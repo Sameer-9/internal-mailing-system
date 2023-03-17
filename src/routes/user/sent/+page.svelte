@@ -1,0 +1,124 @@
+<script>
+	import { MailSentTable } from '$lib/components/mailTables/index.js';
+</script>
+
+<div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
+	<div class="grey-md rounded-tl-md rounded-tr-md">
+		<div class="h-12 flex text-gray-300 font-thin justify-between items-center">
+			<div class="pl-3 flex text-center">
+				<div class="flex items-center">
+					<div
+						class="hover:bg-zinc-500 p-1 rounded-md ml-2 tooltip tooltip-bottom"
+						data-tip="Select All"
+					>
+						<input type="checkbox" class="checkbox h-3 w-3 rounded-sm" />
+					</div>
+					<div class="h-full hover:bg-zinc-500 pt-1">
+						<img src="/images/down-arrow.png" alt="" />
+					</div>
+				</div>
+				<div class="flex">
+					<div
+						class="hover:cursor-pointer hover:bg-zinc-500 rounded-full p-2 tooltip tooltip-bottom"
+						data-tip="Refresh"
+					>
+						<img src="/images/refresh.png" alt="Refresh" />
+					</div>
+				</div>
+				<div class="flex justify-center items-center ">
+					<div
+						class="hover:bg-zinc-500 rounded-full hover:cursor-pointer p-1 tooltip tooltip-bottom"
+						data-tip="More"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width={1.5}
+							stroke="currentColor"
+							class="w-6 h-6"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
+							/>
+						</svg>
+					</div>
+				</div>
+			</div>
+			<div class="pr-6 flex">
+				<div>
+					<div class="hover:bg-zinc-500 rounded-md hover:cursor-pointer p-1">1-50 of 1700</div>
+				</div>
+				<div class="flex gap-2">
+					<div
+						class="hover:bg-zinc-500 rounded-full hover:cursor-pointer p-2 tooltip tooltip-bottom"
+						data-tip="Previous Page"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="w-4 h-4"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M15.75 19.5L8.25 12l7.5-7.5"
+							/>
+						</svg>
+					</div>
+					<div
+						class="hover:bg-zinc-500 rounded-full hover:cursor-pointer p-2 tooltip tooltip-bottom"
+						data-tip="Next Page"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="w-4 h-4"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="h-[85vh] overflow-x-hidden bg-[#1b1b1b]">
+		<MailSentTable />
+	</div>
+</div>
+
+<style>
+	.grey-md {
+		background-color: rgba(241, 243, 244, 0.2);
+	}
+
+	input[type='checkbox'] {
+		outline: 2px solid rgba(255, 255, 255, 0.4);
+	}
+
+	::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		border-radius: 0px;
+		background-color: rgba(241, 243, 244, 0.2);
+	}
+
+	::-webkit-scrollbar {
+		width: 12px;
+		background-color: #111111;
+	}
+
+	::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		background-color: #696969;
+	}
+</style>
