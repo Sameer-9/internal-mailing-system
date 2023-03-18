@@ -1,5 +1,9 @@
 <script>
 	import { MailTable } from '$lib/components/mailTables/index.js';
+	import { SelectAllConversation } from '$lib/stores/inbox-conversation';
+	let isAllChecked = false;
+
+	$: SelectAllConversation(isAllChecked)
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
@@ -11,7 +15,7 @@
 						class="hover:bg-zinc-500 p-1 rounded-md ml-2 tooltip tooltip-bottom"
 						data-tip="Select All"
 					>
-						<input type="checkbox" class="checkbox h-3 w-3 rounded-sm" />
+						<input type="checkbox" bind:checked={isAllChecked} class="checkbox h-3 w-3 rounded-sm" />
 					</div>
 					<div class="h-full hover:bg-zinc-500 pt-1">
 						<img src="/images/down-arrow.png" alt="" />

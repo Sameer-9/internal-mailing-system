@@ -1,24 +1,38 @@
 <script>
 	export let isRead = false;
+	export let isStarred = false;
+	export let sender = '';
+	export let subject = '(No Subject)';
+	export let message = '(No Message)';
+	export let isChecked = false;
+	export let date  = '';
 	let isHover = false;
+
+	$: console.log("ISCHECKED:::::::", isChecked);
 </script>
 
-<tr
+<tr class:text-zinc-200={isChecked}
 	class="p-2 max-w-[100%] grid grid-flow-col-dense hover:cursor-pointer"
 	on:mouseleave={() => (isHover = false)}
 	on:mouseenter={() => (isHover = true)}
-	class:is-read={isRead}
+	class:is-read={!isRead && !isChecked}
+	class:bg-[#174ea6]={isChecked}
 >
 	<td class="w-10 flex" class:drag={isHover}>
 		<div class="checkbox-div">
-			<input type="checkbox" class="checkbox h-3 w-3 rounded-sm" class:active={isHover} />
+			<input type="checkbox" bind:checked={isChecked} class="checkbox h-3 w-3 rounded-sm" class:active={isHover} />
 		</div>
 	</td>
 	<td class="ml-2">
-		<button class:active={isHover}>
+		<button 
+			class="tooltip tooltip-bottom"
+			class:active={isHover}
+			data-tip={isStarred ? 'Starred' : 'Not starred'}
+			on:click={() => (isStarred = !isStarred)}
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
+				fill={isStarred ? 'orange' : 'none'}
 				viewBox="0 0 24 24"
 				stroke-width="1.5"
 				stroke="currentColor"
@@ -35,16 +49,15 @@
 	<td> &nbsp;&nbsp;&nbsp; </td>
 	<td
 		class="sender-name w-24 md:w-40 sm:w-32 sm:whitespace-normal md:whitespace-nowrap min-w-[70px] text-sm"
-		>Sender Name</td
+		>{sender}</td
 	>
 	<td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
 	<td class="message">
-		<div class="flex">
-			<div class="subject text-sm">ex est quam delectus doloremque eum earum sed. Nemo, eaque.</div>
+		<div class="flex flex-grow-0">
+			<div class="subject text-sm">{subject}</div>
 			<span>&nbsp;&nbsp;&nbsp; &dash; &nbsp;&nbsp;&nbsp;</span>
 			<span class="text-sm"
-				>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus magni iste vero
-				velit aspernatur dolore labore quod asperiores quae recusandae,</span
+				>{message}</span
 			>
 		</div>
 	</td>
@@ -109,7 +122,7 @@
 		</div>
 	</td>
 	<td> &nbsp;&nbsp;&nbsp; </td>
-	<td class="float-right pr-4 font-bold text-xs text-zinc-500 whitespace-nowrap time">Mar 15</td>
+	<td class:text-zinc-500={!isChecked} class="float-right pr-4 font-bold text-xs whitespace-nowrap time">{date}</td>
 </tr>
 
 <style>

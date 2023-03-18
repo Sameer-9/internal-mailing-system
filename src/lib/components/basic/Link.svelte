@@ -10,15 +10,17 @@
 </script>
 
 <a
-	
 	href={url}
 	on:mouseenter={() => (hidden = false)}
 	on:mouseleave={() => (hidden = true)}
-	class="px-2 py-1 relative text-sm"
+	class="px-2 py-1 relative text-sm tooltip tooltip-right"
+	data-tip={label}
 >
-	<div class="flex gap-4 hover:bg-[#ffffff4d] hover:rounded-2xl px-2 py-1"
-	class:active
-	class:justify-center={!$isSidebarOpened}>
+	<div 
+	  class="flex gap-4 hover:bg-[#ffffff4d] hover:rounded-2xl px-2 py-1 "
+	  class:active
+	  class:justify-center={!$isSidebarOpened}
+	>
 		{#if imgUrl}
 		<img src={imgUrl} alt={label} />
 		{/if}
@@ -29,7 +31,7 @@
 		</li>
 		{/if}
 	</div>
-	{#if !hidden}
+	<!-- {#if !hidden}
 		<div
 			in:fly={{ x: 100, duration: 300 }}
 			out:fade
@@ -37,13 +39,10 @@
 		>
 			{label}
 		</div>
-	{/if}
+	{/if} -->
 </a>
 
 <style>
-	.md-transparent {
-		background-color: rgba(255, 255, 255, 0.2);
-	}
 
 	.active {
 		background-color: rgba(255, 255, 255, 0.3);
