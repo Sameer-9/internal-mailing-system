@@ -3,11 +3,11 @@
 	import { inboxConversations } from '$lib/stores/inbox-conversation';
 </script>
 
-<table class="text-zinc-400 font-sans table-fixed w-full min-h-[51vh]">
+<div class="text-zinc-400 font-sans table-fixed w-full min-h-[51vh]">
 	{#each $inboxConversations as conversation}
 		<MailTr {...conversation}/>
 	{/each}
-</table>
+</div>
 
 <style>
 	/* .grey-md {
