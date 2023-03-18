@@ -55,7 +55,7 @@
 		</div>
 	</td>
 	<td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-	<td class="flex gap-3" class:hidden={!isHover}>
+	<td class="flex gap-1" class:hidden={!isHover}>
 		<div
 			class="hover:bg-zinc-500 rounded-full hover:cursor-pointer px-1 tooltip tooltip-bottom"
 			data-tip="Archive"

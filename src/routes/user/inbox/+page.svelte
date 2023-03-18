@@ -91,7 +91,7 @@
 		</div>
 	</div>
 
-	<div class="h-[85vh] overflow-x-hidden bg-[#1b1b1b]">
+	<div class="h-[81vh] overflow-x-hidden bg-[#1b1b1b] rounded-bl-3xl">
 		<MailTable />
 	</div>
 </div>
@@ -105,20 +105,4 @@
 		outline: 2px solid rgba(255, 255, 255, 0.4);
 	}
 
-	::-webkit-scrollbar-track {
-		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-		border-radius: 0px;
-		background-color: rgba(241, 243, 244, 0.2);
-	}
-
-	::-webkit-scrollbar {
-		width: 12px;
-		background-color: #111111;
-	}
-
-	::-webkit-scrollbar-thumb {
-		border-radius: 10px;
-		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-		background-color: #696969;
-	}
 </style>

@@ -1,14 +1,14 @@
 <script>
-	let isOpened = false;
+	import { isSidebarOpened } from "$lib/stores/Sidebar-store";
 	let inputFocus = false;
 	function handleClick() {
-		isOpened = !isOpened;
+		$isSidebarOpened = !$isSidebarOpened;
 	}
 </script>
 
 <header class="h-16 p-2 flex gap-3 text-gray-300">
 	<div class="w-56 flex-none flex items-center">
-		<button class:opened={isOpened} class="menu" on:click={handleClick} aria-label="Main Menu">
+		<button class:opened={!$isSidebarOpened} class="menu" on:click={handleClick} aria-label="Main Menu">
 			<svg width="30" height="60" viewBox="0 0 100 100">
 				<path
 					class="line line1"

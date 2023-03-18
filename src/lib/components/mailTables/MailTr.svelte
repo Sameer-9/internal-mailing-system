@@ -35,7 +35,7 @@
 	<td> &nbsp;&nbsp;&nbsp; </td>
 	<td
 		class="sender-name w-24 md:w-40 sm:w-32 sm:whitespace-normal md:whitespace-nowrap min-w-[70px] text-sm"
-		>Sender Name LONG vsadvbslvbsdvbksbvksvklvksdb</td
+		>Sender Name</td
 	>
 	<td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
 	<td class="message">
@@ -49,7 +49,7 @@
 		</div>
 	</td>
 	<td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-	<td class="flex gap-3" class:hidden={!isHover}>
+	<td class="flex gap-1" class:hidden={!isHover}>
 		<div
 			class="hover:bg-zinc-500 rounded-full hover:cursor-pointer px-1 tooltip tooltip-bottom"
 			data-tip="Archive"

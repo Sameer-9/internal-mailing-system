@@ -1,5 +1,6 @@
 <script>
-	import { fade, fly } from 'svelte/transition';
+	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
+	import { fade, fly, slide } from 'svelte/transition';
 
 	export let url = '';
 	export let imgUrl = '';
@@ -9,23 +10,30 @@
 </script>
 
 <a
-	class:active
+	
 	href={url}
 	on:mouseenter={() => (hidden = false)}
 	on:mouseleave={() => (hidden = true)}
-	class="hover:bg-zinc-700 hover:rounded-2xl px-2 py-1 relative"
+	class="px-2 py-1 relative text-sm"
 >
-	<div class="flex gap-4">
+	<div class="flex gap-4 hover:bg-[#ffffff4d] hover:rounded-2xl px-2 py-1"
+	class:active
+	class:justify-center={!$isSidebarOpened}>
+		{#if imgUrl}
 		<img src={imgUrl} alt={label} />
+		{/if}
+		{#if $isSidebarOpened}
 		<li>
-			{label}
+			<p>{label}</p>
+				
 		</li>
+		{/if}
 	</div>
 	{#if !hidden}
 		<div
 			in:fly={{ x: 100, duration: 300 }}
 			out:fade
-			class="absolute right-0 translate-x-full ml-3 top-2 md-transparent px-2"
+			class="fixed right-0 translate-x-full ml-3 top-2 md-transparent px-2 z-[999999999] bg-red-800"
 		>
 			{label}
 		</div>
@@ -39,6 +47,6 @@
 
 	.active {
 		background-color: rgba(255, 255, 255, 0.3);
-		border-radius: 10px;
+		border-radius: 16px;
 	}
 </style>

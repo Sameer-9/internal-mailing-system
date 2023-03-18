@@ -91,7 +91,7 @@
 		</div>
 	</div>
 
-	<div class="h-[85vh] overflow-x-hidden bg-[#1b1b1b]">
+	<div class="h-[81vh] overflow-x-hidden bg-[#1b1b1b] rounded-bl-3xl">
 		<MailSentTable />
 	</div>
 </div>
