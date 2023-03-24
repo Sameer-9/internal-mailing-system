@@ -7,7 +7,7 @@ export const POST = async ({ cookies, request }) => {
 	if (res?.labelName === '' || !res?.labelName) {
 		console.log('INSIDE ERROR');
 		throw error(500, {
-			message: 'Invalid Name'
+			message: 'Invalid Label Name'
 		});
 	}
 	return json({ success: true });

@@ -5,7 +5,7 @@
 
 <div class="text-zinc-400 font-sans table-fixed w-full min-h-[51vh]">
 	{#each $inboxConversations as conversation}
-		<MailTr {...conversation}/>
+		<MailTr {...conversation} />
 	{/each}
 </div>
 

@@ -1,6 +1,6 @@
 <script>
 	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
-	import { fade, fly, slide } from 'svelte/transition';
+	// import { fade, fly, slide } from 'svelte/transition';
 
 	export let url = '';
 	export let imgUrl = '';
@@ -14,21 +14,19 @@
 	on:mouseenter={() => (hidden = false)}
 	on:mouseleave={() => (hidden = true)}
 	class="px-2 py-1 relative text-sm tooltip tooltip-right"
-	data-tip={label}
 >
-	<div 
-	  class="flex gap-4 hover:bg-[#ffffff4d] hover:rounded-2xl px-2 py-1 "
-	  class:active
-	  class:justify-center={!$isSidebarOpened}
+	<div
+		class="flex gap-4 hover:bg-[#ffffff4d] hover:rounded-2xl px-2 py-1 "
+		class:active
+		class:justify-center={!$isSidebarOpened}
 	>
 		{#if imgUrl}
-		<img src={imgUrl} alt={label} />
+			<img src={imgUrl} alt={label} />
 		{/if}
 		{#if $isSidebarOpened}
-		<li>
-			<p>{label}</p>
-				
-		</li>
+			<li>
+				<p>{label}</p>
+			</li>
 		{/if}
 	</div>
 	<!-- {#if !hidden}
@@ -43,7 +41,6 @@
 </a>
 
 <style>
-
 	.active {
 		background-color: rgba(255, 255, 255, 0.3);
 		border-radius: 16px;

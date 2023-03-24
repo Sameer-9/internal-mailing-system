@@ -1,9 +1,9 @@
 <script>
 	// @ts-nocheck
-    import { isSidebarOpened } from '$lib/stores/Sidebar-store';
-	import { Link } from '$lib/components/basic/index.js';
+	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
+	import { LabelLink, Link } from '$lib/components/basic/index.js';
 	import { page } from '$app/stores';
-	import { slide } from 'svelte/transition';
+	import { labelStore } from '$lib/stores/label-store';
 
 	const dummyData = [
 		{
@@ -22,7 +22,7 @@
 			icon: '/images/sent.png'
 		},
 		{
-			url: '/user/drafts',
+			url: '/user/draft',
 			label: 'Drafts',
 			icon: '/images/draft.png'
 		},
@@ -44,7 +44,7 @@
 	];
 </script>
 
-<aside class="h-full text-white" class:w-[224px]={$isSidebarOpened}>
+<aside class="h-full text-white min-w-[60px]" class:w-[224px]={$isSidebarOpened}>
 	<div class="border-b-2 border-zinc-400 pb-4">
 		<button class="px-5 py-4 bg-white text-gray-500 font-semibold rounded-2xl">
 			<div class="flex gap-2">
@@ -55,7 +55,7 @@
 			</div>
 		</button>
 	</div>
-	<div class="pt-5" id="overflow-sidebar">
+	<div class="pt-3" id="overflow-sidebar">
 		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]">
 			{#each dummyData as data}
 				<Link
@@ -68,7 +68,7 @@
 
 			<div class="pl-3 pt-2 text-lg flex font-sans justify-between">
 				{#if $isSidebarOpened}
-						<pe>Label</pe>
+					<pe>Label</pe>
 				{/if}
 				<label for="label-modal">
 					<div class="tooltip tooltip-bottom" data-tip="Add Label">
@@ -88,21 +88,21 @@
 			</div>
 			<div class="p-0 text-sm w-full">
 				<ul class="gap-1 flex flex-col font-bold text-gray-300 w-full pl-5">
-					<!-- {#each dummyData as data,index (index)}
-						<Link
-						active={$page.route?.id?.includes(data.url)}
-						label={data.label}
-						url={data.url}
-						/>
-					{/each} -->
+						{#each $labelStore as label}
+							<LabelLink
+								id={label.id ?? ''}
+								active={$page.route?.id?.includes(label.id)}
+								label={label.name ?? ''}
+								color={label.color ?? ''}
+							/>
+						{/each}
 				</ul>
-		</div>
+			</div>
 		</ul>
 	</div>
 </aside>
 
 <style>
-
 	.add-label {
 		position: relative;
 		z-index: 1 !important;

@@ -17,7 +17,7 @@
 				console.log('RESPONSE:::::', json);
 				labelError = null;
 				closeModalBtn.click();
-				labelName = ''
+				labelName = '';
 				toast('success', 'Label Added Successfully');
 			} else {
 				console.log('ERROR HANDLES::::::', json);
@@ -29,7 +29,7 @@
 		}
 	}
 
-	$: console.log($toastStore)
+	$: console.log($toastStore);
 </script>
 
 {#if $toastStore?.type}
@@ -79,22 +79,20 @@
 </div>
 
 <style>
+	:global(::-webkit-scrollbar-track) {
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		border-radius: 0px;
+		background-color: rgba(241, 243, 244, 0.2);
+	}
 
+	:global(::-webkit-scrollbar) {
+		width: 12px;
+		background-color: #111111;
+	}
 
-:global(::-webkit-scrollbar-track) {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 0px;
-	background-color: rgba(241, 243, 244, 0.2);
-}
-
-:global(::-webkit-scrollbar) {
-	width: 12px;
-	background-color: #111111;
-}
-
-:global(::-webkit-scrollbar-thumb) {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: #696969;
-}
+	:global(::-webkit-scrollbar-thumb) {
+		border-radius: 10px;
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		background-color: #696969;
+	}
 </style>
