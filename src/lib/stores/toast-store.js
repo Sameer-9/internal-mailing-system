@@ -1,26 +1,29 @@
 import { writable } from 'svelte/store';
 
 export const toastStore = writable({
-	type: null,
-	message: null
+	type: '',
+	message: ''
 });
-
-export function toast(_type = null, _message = null) {
+/**
+ * @type {string | number | NodeJS.Timeout | undefined}
+ */
+let timeoutId;
+export function toast(_type = '', _message = '') {
 	toastStore.update(({ type, message }) => {
 		return {
 			type: _type,
 			message: _message
 		};
 	});
-
-	setTimeout(removeToast, 3000);
+	clearTimeout(timeoutId);
+	timeoutId = setTimeout(removeToast, 3000);
 }
 
 function removeToast() {
 	toastStore.update(({ type, message }) => {
 		return {
-			type: null,
-			message: null
+			type: '',
+			message: ''
 		};
 	});
 }

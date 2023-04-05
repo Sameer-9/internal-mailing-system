@@ -1,47 +1,9 @@
 <script>
 	// @ts-nocheck
-	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
+	import { isSidebarOpened, sidebarArray } from '$lib/stores/Sidebar-store';
 	import { LabelLink, Link } from '$lib/components/basic/index.js';
 	import { page } from '$app/stores';
 	import { labelStore } from '$lib/stores/label-store';
-
-	const dummyData = [
-		{
-			url: '/user/inbox',
-			label: 'Inbox',
-			icon: '/images/inbox.png'
-		},
-		{
-			url: '/user/starred',
-			label: 'Starred',
-			icon: '/images/star.png'
-		},
-		{
-			url: '/user/sent',
-			label: 'Sent',
-			icon: '/images/sent.png'
-		},
-		{
-			url: '/user/draft',
-			label: 'Drafts',
-			icon: '/images/draft.png'
-		},
-		{
-			url: '/user/scheduled',
-			label: 'Scheduled',
-			icon: '/images/scheduled.png'
-		},
-		{
-			url: '/user/spam',
-			label: 'Spam',
-			icon: '/images/spam.png'
-		},
-		{
-			url: '/user/trash',
-			label: 'trash',
-			icon: '/images/trash.png'
-		}
-	];
 </script>
 
 <aside class="h-full text-white min-w-[60px]" class:w-[224px]={$isSidebarOpened}>
@@ -57,10 +19,10 @@
 	</div>
 	<div class="pt-3" id="overflow-sidebar">
 		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]">
-			{#each dummyData as data}
+			{#each $sidebarArray as data}
 				<Link
 					active={$page.route?.id?.includes(data.url)}
-					label={data.label}
+					label={data.name}
 					url={data.url}
 					imgUrl={data.icon}
 				/>
@@ -88,14 +50,14 @@
 			</div>
 			<div class="p-0 text-sm w-full">
 				<ul class="gap-1 flex flex-col font-bold text-gray-300 w-full pl-5">
-						{#each $labelStore as label}
-							<LabelLink
-								id={label.id ?? ''}
-								active={$page.route?.id?.includes(label.id)}
-								label={label.name ?? ''}
-								color={label.color ?? ''}
-							/>
-						{/each}
+					{#each $labelStore as label}
+						<LabelLink
+							id={label?.id}
+							active={$page.route?.id?.includes(label.id)}
+							label={label?.name ?? ''}
+							color={label?.color ?? ''}
+						/>
+					{/each}
 				</ul>
 			</div>
 		</ul>

@@ -1,9 +1,14 @@
 <script>
 	import { MailTable } from '$lib/components/mailTables/index.js';
-	import { SelectAllConversation } from '$lib/stores/inbox-conversation';
-	let isAllChecked = false;
+	import { inboxConversations, SelectAllConversation } from '$lib/stores/inbox-conversation';
+	export let data;
 
+	let isAllChecked = false;
 	$: SelectAllConversation(isAllChecked);
+
+	$: console.log(data);
+
+	inboxConversations.set(data.inbox?.conversations);
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">

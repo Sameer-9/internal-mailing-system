@@ -21,7 +21,7 @@
 		class:justify-center={!$isSidebarOpened}
 	>
 		{#if imgUrl}
-			<img src={imgUrl} alt={label} />
+			<img src={imgUrl} width="20" alt={label} />
 		{/if}
 		{#if $isSidebarOpened}
 			<li>

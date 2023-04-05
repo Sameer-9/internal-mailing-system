@@ -1,28 +1,92 @@
 <script>
+// @ts-nocheck
+
 	import { page } from '$app/stores';
-	export let isRead = false;
-	export let isStarred = false;
+	import { inboxConversations } from '$lib/stores/inbox-conversation';
+	import { toast } from '$lib/stores/toast-store';
+	import { alertTypes, userActions } from '$lib/utils/common/constants';
+
+	/**
+	 * @type {number}
+	 */
+	export let id;
+	export let is_read = false;
+	export let is_starred = false;
 	export let sender = '';
 	export let subject = '(No Subject)';
 	export let message = '(No Message)';
-	export let isChecked = false;
+	export let is_checked = false;
 	export let date = '';
 	let isHover = false;
+
+	/**
+	 * @param {string} flag
+	 */
+	async function updateFlag(flag) {
+		let value = null
+
+		switch (flag) {
+			case userActions.IS_STARRED:
+				value = !is_starred;
+				break;
+			case userActions.IS_READ:
+				value = !is_read;
+				break;
+			default:
+				break;
+		}
+
+		try {
+			const res = await fetch('/api/update/flag', {
+				method: 'POST',
+				headers: {
+					contentType: 'application/json'
+				},
+				body: JSON.stringify({ conversation_id: id, value: value , flag: flag})
+			});
+
+			const jsonRes = await res.json();
+			if (res.ok) {
+				console.log('jsonRes::::::', jsonRes);
+				if (jsonRes.success) {
+					console.log('INSIDE SUCCESS:::::::');
+					inboxConversations.update((state) => {
+						return state?.map((obj) => {
+							if (id == obj.id) {
+								console.log('flag:::::::::', flag);
+								console.log('value:::::::::', value);
+								obj.flag = value;
+							}
+							return obj;
+						});
+					});
+					toast(alertTypes.SUCCESS, jsonRes.message);
+				} else if (jsonRes.warning) {
+					toast(alertTypes.WARNING, jsonRes.message);
+				} else {
+					toast(alertTypes.ERROR, jsonRes.message);
+				}
+			}
+			console.log(res);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 </script>
 
-<!-- svelte-ignore a11y-invalid-attribute -->
-<a class="cursor-pointer -z-10" href="#">
+<div class="cursor-pointer -z-10">
 	<div
 		class="flex items-center gap-2 pb-2 div-row cursor-pointer"
 		on:mouseleave={() => (isHover = false)}
 		on:mouseenter={() => (isHover = true)}
-		class:is-read={!isRead && !isChecked}
-		class:bg-[#174ea6]={isChecked}
+		class:is-read={!is_read && !is_checked}
+		class:bg-[#174ea6]={is_checked}
 	>
 		<div class="checkbox-div" class:drag={isHover}>
 			<input
 				type="checkbox"
-				bind:checked={isChecked}
+				bind:checked={is_checked}
 				class="checkbox h-3 w-3 rounded-sm"
 				class:active={isHover}
 			/>
@@ -30,13 +94,13 @@
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div
 			class="tooltip tooltip-bottom"
-			on:click={() => (isStarred = !isStarred)}
-			data-tip={isStarred ? 'Starred' : 'Not starred'}
+			on:click={() => updateFlag(userActions.IS_STARRED)}
+			data-tip={is_starred ? 'Starred' : 'Not starred'}
 		>
 			<button class:active={isHover}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					fill={isStarred ? 'orange' : 'none'}
+					fill={is_starred ? 'orange' : 'none'}
 					viewBox="0 0 24 24"
 					stroke-width="1.5"
 					stroke="currentColor"
@@ -51,21 +115,25 @@
 			</button>
 		</div>
 		<div>
-			<div
-				class="sender-name w-24 md:w-30 sm:w-32 sm:whitespace-normal md:whitespace-nowrap min-w-[30px] text-sm"
-			>
-				{sender}
-			</div>
+			<a href={$page.url.href}>
+				<div
+					class="sender-name w-24 md:w-30 sm:w-32 sm:whitespace-normal md:whitespace-nowrap min-w-[30px] text-sm"
+				>
+					{sender}
+				</div>
+			</a>
 		</div>
 		<div class="message flex flex-1 w-[120px]">
-			<div class="text-sm subject">
-				{subject} &nbsp;-&nbsp;
-			</div>
+			<a href={$page.url.href}>
+				<div class="text-sm subject">
+					{subject} &nbsp;-&nbsp;
+				</div>
+			</a>
 			<span class="text-sm">{message}</span>
 		</div>
 		<div class="flex gap-1" class:hidden={!isHover}>
 			<div
-				class="hover:bg-zinc-500 rounded-full hover:cursor-pointer px-1 tooltip tooltip-bottom"
+				class="hover:bg-zinc-500 rounded-full hover:cursor-pointer p-1 tooltip tooltip-bottom"
 				data-tip="Archive"
 			>
 				<svg
@@ -74,7 +142,7 @@
 					viewBox="0 0 24 24"
 					stroke-width="1.5"
 					stroke="currentColor"
-					class="w-5 h-5"
+					class="w-4 h-4"
 				>
 					<path
 						stroke-linecap="round"
@@ -84,7 +152,7 @@
 				</svg>
 			</div>
 			<div
-				class="hover:bg-zinc-500 rounded-full hover:cursor-pointer px-1 tooltip tooltip-bottom"
+				class="hover:bg-zinc-500 rounded-full hover:cursor-pointer p-1 tooltip tooltip-bottom"
 				data-tip="Delete"
 			>
 				<svg
@@ -93,7 +161,7 @@
 					viewBox="0 0 24 24"
 					stroke-width="1.5"
 					stroke="currentColor"
-					class="w-5 h-5"
+					class="w-4 h-4"
 				>
 					<path
 						stroke-linecap="round"
@@ -102,34 +170,53 @@
 					/>
 				</svg>
 			</div>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div
-				class="hover:bg-zinc-500 rounded-full hover:cursor-pointer px-1 tooltip tooltip-bottom"
-				data-tip="Mark as read"
+				class="hover:bg-zinc-500 rounded-full hover:cursor-pointer p-1 tooltip tooltip-bottom"
+				data-tip={is_read ? 'Mark as unread' : 'Mark as read'}
+				on:click={() => updateFlag(userActions.IS_READ)}
 			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke-width="1.5"
-					stroke="currentColor"
-					class="w-5 h-5"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-					/>
-				</svg>
+				{#if is_read}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-4 h-4"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z"
+						/>
+					</svg>
+				{:else}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-4 h-4"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+						/>
+					</svg>
+				{/if}
 			</div>
 		</div>
 		<div
-			class:text-zinc-500={!isChecked}
+			class:text-zinc-500={!is_checked}
 			class="ml-auto pr-4 font-bold text-xs whitespace-nowrap time"
 		>
 			{date}
 		</div>
 	</div>
-</a>
+</div>
 
 <style>
 	input[type='checkbox'] {
@@ -180,7 +267,7 @@
 	}
 
 	.message span {
-		max-width: 200px;
+		max-width: 360px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -193,6 +280,7 @@
 	}
 
 	.subject {
+		min-width: 20%;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
@@ -200,13 +288,12 @@
 
 	.is-read {
 		background-color: rgba(200, 200, 200, 0.1);
-		font-weight: 500;
 		font-family: sans-serif;
 	}
 
 	.is-read .subject,
 	.is-read .sender-name,
 	.is-read .time {
-		color: white;
+		color: #ffffff;
 	}
 </style>

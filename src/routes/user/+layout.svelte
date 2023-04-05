@@ -1,11 +1,23 @@
 <script>
 	// @ts-nocheck
 	import { Header, Sidebar } from '$lib/components/basic/index.js';
+	import { labelStore } from '$lib/stores/label-store';
+	import { sidebarArray } from '$lib/stores/Sidebar-store';
 	import { toast, toastStore } from '$lib/stores/toast-store';
+	import { userStore } from '$lib/stores/user-store';
+	import { alertTypes } from '$lib/utils/common/constants';
 
+	export let data;
 	let labelName = '';
 	let labelError = null;
+	let labelColor = '';
 	let closeModalBtn;
+
+	sidebarArray.set(data.sidebar);
+	userStore.set(data.userDetails[0]);
+
+	console.log($userStore);
+
 	async function handleSubmit() {
 		try {
 			const res = await fetch('/api/add-label', {
@@ -17,11 +29,22 @@
 				console.log('RESPONSE:::::', json);
 				labelError = null;
 				closeModalBtn.click();
+				toast(alertTypes.SUCCESS, 'Label Added Successfully');
+				labelStore.update((prevVal) => {
+					prevVal = [
+						...prevVal,
+						{
+							id: crypto.randomUUID(),
+							name: labelName,
+							color: labelColor
+						}
+					];
+					return prevVal;
+				});
 				labelName = '';
-				toast('success', 'Label Added Successfully');
 			} else {
-				console.log('ERROR HANDLES::::::', json);
-				toast('error', json?.message);
+				console.log('ERROR HANDLED::::::', json);
+				toast(alertTypes.ERROR, json?.message);
 				labelError = json?.message;
 			}
 		} catch (err) {
@@ -69,6 +92,18 @@
 					class="input input-bordered w-full "
 				/>
 				<p class="text-error">{labelError ?? ''}</p>
+			</div>
+			<div class="">
+				<label class="label" for="label-name">
+					<span class="label-text">Select Label Color</span>
+				</label>
+				<input
+					bind:value={labelColor}
+					type="color"
+					id="label-color"
+					name="label-color"
+					class="input w-2/4"
+				/>
 			</div>
 			<div class="modal-action">
 				<label for="label-modal" bind:this={closeModalBtn} class="btn">Cancel</label>

@@ -1,5 +1,8 @@
 <script>
+	// @ts-nocheck
+
 	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
+	import { userStore } from '$lib/stores/user-store';
 	let inputFocus = false;
 	function handleClick() {
 		$isSidebarOpened = !$isSidebarOpened;
@@ -26,7 +29,7 @@
 				/>
 			</svg>
 		</button>
-		<p class="text-gray-200 font-bold text-2xl flex-1 pl-6">Mail</p>
+		<p class="text-gray-200 font-bold text-2xl flex-1 pl-6 font-mono">Mail</p>
 	</div>
 	<div class="flex-1">
 		<div
@@ -75,10 +78,7 @@
 		<div
 			class="flex items-center justify-end w-12 h-12 overflow-hidden rounded-full avatar cursor-pointer"
 		>
-			<img
-				src="https://images.unsplash.com/photo-1548544149-4835e62ee5b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
-				alt="profle"
-			/>
+			<img src={$userStore?.profile_photo} alt="profle" />
 		</div>
 	</div>
 </header>

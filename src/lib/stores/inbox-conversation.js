@@ -1,43 +1,13 @@
 import { writable } from 'svelte/store';
 
-export const inboxConversations = writable([
-	{
-		id: crypto.randomUUID(),
-		sender: 'Test Sender',
-		message: 'cbvwoiviwovwviwoivii weovwovwiov wviwivowiov',
-		date: 'Mar 26',
-		isRead: false,
-		isStarred: false,
-		isChecked: false
-	},
-	{
-		id: crypto.randomUUID(),
-		sender: 'Test Sender wv vwvwivowv',
-		subject: 'loremwwwpvwpbvpwevpev v wpvhwp ehvpwhevphwepvh wev',
-		message: 'cbvwoiviwovwviwoivii weovwovwiov wviwivowiov',
-		date: 'Mar 26',
-		isRead: false,
-		isStarred: false,
-		isChecked: false
-	},
-	{
-		id: crypto.randomUUID(),
-		sender: 'Test Sender vwvwvl',
-		subject: 'loremwwwpvwpbvpwevpev v wpvhwp ehvpwhevphwepvh wev',
-		message: 'cbvwoiviwovwviwoivii weovwovwiov wviwivowiov',
-		date: 'Mar 26',
-		isRead: true,
-		isStarred: false,
-		isChecked: false
-	}
-]);
+export const inboxConversations = writable();
 
 /**
  * @param {any} conversationObject
  */
 export function updateInboxConversation(conversationObject) {
 	inboxConversations.update((state) => {
-		return state.map((obj) => {
+		return state?.map((/** @type {{ id: any; }} */ obj) => {
 			if (conversationObject?.id == obj?.id) {
 				obj = conversationObject;
 			}
@@ -46,10 +16,10 @@ export function updateInboxConversation(conversationObject) {
 	});
 }
 
-export function SelectAllConversation(isChecked = false) {
+export function SelectAllConversation(is_checked = false) {
 	inboxConversations.update((state) => {
-		return state.map((obj) => {
-			obj.isChecked = isChecked;
+		return state?.map((/** @type {{ is_checked: boolean; }} */ obj) => {
+			obj.is_checked = is_checked;
 			return obj;
 		});
 	});
