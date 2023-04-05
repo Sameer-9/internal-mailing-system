@@ -47,15 +47,13 @@
 
 			const jsonRes = await res.json();
 			if (res.ok) {
-				console.log('jsonRes::::::', jsonRes);
 				if (jsonRes.success) {
-					console.log('INSIDE SUCCESS:::::::');
 					inboxConversations.update((state) => {
 						return state?.map((obj) => {
 							if (id == obj.id) {
 								console.log('flag:::::::::', flag);
 								console.log('value:::::::::', value);
-								obj.flag = value;
+								obj[flag] = value;
 							}
 							return obj;
 						});

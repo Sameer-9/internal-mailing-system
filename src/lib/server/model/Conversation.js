@@ -20,12 +20,13 @@ export const updateIsRead = (
 	/** @type {number} */ user_id
 ) => {
 	const statement = {
-		text: `UPDATE message_reciepients SET is_read = $1, 
+		text: `UPDATE message_recepient SET is_read = $1, 
 				modified_date = CURRENT_TIMESTAMP, modified_by = $3
 			    WHERE message_lid 
 				IN(SELECT id FROM message WHERE conversation_lid = $2)
 				AND user_lid = $3;`,
 			   values: [isRead, id, user_id]
 	};
+	console.log(statement);
 	return client.query(statement);
 };

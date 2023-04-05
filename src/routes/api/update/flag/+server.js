@@ -1,6 +1,7 @@
 import { updateIsRead, updateIsStarred } from '$lib/server/model/Conversation';
 import { userActions } from '$lib/utils/common/constants';
 import { checkValueInJsonObject } from '$lib/utils/common/helper';
+import { fail } from 'assert';
 
 /** @type {import('../star/$types').RequestHandler} */
 export async function POST({ request, locals }) {
@@ -45,7 +46,7 @@ export async function POST({ request, locals }) {
 			})
 		}
 
-		if (res?.rowCount === 1) {
+		if (res?.rowCount && res?.rowCount > 0) {
 			return new Response(
 				JSON.stringify({
 					success: true,
@@ -66,13 +67,6 @@ export async function POST({ request, locals }) {
 		}
 	} catch (err) {
 		console.log(err);
-		return new Response(
-			JSON.stringify({
-				success: false,
-				error: true,
-				warning: false,
-				message: err ?? 'Internal Server Error'
-			})
-		);
+		throw fail(JSON.stringify(err))
 	}
 }
