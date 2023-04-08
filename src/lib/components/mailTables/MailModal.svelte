@@ -1,276 +1,41 @@
 <script>
+	import { initializeCK } from '$lib/utils/common/ckinitializer';
+
 	// @ts-nocheck
 	import { onMount } from 'svelte';
 
 	let isFocused = false;
+	let xDirection = 0;
+	let yDirection = 0;
 
-	$: console.log(isFocused);
+	/**
+	 * @type {any}
+	 */
 	let editor;
 	let editor1;
-	onMount(() => {
-		CKEDITOR.ClassicEditor.create(editor, {
-			// https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format,
-
-			toolbar: {
-				items: [
-					'heading',
-					'|',
-					'bold',
-					'italic',
-					'strikethrough',
-					'underline',
-					'code',
-					'subscript',
-					'superscript',
-					'removeFormat',
-					'|',
-					'bulletedList',
-					'numberedList',
-					'todoList',
-					'|',
-					'outdent',
-					'indent',
-					'|',
-					'undo',
-					'redo',
-					'-',
-					'fontSize',
-					'fontFamily',
-					'fontColor',
-					'fontBackgroundColor',
-					'highlight',
-					'|',
-					'alignment',
-					'|',
-					'link',
-					'insertImage',
-					'blockQuote',
-					'insertTable',
-					'specialCharacters',
-					'horizontalLine',
-					'pageBreak',
-					'|',
-					'textPartLanguage',
-					'|',
-					'findAndReplace',
-					'imageTextAlternative'
-				],
-				shouldNotGroupWhenFull: true
-			},
-			blockedKeystrokes: [9],
-			table: {
-				contentToolbar: [
-					'insertTable',
-					'tableColumn',
-					'tableRow',
-					'mergeTableCells',
-					'tableProperties',
-					'tableCellProperties',
-					'toggleTableCaption'
-				]
-			},
-			// Changing the language of the interface requires loading the language file using the <script> tag.
-			// language: 'es',
-			list: {
-				properties: {
-					styles: true,
-					startIndex: true,
-					reversed: true
-				}
-			},
-			// https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-			heading: {
-				options: [
-					{
-						model: 'paragraph',
-						title: 'Paragraph',
-						class: 'ck-heading_paragraph'
-					},
-					{
-						model: 'heading1',
-						view: 'h1',
-						title: 'Heading 1',
-						class: 'ck-heading_heading1'
-					},
-					{
-						model: 'heading2',
-						view: 'h2',
-						title: 'Heading 2',
-						class: 'ck-heading_heading2'
-					},
-					{
-						model: 'heading3',
-						view: 'h3',
-						title: 'Heading 3',
-						class: 'ck-heading_heading3'
-					},
-					{
-						model: 'heading4',
-						view: 'h4',
-						title: 'Heading 4',
-						class: 'ck-heading_heading4'
-					},
-					{
-						model: 'heading5',
-						view: 'h5',
-						title: 'Heading 5',
-						class: 'ck-heading_heading5'
-					},
-					{
-						model: 'heading6',
-						view: 'h6',
-						title: 'Heading 6',
-						class: 'ck-heading_heading6'
-					}
-				]
-			},
-			// https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-			placeholder: '',
-			// https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-			fontFamily: {
-				options: [
-					'default',
-					'Arial, Helvetica, sans-serif',
-					'Courier New, Courier, monospace',
-					'Georgia, serif',
-					'Lucida Sans Unicode, Lucida Grande, sans-serif',
-					'Tahoma, Geneva, sans-serif',
-					'Times New Roman, Times, serif',
-					'Trebuchet MS, Helvetica, sans-serif',
-					'Verdana, Geneva, sans-serif'
-				],
-				supportAllValues: true
-			},
-			// https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-			fontSize: {
-				options: [10, 12, 14, 'default', 18, 20, 22],
-				supportAllValues: true
-			},
-			// Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-			// https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-			htmlSupport: {
-				allow: [
-					{
-						name: /.*/,
-						attributes: true,
-						classes: true,
-						styles: true
-					}
-				]
-			},
-			// Be careful with enabling previews
-			// https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-			htmlEmbed: {
-				showPreviews: true
-			},
-			// https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-			link: {
-				decorators: {
-					addTargetToExternalLinks: true,
-					defaultProtocol: 'https://',
-					toggleDownloadable: {
-						mode: 'manual',
-						label: 'Downloadable',
-						attributes: {
-							download: 'file'
-						}
-					}
-				}
-			},
-			// https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-			mention: {
-				feeds: [
-					{
-						marker: '@',
-						feed: [
-							'@apple',
-							'@bears',
-							'@brownie',
-							'@cake',
-							'@cake',
-							'@candy',
-							'@canes',
-							'@chocolate',
-							'@cookie',
-							'@cotton',
-							'@cream',
-							'@cupcake',
-							'@danish',
-							'@donut',
-							'@dragée',
-							'@fruitcake',
-							'@gingerbread',
-							'@gummi',
-							'@ice',
-							'@jelly-o',
-							'@liquorice',
-							'@macaroon',
-							'@marzipan',
-							'@oat',
-							'@pie',
-							'@plum',
-							'@pudding',
-							'@sesame',
-							'@snaps',
-							'@soufflé',
-							'@sugar',
-							'@sweet',
-							'@topping',
-							'@wafer'
-						],
-						minimumCharacters: 1
-					}
-				]
-			},
-			// The "super-build" contains more premium features that require additional configuration, disable them below.
-			// Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-			removePlugins: [
-				// These two are commercial, but you can try them out without registering to a trial.
-				// 'ExportPdf',
-				// 'ExportWord',
-				'CKBox',
-				'CKFinder',
-				'EasyImage',
-				// This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-				// https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-				// Storing images as Base64 is usually a very bad idea.
-				// Replace it on production website with other solutions:
-				// https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-				// 'Base64UploadAdapter',
-				'RealTimeCollaborativeComments',
-				'RealTimeCollaborativeTrackChanges',
-				'RealTimeCollaborativeRevisionHistory',
-				'PresenceList',
-				'Comments',
-				'TrackChanges',
-				'TrackChangesData',
-				'RevisionHistory',
-				'Pagination',
-				'WProofreader',
-				// Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-				// from a local file system (file://) - load this site via HTTP server if you enable MathType
-				'MathType'
-			]
-		})
-			.then((editor) => {
-				editor1 = editor;
-				// const toolbarContainer = document.querySelector('#toolbar-container');
-				// toolbarContainer.appendChild(editor.ui.view.toolbar.element);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+	onMount(async () => {
+		editor1 = await initializeCK(editor)
 	});
 
-	function submitTypeSelect() {
+	/**
+	 * @param {any} e
+	 */
+	function submitTypeSelect(e) {
+        const clickedElement = e.target;
+        console.log(clickedElement);
+        const { top, left } = clickedElement.getBoundingClientRect();
+        yDirection = top - 40;
+        xDirection = left - 50;
+        console.log("X", xDirection);
+        console.log("y", yDirection);
 		isFocused = !isFocused;
 	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="bg-[#33333360] fixed inset-0 z-[9999999] overflow-y-auto grid items-center text-black">
+<div class="bg-[#33333360] fixed inset-0 z-[99999] overflow-y-auto grid items-center text-black">
 	<div
-		class="m-auto overflow-y-auto min-h-[90%] max-w-[70%] min-w-[70%] bg-white rounded-xl relative"
+		class="m-auto overflow-y-auto overflow-x-hidden min-h-[90%] max-w-[70%] min-w-[70%] bg-white rounded-xl relative"
 	>
 		<div class="border-b-0 border-gray-500 py-2 px-3 bg-gray-100 flex justify-between">
 			<p class=" font-semibold text-gray-900 font-sans">New Message</p>
@@ -394,9 +159,16 @@
 		</div>
 	</div>
 </div>
-
+{#if isFocused}
+    <div class="fixed z-[9999999999]" style={`left: ${xDirection}px;top: ${yDirection}px`} >
+            BCYB#YCB#BCU*#BCU#Bu
+    </div>
+{/if}
 <style>
 	:global(.ck-toolbar, .ck-editor__main) {
 		max-width: 100% !important;
+	}
+	:global(.ck.ck-editor__main) {
+		margin-bottom: 150px !important;
 	}
 </style>
