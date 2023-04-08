@@ -1,4 +1,3 @@
-import { error, json } from '@sveltejs/kit';
 import { getSidebar, getUser } from '$lib/server/model/Common';
 
 export const load = async () => {

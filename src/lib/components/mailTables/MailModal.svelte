@@ -1,0 +1,402 @@
+<script>
+	// @ts-nocheck
+	import { onMount } from 'svelte';
+
+	let isFocused = false;
+
+	$: console.log(isFocused);
+	let editor;
+	let editor1;
+	onMount(() => {
+		CKEDITOR.ClassicEditor.create(editor, {
+			// https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format,
+
+			toolbar: {
+				items: [
+					'heading',
+					'|',
+					'bold',
+					'italic',
+					'strikethrough',
+					'underline',
+					'code',
+					'subscript',
+					'superscript',
+					'removeFormat',
+					'|',
+					'bulletedList',
+					'numberedList',
+					'todoList',
+					'|',
+					'outdent',
+					'indent',
+					'|',
+					'undo',
+					'redo',
+					'-',
+					'fontSize',
+					'fontFamily',
+					'fontColor',
+					'fontBackgroundColor',
+					'highlight',
+					'|',
+					'alignment',
+					'|',
+					'link',
+					'insertImage',
+					'blockQuote',
+					'insertTable',
+					'specialCharacters',
+					'horizontalLine',
+					'pageBreak',
+					'|',
+					'textPartLanguage',
+					'|',
+					'findAndReplace',
+					'imageTextAlternative'
+				],
+				shouldNotGroupWhenFull: true
+			},
+			blockedKeystrokes: [9],
+			table: {
+				contentToolbar: [
+					'insertTable',
+					'tableColumn',
+					'tableRow',
+					'mergeTableCells',
+					'tableProperties',
+					'tableCellProperties',
+					'toggleTableCaption'
+				]
+			},
+			// Changing the language of the interface requires loading the language file using the <script> tag.
+			// language: 'es',
+			list: {
+				properties: {
+					styles: true,
+					startIndex: true,
+					reversed: true
+				}
+			},
+			// https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+			heading: {
+				options: [
+					{
+						model: 'paragraph',
+						title: 'Paragraph',
+						class: 'ck-heading_paragraph'
+					},
+					{
+						model: 'heading1',
+						view: 'h1',
+						title: 'Heading 1',
+						class: 'ck-heading_heading1'
+					},
+					{
+						model: 'heading2',
+						view: 'h2',
+						title: 'Heading 2',
+						class: 'ck-heading_heading2'
+					},
+					{
+						model: 'heading3',
+						view: 'h3',
+						title: 'Heading 3',
+						class: 'ck-heading_heading3'
+					},
+					{
+						model: 'heading4',
+						view: 'h4',
+						title: 'Heading 4',
+						class: 'ck-heading_heading4'
+					},
+					{
+						model: 'heading5',
+						view: 'h5',
+						title: 'Heading 5',
+						class: 'ck-heading_heading5'
+					},
+					{
+						model: 'heading6',
+						view: 'h6',
+						title: 'Heading 6',
+						class: 'ck-heading_heading6'
+					}
+				]
+			},
+			// https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+			placeholder: '',
+			// https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+			fontFamily: {
+				options: [
+					'default',
+					'Arial, Helvetica, sans-serif',
+					'Courier New, Courier, monospace',
+					'Georgia, serif',
+					'Lucida Sans Unicode, Lucida Grande, sans-serif',
+					'Tahoma, Geneva, sans-serif',
+					'Times New Roman, Times, serif',
+					'Trebuchet MS, Helvetica, sans-serif',
+					'Verdana, Geneva, sans-serif'
+				],
+				supportAllValues: true
+			},
+			// https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+			fontSize: {
+				options: [10, 12, 14, 'default', 18, 20, 22],
+				supportAllValues: true
+			},
+			// Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+			// https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+			htmlSupport: {
+				allow: [
+					{
+						name: /.*/,
+						attributes: true,
+						classes: true,
+						styles: true
+					}
+				]
+			},
+			// Be careful with enabling previews
+			// https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+			htmlEmbed: {
+				showPreviews: true
+			},
+			// https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+			link: {
+				decorators: {
+					addTargetToExternalLinks: true,
+					defaultProtocol: 'https://',
+					toggleDownloadable: {
+						mode: 'manual',
+						label: 'Downloadable',
+						attributes: {
+							download: 'file'
+						}
+					}
+				}
+			},
+			// https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
+			mention: {
+				feeds: [
+					{
+						marker: '@',
+						feed: [
+							'@apple',
+							'@bears',
+							'@brownie',
+							'@cake',
+							'@cake',
+							'@candy',
+							'@canes',
+							'@chocolate',
+							'@cookie',
+							'@cotton',
+							'@cream',
+							'@cupcake',
+							'@danish',
+							'@donut',
+							'@dragée',
+							'@fruitcake',
+							'@gingerbread',
+							'@gummi',
+							'@ice',
+							'@jelly-o',
+							'@liquorice',
+							'@macaroon',
+							'@marzipan',
+							'@oat',
+							'@pie',
+							'@plum',
+							'@pudding',
+							'@sesame',
+							'@snaps',
+							'@soufflé',
+							'@sugar',
+							'@sweet',
+							'@topping',
+							'@wafer'
+						],
+						minimumCharacters: 1
+					}
+				]
+			},
+			// The "super-build" contains more premium features that require additional configuration, disable them below.
+			// Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+			removePlugins: [
+				// These two are commercial, but you can try them out without registering to a trial.
+				// 'ExportPdf',
+				// 'ExportWord',
+				'CKBox',
+				'CKFinder',
+				'EasyImage',
+				// This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+				// https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+				// Storing images as Base64 is usually a very bad idea.
+				// Replace it on production website with other solutions:
+				// https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+				// 'Base64UploadAdapter',
+				'RealTimeCollaborativeComments',
+				'RealTimeCollaborativeTrackChanges',
+				'RealTimeCollaborativeRevisionHistory',
+				'PresenceList',
+				'Comments',
+				'TrackChanges',
+				'TrackChangesData',
+				'RevisionHistory',
+				'Pagination',
+				'WProofreader',
+				// Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+				// from a local file system (file://) - load this site via HTTP server if you enable MathType
+				'MathType'
+			]
+		})
+			.then((editor) => {
+				editor1 = editor;
+				// const toolbarContainer = document.querySelector('#toolbar-container');
+				// toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	});
+
+	function submitTypeSelect() {
+		isFocused = !isFocused;
+	}
+</script>
+
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="bg-[#33333360] fixed inset-0 z-[9999999] overflow-y-auto grid items-center text-black">
+	<div
+		class="m-auto overflow-y-auto min-h-[90%] max-w-[70%] min-w-[70%] bg-white rounded-xl relative"
+	>
+		<div class="border-b-0 border-gray-500 py-2 px-3 bg-gray-100 flex justify-between">
+			<p class=" font-semibold text-gray-900 font-sans">New Message</p>
+			<button title="Save & close" class="font-semibold text-gray-900 font-sans">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="w-6 h-6"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+				</svg>
+			</button>
+		</div>
+		<div class="border-b-0 border-gray-500 bg-gray-100">
+			<div class="text-gray-500 cursor-text">
+				<label class="input-group">
+					<span class="bg-white">To</span>
+					<input
+						type="search"
+						class="input text-black font-semibold input-sm bg-white w-full focus-within:outline-none"
+					/>
+				</label>
+			</div>
+		</div>
+		<div class="border-b-0 border-gray-500 bg-gray-100">
+			<div class="text-gray-500 cursor-text">
+				<label class="input-group">
+					<span class="bg-white">Cc</span>
+					<input
+						type="search"
+						class="input input-sm text-black font-semibold bg-white w-full focus-within:outline-none"
+					/>
+				</label>
+			</div>
+		</div>
+		<div class="border-b-0 border-gray-500 bg-gray-100">
+			<div class="text-gray-500 cursor-text">
+				<label class="input-group">
+					<span class="bg-white">Bcc</span>
+					<input
+						type="search"
+						class="input input-sm text-black font-semibold bg-white w-full focus-within:outline-none"
+					/>
+				</label>
+			</div>
+		</div>
+
+		<div class="border-b-0 border-gray-500 bg-gray-100">
+			<div class="text-gray-500 cursor-text">
+				<input
+					type="text"
+					placeholder="Subject"
+					class="input text-black font-semibold bg-white w-full focus-within:outline-none"
+				/>
+			</div>
+		</div>
+		<div bind:this={editor} class="container max-w-[80%]" />
+
+		<div class="absolute w-full bottom-3 py-2 flex justify-between items-center p-4">
+			<div class="btn-group">
+				<button class="btn rounded-l-full px-6 bg-[#0B57D0] text-white hover:bg-[#0B57F0]"
+					>Send</button
+				>
+				<button
+					class="btn rounded-r-full px-3 bg-[#0B57D0] text-white hover:bg-[#0B57F0]"
+					on:click={submitTypeSelect}
+				>
+					{#if isFocused}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="2.5"
+							stroke="currentColor"
+							class="w-4 h-4"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+						</svg>
+					{:else}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="2.5"
+							stroke="currentColor"
+							class="w-4 h-4"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+							/>
+						</svg>
+					{/if}
+				</button>
+			</div>
+			<div>
+				<button
+					class="hover:bg-gray-200 rounded-full tooltip tooltip-left p-2"
+					data-tip="Discard Draft"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="2.0"
+						stroke="black"
+						class="w-5 h-5"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+						/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	:global(.ck-toolbar, .ck-editor__main) {
+		max-width: 100% !important;
+	}
+</style>

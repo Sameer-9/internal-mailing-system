@@ -7,7 +7,7 @@ export const getSidebar = () => {
 
 export const getUser = (/** @type {number} */ userId) => {
 	const statement = {
-		text: `Select pu.id as user_id,pu.first_name,pu.last_name,pu.email,ui.* from public.user pu
+		text: `SELECT pu.id as user_id,pu.first_name,pu.last_name,pu.email,ui.* from public.user pu
                 INNER JOIN user_info ui ON pu.id = ui.user_lid where pu.id = $1 AND pu.active = true`,
 		values: [userId]
 	};
@@ -16,9 +16,8 @@ export const getUser = (/** @type {number} */ userId) => {
 
 export const getInboxConversation = (/** @type {number} */ userId) => {
 	const statement = {
-		text: `Select get_inbox_conversation($1)`,
+		text: `SELECT get_inbox_conversation($1)`,
 		values: [userId]
 	};
-	console.log('statement', statement);
 	return client.query(statement);
 };

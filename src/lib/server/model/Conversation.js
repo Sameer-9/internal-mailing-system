@@ -9,7 +9,7 @@ export const updateIsStarred = (
 		text: `UPDATE conversation_participant SET is_starred = $1, 
 				modified_date = CURRENT_TIMESTAMP, modified_by = $3
 			    WHERE conversation_lid = $2 AND user_lid = $3`,
-			   values: [isStarred, id, user_id]
+		values: [isStarred, id, user_id]
 	};
 	return client.query(statement);
 };
@@ -25,7 +25,7 @@ export const updateIsRead = (
 			    WHERE message_lid 
 				IN(SELECT id FROM message WHERE conversation_lid = $2)
 				AND user_lid = $3;`,
-			   values: [isRead, id, user_id]
+		values: [isRead, id, user_id]
 	};
 	console.log(statement);
 	return client.query(statement);

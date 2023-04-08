@@ -1,5 +1,5 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	import { page } from '$app/stores';
 	import { inboxConversations } from '$lib/stores/inbox-conversation';
@@ -18,12 +18,12 @@
 	export let is_checked = false;
 	export let date = '';
 	let isHover = false;
-
+	$: console.log('ISREAD:::::::::', is_read);
 	/**
 	 * @param {string} flag
 	 */
 	async function updateFlag(flag) {
-		let value = null
+		let value = null;
 
 		switch (flag) {
 			case userActions.IS_STARRED:
@@ -42,7 +42,7 @@
 				headers: {
 					contentType: 'application/json'
 				},
-				body: JSON.stringify({ conversation_id: id, value: value , flag: flag})
+				body: JSON.stringify({ conversation_id: id, value: value, flag: flag })
 			});
 
 			const jsonRes = await res.json();
@@ -70,7 +70,6 @@
 			console.log(err);
 		}
 	}
-
 </script>
 
 <div class="cursor-pointer -z-10">
@@ -121,7 +120,7 @@
 				</div>
 			</a>
 		</div>
-		<div class="message flex flex-1 w-[120px]">
+		<div class="message flex flex-1 w-[100px]">
 			<a href={$page.url.href}>
 				<div class="text-sm subject">
 					{subject} &nbsp;-&nbsp;
@@ -278,7 +277,6 @@
 	}
 
 	.subject {
-		min-width: 20%;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;

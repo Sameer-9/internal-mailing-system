@@ -105,7 +105,7 @@
 	</div>
 
 	<div class="h-[81vh] overflow-x-hidden bg-[#1b1b1b] rounded-bl-3xl">
-		<MailTable isStarred={false} />
+		<MailTable isStarred={true} />
 	</div>
 </div>
 

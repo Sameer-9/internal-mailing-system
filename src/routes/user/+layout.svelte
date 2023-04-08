@@ -1,6 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { Header, Sidebar } from '$lib/components/basic/index.js';
+	import { MailModal } from '$lib/components/mailTables/index.js';
 	import { labelStore } from '$lib/stores/label-store';
 	import { sidebarArray } from '$lib/stores/Sidebar-store';
 	import { toast, toastStore } from '$lib/stores/toast-store';
@@ -51,10 +52,9 @@
 			alert(err);
 		}
 	}
-
-	$: console.log($toastStore);
 </script>
 
+<MailModal />
 {#if $toastStore?.type}
 	<div class="toast toast-top toast-end z-[9999999999]">
 		<div class="alert alert-{$toastStore.type}">
