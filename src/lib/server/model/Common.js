@@ -21,3 +21,15 @@ export const getInboxConversation = (/** @type {number} */ userId) => {
 	};
 	return client.query(statement);
 };
+
+export const findUser = (/** @type {string} */ username) => {
+	const statement = {
+		text: `SELECT pu.id,pu.first_name as firstName, pu.last_name as lastName, pu.email, ui.profile_photo as profilePhoto 
+			   FROM public.user pu
+			   INNER JOIN user_info ui 
+			   ON pu.id = ui.user_lid
+			   WHERE UPPER(CONCAT(pu.first_name, ' ', pu.last_name, ' ' ,pu.email)) like $1 LIMIT 6`,
+		values: ['%' + username + '%']
+	};
+	return client.query(statement);
+};

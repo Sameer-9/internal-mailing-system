@@ -1,5 +1,5 @@
 <script>
-	import { MailSentTable } from '$lib/components/mailTables/index.js';
+	import { MailSentTable } from '$lib/components/mail/index.js';
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">

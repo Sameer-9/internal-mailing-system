@@ -3,13 +3,11 @@ import { userActions } from '$lib/utils/common/constants';
 import { checkValueInJsonObject } from '$lib/utils/common/helper';
 import { fail } from 'assert';
 
-/** @type {import('../star/$types').RequestHandler} */
 export async function POST({ request, locals }) {
 	const { conversation_id, value, flag } = await request.json();
 
 	const { user_id } = locals.user;
-	console.log('FLAG:::::::::::', flag);
-	console.log('value:::::::::::', value);
+
 	if (!checkValueInJsonObject(flag)) {
 		return new Response(
 			JSON.stringify({
@@ -45,7 +43,7 @@ export async function POST({ request, locals }) {
 				message: "Couldn't Update, try again later!"
 			});
 		}
-		console.log('RESPONSE::::::::::', res);
+
 		if (res?.rowCount && res?.rowCount > 0) {
 			return new Response(
 				JSON.stringify({
@@ -66,7 +64,7 @@ export async function POST({ request, locals }) {
 			);
 		}
 	} catch (err) {
-		console.log(err);
+
 		throw fail(JSON.stringify(err));
 	}
 }

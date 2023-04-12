@@ -1,5 +1,5 @@
 <script>
-	import { MailTable } from '$lib/components/mailTables/index.js';
+	import { MailTable } from '$lib/components/mail/index.js';
 	import { inboxConversations, SelectAllConversation } from '$lib/stores/inbox-conversation';
 	export let data;
 

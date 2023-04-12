@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { Header, Sidebar } from '$lib/components/basic/index.js';
-	import { MailModal } from '$lib/components/mailTables/index.js';
+	import { MailModal } from '$lib/components/mail/index.js';
 	import { labelStore } from '$lib/stores/label-store';
 	import { sidebarArray } from '$lib/stores/Sidebar-store';
 	import { toast, toastStore } from '$lib/stores/toast-store';

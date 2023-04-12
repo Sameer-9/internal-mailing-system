@@ -3,5 +3,6 @@ import MailTr from './MailTr.svelte';
 import MailSentTr from './MailSentTr.svelte';
 import MailSentTable from './MailSentTable.svelte';
 import MailModal from './MailModal.svelte';
+import UserOption from './UserOption.svelte';
 
-export { MailTable, MailTr, MailSentTr, MailSentTable, MailModal };
+export { MailTable, MailTr, MailSentTr, MailSentTable, MailModal, UserOption };
