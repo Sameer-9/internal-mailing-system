@@ -1,5 +1,6 @@
 import { error, json } from '@sveltejs/kit';
 
+/** @type {import('./$types').RequestHandler} */
 export const POST = async ({ cookies, request }) => {
 	const res = await request.json();
 	console.log(res);

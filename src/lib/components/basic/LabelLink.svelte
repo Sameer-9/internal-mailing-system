@@ -12,7 +12,7 @@
 	on:mouseenter={() => (hidden = false)}
 	on:mouseleave={() => (hidden = true)}
 	class:active
-	class="px-2 py-1 relative text-sm tooltip tooltip-right w-full flex hover:bg-[#ffffff4d] hover:rounded-2xl"
+	class="px-2 py-1 relative text-sm tooltip tooltip-right w-full flex hover:bg-[#ffffff4d] hover:rounded-3xl"
 >
 	<a href="/user/label/{id}">
 		<div class="flex  px-2 py-1 gap-2" class:justify-center={!$isSidebarOpened}>
@@ -33,12 +33,12 @@
 			</svg>
 			{#if $isSidebarOpened}
 				<li>
-					<p class="text-ellipsis whitespace-nowrap overflow-hidden w-[100px]">{label}</p>
+					<p class="text-ellipsis whitespace-nowrap overflow-hidden w-[90px]">{label}</p>
 				</li>
 			{/if}
 		</div>
 	</a>
-	<div class="flex justify-center items-center ">
+	<div class="flex justify-center items-center">
 		<div
 			class="hover:bg-zinc-500 rounded-full hover:cursor-pointer py-1 tooltip tooltip-bottom"
 			data-tip="More"

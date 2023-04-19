@@ -64,7 +64,6 @@ export async function POST({ request, locals }) {
 			);
 		}
 	} catch (err) {
-
 		throw fail(JSON.stringify(err));
 	}
 }

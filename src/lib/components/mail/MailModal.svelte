@@ -2,16 +2,18 @@
 	import { toast } from '$lib/stores/toast-store';
 	import { SelectedUser } from '$lib/stores/userSelection-store';
 	import { initializeCK } from '$lib/utils/common/ckinitializer';
-	import { validate_slots } from 'svelte/internal';
 	import { UserOption } from '.';
-	
-	// @ts-nocheck
+	import { scale } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import { isCreateModalOpen } from '$lib/stores/Sidebar-store';
+	import { quintOut } from 'svelte/easing';
+	import { page } from '$app/stores';
 
 	let isFocused = false;
 	let xDirection = 0;
 	let yDirection = 0;
 	let isSelectFocused = false;
+	let subject = '';
 	/**
 	 * @type {any[]}
 	 */
@@ -20,9 +22,13 @@
 	 * @type {any}
 	 */
 	let editor;
+	// @ts-ignore
 	let editor1;
-	onMount(async () => {
-		editor1 = await initializeCK(editor);
+	onMount(() => {
+		setTimeout(async () => {
+			//logic goes here
+			editor1 = await initializeCK(editor);
+		}, 10);
 	});
 
 	/**
@@ -38,36 +44,38 @@
 
 	/**
 	 * @param {any} e
+	 * @param {number} type_lid
 	 */
-	function searchUsers(e) {
+	function searchUsers(e, type_lid) {
 		e.stopPropagation();
+		const target = e.target;
 		// @ts-ignore
-		const query = this.value;
+		const query = target.value;
 		// @ts-ignore
-		const { top, left } = this.getBoundingClientRect();
+		const { top, left } = target.getBoundingClientRect();
 		yDirection = top + 40;
 		xDirection = left;
-		if(!query || query === '') {
-			isSelectFocused = false;	
+		if (!query || query === '') {
+			isSelectFocused = false;
 			return;
-		} 
+		}
 		isSelectFocused = true;
 		// @ts-ignore
-		fetchUser(query)
+		fetchUser(query, type_lid);
 	}
-	
+
 	/**
 	 * @param {string} query
+	 * @param {number} type_lid
 	 */
-	async function fetchUser(query) {
-
-		try{
+	async function fetchUser(query, type_lid) {
+		try {
 			isSelectFocused = true;
 			const response = await fetch(`/api/get/user?query=${query}`);
-			if(response.ok) {
+			if (response.ok) {
 				const jsonResponse = await response.json();
-				console.log(jsonResponse);
-				searchedUsers = jsonResponse;
+				searchedUsers = jsonResponse?.map((/** @type {any} */ e) => ({ ...e, type_lid }));
+				console.log(searchedUsers);
 				// const text = document.querySelector('p').textContent;
 				// const regex = /brown/g;
 				// const highlightedText = text.replace(regex, '<mark>$&</mark>');
@@ -76,7 +84,7 @@
 				toast('error', 'Invalid Request');
 				isSelectFocused = false;
 			}
-		} catch(err) {
+		} catch (err) {
 			console.log(err);
 			toast('error', 'Internal Server Error');
 			isSelectFocused = false;
@@ -88,26 +96,63 @@
 	 * @this {any}
 	 * @param {MouseEvent & { currentTarget: EventTarget & HTMLDivElement; }} e
 	 */
-	function handleRemoveUser(id,e) {
-		
+	function handleRemoveUser(id, e) {
 		// @ts-ignore
-		console.log("THIS:::::::",e.target.closest('.input-group').querySelector('input'));
 		SelectedUser.update((prev) => {
-			return prev.filter(obj => obj.id !== id);
-		})
+			return prev.filter((obj) => obj.id !== id);
+		});
 		// @ts-ignore
-		e.target.closest('.input-group').querySelector('input').click()
+		e.target.closest('.input-group').querySelector('input').click();
+	}
+	
+	async function sendMail() {
+		console.log($SelectedUser);
+		if(!$SelectedUser || $SelectedUser.length === 0) {
+			toast('error', 'Please specify at least one recipient.');
+			return;
+		}
+
+		if(!subject || subject.length === 0) {
+			toast('error', 'Please provide a Subject.');
+			return;
+		}
+		// @ts-ignore
+		let editorData = await editor1.getData();
+		const base64Body = window.btoa(editorData);
+		const usersArray = $SelectedUser?.map((val) => {
+			return {
+				"user_id": val.id,
+				"participation_type_id": val.type_lid
+			}
+		})
+		const jsonToSend = {
+			"conversation": {
+				"created_by": $page.data?.userDetails[0]?.id,
+				"subject": subject,
+				"body": base64Body
+			},
+			"users_array": usersArray
+		}
+		console.log(jsonToSend);
 	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="bg-[#33333360] fixed inset-0 z-[99999] overflow-y-auto grid items-center text-black" on:click={() => isSelectFocused = false}>
+<div
+	class="bg-[#33333360] fixed inset-0 z-[99999] overflow-y-auto grid items-center text-black"
+	on:click={() => (isSelectFocused = false)}
+	transition:scale={{ delay: 250, duration: 300, easing: quintOut }}
+>
 	<div
 		class="m-auto overflow-y-auto overflow-x-hidden min-h-[90%] max-w-[70%] min-w-[70%] bg-white rounded-xl relative"
 	>
 		<div class="border-b-0 border-gray-500 py-2 px-3 bg-gray-100 flex justify-between">
 			<p class=" font-semibold text-gray-900 font-sans">New Message</p>
-			<button title="Save & close" class="font-semibold text-gray-900 font-sans">
+			<button
+				title="Save & close"
+				class="font-semibold text-gray-900 font-sans"
+				on:click={() => ($isCreateModalOpen = false)}
+			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
@@ -122,67 +167,175 @@
 		</div>
 		<div class="border-b-0 border-gray-500 bg-gray-100">
 			<div class="text-gray-500 cursor-text bg-white mt-3 flex">
-				<span class="bg-white ml-2 w-8 text-center">To</span>
+				<span class="bg-white ml-1 w-12 text-center">To</span>
 				<label class="input-group items-center flex-wrap gap-1" for="u">
-					<div class="hidden"></div>
+					<div class="hidden" />
 					{#if $SelectedUser?.length > 0}
-					
-					{#each $SelectedUser as {id, firstname, lastname, profilephoto}, idx}
-						<div class="hover:text-black text-gray-500 font-semibold flex gap-2 border h-6 pl-[2px] border-black rounded-3xl text-xs leading-none justify-around items-center pr-2">
-							<div class="w-5 h-5">
-								<img src={profilephoto} class="rounded-full" alt="Profile" style="width: 20px; height: 20px;">
-							</div>
-							<div class="">
-								{firstname} {lastname}
-							</div>
-							<div class="cursor-pointer" title="remove User">
-								<div on:click={(e) => handleRemoveUser(id,e)}>
-									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-									</svg>							  
+						{#each $SelectedUser as { id, firstname, lastname, profilephoto, type_lid }, idx}
+							{#if type_lid === 1}
+								<div
+									class="hover:text-black text-gray-500 font-semibold flex gap-2 border h-8 pl-[2px] border-black rounded-3xl text-xs leading-none justify-around items-center pr-2"
+								>
+									<div class="w-7 h-7">
+										<img
+											src={profilephoto}
+											class="rounded-full"
+											alt="Profile"
+											style="width: 27px; height: 27px;"
+										/>
+									</div>
+									<div class="">
+										{firstname}
+										{lastname}
+									</div>
+									<div class="cursor-pointer" title="remove User">
+										<div on:click={(e) => handleRemoveUser(id, e)}>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke-width="1.5"
+												stroke="currentColor"
+												class="w-3 h-3"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M6 18L18 6M6 6l12 12"
+												/>
+											</svg>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-					{/each}
-
+							{/if}
+						{/each}
 					{/if}
-					<span class="flex-1 bg-white">
+					<span class="flex-1 bg-white p-0">
 						<input
-						type="search"
-						on:input={searchUsers}
-						on:focusin={searchUsers}
-						on:click={searchUsers}
-						class="input text-black font-semibold input-sm bg-white w-full focus-within:outline-none"
+							id="to"
+							type="search"
+							on:input={(e) => searchUsers(e, 1)}
+							on:focusin={(e) => searchUsers(e, 1)}
+							on:click={(e) => searchUsers(e, 1)}
+							class="input text-black font-semibold input-sm px-0 bg-white w-full focus-within:outline-none"
 						/>
 					</span>
 				</label>
 			</div>
 		</div>
 		<div class="border-b-0 border-gray-500 bg-gray-100">
-			<div class="text-gray-500 cursor-text">
-				<label class="input-group" for="k">
-					<span class="bg-white">Cc</span>
-					<input
-						type="search"
-						on:input={searchUsers}
-						on:focusin={searchUsers}
-						on:click={searchUsers}
-						class="input input-sm text-black font-semibold bg-white w-full focus-within:outline-none"
-					/>
+			<div class="text-gray-500 cursor-text bg-white mt-3 flex">
+				<span class="bg-white ml-1 w-12 text-center">Cc</span>
+				<label class="input-group items-center flex-wrap gap-1" for="u">
+					<div class="hidden" />
+					{#if $SelectedUser?.length > 0}
+						{#each $SelectedUser as { id, firstname, lastname, profilephoto, type_lid }, idx}
+							{#if type_lid === 3}
+								<div
+									class="hover:text-black text-gray-500 font-semibold flex gap-2 border h-8 pl-[2px] border-black rounded-3xl text-xs leading-none justify-around items-center pr-2"
+								>
+									<div class="w-7 h-7">
+										<img
+											src={profilephoto}
+											class="rounded-full"
+											alt="Profile"
+											style="width: 27px; height: 27px;"
+										/>
+									</div>
+									<div class="">
+										{firstname}
+										{lastname}
+									</div>
+									<div class="cursor-pointer" title="remove User">
+										<div on:click={(e) => handleRemoveUser(id, e)}>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke-width="1.5"
+												stroke="currentColor"
+												class="w-3 h-3"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M6 18L18 6M6 6l12 12"
+												/>
+											</svg>
+										</div>
+									</div>
+								</div>
+							{/if}
+						{/each}
+					{/if}
+					<span class="flex-1 bg-white p-0">
+						<input
+							id="cc"
+							type="search"
+							on:input={(e) => searchUsers(e, 3)}
+							on:focusin={(e) => searchUsers(e, 3)}
+							on:click={(e) => searchUsers(e, 3)}
+							class="input text-black font-semibold input-sm px-0 bg-white w-full focus-within:outline-none"
+						/>
+					</span>
 				</label>
 			</div>
 		</div>
 		<div class="border-b-0 border-gray-500 bg-gray-100">
-			<div class="text-gray-500 cursor-text">
-				<label class="input-group" for="y">
-					<span class="bg-white">Bcc</span>
-					<input
-						type="search"
-						on:input={searchUsers}
-						on:focusin={searchUsers}
-						on:click={searchUsers}
-						class="input input-sm text-black font-semibold bg-white w-full focus-within:outline-none"
-					/>
+			<div class="text-gray-500 cursor-text bg-white mt-3 flex">
+				<span class="bg-white ml-1 w-12 text-center">Bcc</span>
+				<label class="input-group items-center flex-wrap gap-1" for="u">
+					<div class="hidden" />
+					{#if $SelectedUser?.length > 0}
+						{#each $SelectedUser as { id, firstname, lastname, profilephoto, type_lid }, idx}
+							{#if type_lid === 4}
+								<div
+									class="hover:text-black text-gray-500 font-semibold flex gap-2 border h-8 pl-[2px] border-black rounded-3xl text-xs leading-none justify-around items-center pr-2"
+								>
+									<div class="w-7 h-7">
+										<img
+											src={profilephoto}
+											class="rounded-full"
+											alt="Profile"
+											style="width: 27px; height: 27px;"
+										/>
+									</div>
+									<div class="">
+										{firstname}
+										{lastname}
+									</div>
+									<div class="cursor-pointer" title="remove User">
+										<div on:click={(e) => handleRemoveUser(id, e)}>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+												stroke-width="1.5"
+												stroke="currentColor"
+												class="w-3 h-3"
+											>
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													d="M6 18L18 6M6 6l12 12"
+												/>
+											</svg>
+										</div>
+									</div>
+								</div>
+							{/if}
+						{/each}
+					{/if}
+					<span class="flex-1 bg-white p-0">
+						<input
+							id="bcc"
+							type="search"
+							on:input={(e) => searchUsers(e, 4)}
+							on:focusin={(e) => searchUsers(e, 4)}
+							on:click={(e) => searchUsers(e, 4)}
+							class="input text-black font-semibold input-sm px-0 bg-white w-full focus-within:outline-none"
+						/>
+					</span>
 				</label>
 			</div>
 		</div>
@@ -191,8 +344,9 @@
 			<div class="text-gray-500 cursor-text">
 				<input
 					type="text"
+					bind:value={subject}
 					placeholder="Subject"
-					class="input text-black font-semibold bg-white w-full focus-within:outline-none"
+					class="input text-black bg-white w-full focus-within:outline-none"
 				/>
 			</div>
 		</div>
@@ -200,8 +354,9 @@
 
 		<div class="absolute w-full bottom-3 py-2 flex justify-between items-center p-4">
 			<div class="btn-group">
-				<button class="btn rounded-l-full px-6 bg-[#0B57D0] text-white hover:bg-[#0B57F0]"
-					>Send</button
+				<button
+					on:click={sendMail}
+					class="btn rounded-l-full px-6 bg-[#0B57D0] text-white hover:bg-[#0B57F0]">Send</button
 				>
 				<button
 					class="btn rounded-r-full px-3 bg-[#0B57D0] text-white hover:bg-[#0B57F0]"
@@ -266,17 +421,22 @@
 	</div>
 {/if}
 {#if isSelectFocused}
-	<div id="select-wrapper" class="fixed z-[9999999999] bg-white w-80" style={`left: ${xDirection}px;top: ${yDirection}px`}>
+	<div
+		id="select-wrapper"
+		class="fixed z-[9999999999] bg-white w-80"
+		style={`left: ${xDirection}px;top: ${yDirection}px`}
+		in:scale={{ delay: 250, duration: 200, easing: quintOut }}
+	>
 		<div class="py-4 rounded-md">
-				<ul>
-					{#if searchedUsers.length > 0}
-						{#each searchedUsers as user,index}
-							<UserOption {...user} index={index}/>
-						{/each}
-					{:else}
-						 <div class="text-center text-black">No Users Found</div>
-					{/if}
-				</ul>
+			<ul>
+				{#if searchedUsers.length > 0}
+					{#each searchedUsers as user, index}
+						<UserOption {...user} {index} />
+					{/each}
+				{:else}
+					<div class="text-center text-black">No Users Found</div>
+				{/if}
+			</ul>
 		</div>
 	</div>
 {/if}

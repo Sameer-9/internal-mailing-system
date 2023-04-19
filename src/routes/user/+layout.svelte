@@ -3,7 +3,7 @@
 	import { Header, Sidebar } from '$lib/components/basic/index.js';
 	import { MailModal } from '$lib/components/mail/index.js';
 	import { labelStore } from '$lib/stores/label-store';
-	import { sidebarArray } from '$lib/stores/Sidebar-store';
+	import { isCreateModalOpen, sidebarArray } from '$lib/stores/Sidebar-store';
 	import { toast, toastStore } from '$lib/stores/toast-store';
 	import { userStore } from '$lib/stores/user-store';
 	import { alertTypes } from '$lib/utils/common/constants';
@@ -54,7 +54,9 @@
 	}
 </script>
 
-<MailModal />
+{#if $isCreateModalOpen}
+	<MailModal />
+{/if}
 {#if $toastStore?.type}
 	<div class="toast toast-top toast-end z-[9999999999]">
 		<div class="alert alert-{$toastStore.type}">

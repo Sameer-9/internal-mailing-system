@@ -1,8 +1,8 @@
 interface User {
-    id: number;
-    firstname: string;
-    lastname: string;
-    email: string;
-    profilephoto: string;
-  }
-  
+	id: number;
+	firstname: string | undefined;
+	lastname: string | undefined;
+	email: string | undefined;
+	profilephoto: string | undefined;
+	type_lid: number;
+}

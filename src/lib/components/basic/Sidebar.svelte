@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { isSidebarOpened, sidebarArray } from '$lib/stores/Sidebar-store';
+	import { isCreateModalOpen, isSidebarOpened, sidebarArray } from '$lib/stores/Sidebar-store';
 	import { LabelLink, Link } from '$lib/components/basic/index.js';
 	import { page } from '$app/stores';
 	import { labelStore } from '$lib/stores/label-store';
@@ -8,7 +8,10 @@
 
 <aside class="h-full text-white min-w-[60px]" class:w-[224px]={$isSidebarOpened}>
 	<div class="border-b-2 border-zinc-400 pb-4">
-		<button class="px-5 py-4 bg-white text-gray-500 font-semibold rounded-2xl">
+		<button
+			class="px-5 py-4 bg-white text-gray-500 font-semibold rounded-2xl"
+			on:click={() => ($isCreateModalOpen = true)}
+		>
 			<div class="flex gap-2">
 				<img src="/images/pencil.png" width="20" alt="Compose" />
 				{#if $isSidebarOpened}
