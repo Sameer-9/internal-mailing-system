@@ -6,8 +6,6 @@
 	let isAllChecked = false;
 	$: SelectAllConversation(isAllChecked);
 
-	$: console.log(data);
-
 	inboxConversations.set(data.inbox?.conversations);
 </script>
 
@@ -103,9 +101,8 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="h-[81vh] overflow-x-hidden bg-[#1b1b1b] rounded-bl-3xl">
-		<MailTable isStarred={false} />
+		<MailTable />
 	</div>
 </div>
 

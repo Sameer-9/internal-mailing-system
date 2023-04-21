@@ -16,7 +16,7 @@
 </table>
 
 <style>
-	.grey-md {
+	/* .grey-md {
 		background-color: rgba(241, 243, 244, 0.2);
-	}
+	} */
 </style>

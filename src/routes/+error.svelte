@@ -1,12 +1,18 @@
+<script>
+	import { page } from '$app/stores';
+
+	console.log($page);
+</script>
+
 <div class="background">
 	<div class="ground" />
 </div>
 <div class="container">
 	<div class="left-section">
 		<div class="inner-content text-center">
-			<h1 class="heading">404</h1>
+			<h1 class="heading">{$page.status}</h1>
 			<p class="subheading text-zinc-300">
-				Looks like the page you were looking for is no longer here.
+				{$page?.error?.message ?? 'Looks like the page you were looking for is no longer here.'}
 			</p>
 			<button class="btn btn-primary mt-3" on:click={() => history.back()}>Go Back</button>
 		</div>

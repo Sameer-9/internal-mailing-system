@@ -33,3 +33,11 @@ export const findUser = (/** @type {string} */ username) => {
 	};
 	return client.query(statement);
 };
+
+export const sendMail = (/** @type {object} */ json) => {
+	const statement = {
+		text: `SELECT create_conversation($1)`,
+		values: [json]
+	};
+	return client.query(statement);
+};

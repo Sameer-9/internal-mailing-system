@@ -8,6 +8,8 @@
 	import { isCreateModalOpen } from '$lib/stores/Sidebar-store';
 	import { quintOut } from 'svelte/easing';
 	import { page } from '$app/stores';
+	import { inboxConversations } from '$lib/stores/inbox-conversation';
+	import { userStore } from '$lib/stores/user-store';
 
 	let isFocused = false;
 	let xDirection = 0;
@@ -75,7 +77,6 @@
 			if (response.ok) {
 				const jsonResponse = await response.json();
 				searchedUsers = jsonResponse?.map((/** @type {any} */ e) => ({ ...e, type_lid }));
-				console.log(searchedUsers);
 				// const text = document.querySelector('p').textContent;
 				// const regex = /brown/g;
 				// const highlightedText = text.replace(regex, '<mark>$&</mark>');
@@ -104,36 +105,94 @@
 		// @ts-ignore
 		e.target.closest('.input-group').querySelector('input').click();
 	}
-	
+
 	async function sendMail() {
-		console.log($SelectedUser);
-		if(!$SelectedUser || $SelectedUser.length === 0) {
+		// @ts-ignore
+		let editorData = await editor1.getData();
+
+		if (!$SelectedUser || $SelectedUser.length === 0) {
 			toast('error', 'Please specify at least one recipient.');
 			return;
 		}
 
-		if(!subject || subject.length === 0) {
-			toast('error', 'Please provide a Subject.');
-			return;
+		if (!subject || subject.length === 0 || !editorData || editorData?.length === 0) {
+			const isConfirm = confirm('Send this message without a subject or text in the body?');
+			if (!isConfirm) return;
 		}
 		// @ts-ignore
-		let editorData = await editor1.getData();
 		const base64Body = window.btoa(editorData);
 		const usersArray = $SelectedUser?.map((val) => {
 			return {
-				"user_id": val.id,
-				"participation_type_id": val.type_lid
-			}
-		})
+				user_id: val.id,
+				participation_type_id: val.type_lid
+			};
+		});
 		const jsonToSend = {
-			"conversation": {
-				"created_by": $page.data?.userDetails[0]?.id,
-				"subject": subject,
-				"body": base64Body
+			conversation: {
+				created_by: $userStore?.id,
+				subject: subject === '' ? null : subject,
+				body: base64Body
 			},
-			"users_array": usersArray
-		}
+			users_array: usersArray
+		};
 		console.log(jsonToSend);
+
+		try {
+			const response = await fetch('/api/send-mail', {
+				method: 'POST',
+				body: JSON.stringify(jsonToSend)
+			});
+
+			const resJson = await response.json();
+			if (response.ok) {
+				const isAvailableTOInbox = isAvailableToInbox();
+				console.log(isAvailableTOInbox);
+				if (isAvailableTOInbox) {
+					const today = new Date();
+					const formattedDate = today
+						.toLocaleString('en-US', { month: 'short', day: '2-digit' })
+						.replace(' ', ' ');
+
+					inboxConversations.update((prev) => {
+						const newObj = {
+							id: resJson.conversation_lid,
+							date: formattedDate,
+							sender: $userStore?.first_name + ' ' + $userStore?.last_name,
+							is_read: false,
+							message: base64Body,
+							subject: subject === '' ? null : subject,
+							is_checked: false,
+							is_starred: false
+						};
+						prev = [newObj, ...prev];
+						return prev;
+					});
+				}
+				$isCreateModalOpen = false;
+				SelectedUser.set([]);
+				subject = '';
+				// @ts-ignore
+				toast('success', 'Email Sent Successfully');
+			} else {
+				toast('error', 'Error In Sending Mail');
+			}
+		} catch (err) {
+			console.log(err);
+			toast('error', 'Internal Server Error');
+		}
+	}
+
+	function isAvailableToInbox() {
+		let isAvailable = false;
+		const types = [1, 3, 4];
+		for (let user of $SelectedUser) {
+			console.log('TEST:::', user.id === $userStore.id);
+			if (user.id === $userStore.id && types.includes(user.type_lid)) {
+				isAvailable = true;
+			}
+		}
+
+		return isAvailable;
 	}
 </script>
 
