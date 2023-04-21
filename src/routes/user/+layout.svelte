@@ -5,7 +5,7 @@
 	import { labelStore } from '$lib/stores/label-store';
 	import { isCreateModalOpen, sidebarArray } from '$lib/stores/Sidebar-store';
 	import { toast, toastStore } from '$lib/stores/toast-store';
-	import { userStore } from '$lib/stores/user-store';
+	import { userStore } from '$lib/stores/user-store.js';
 	import { alertTypes } from '$lib/utils/common/constants';
 
 	export let data;
@@ -16,8 +16,6 @@
 
 	sidebarArray.set(data.sidebar);
 	userStore.set(data.userDetails[0]);
-
-	console.log($userStore);
 
 	async function handleSubmit() {
 		try {
@@ -57,6 +55,7 @@
 {#if $isCreateModalOpen}
 	<MailModal />
 {/if}
+
 {#if $toastStore?.type}
 	<div class="toast toast-top toast-end z-[9999999999]">
 		<div class="alert alert-{$toastStore.type}">

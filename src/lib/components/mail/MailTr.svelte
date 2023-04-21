@@ -5,7 +5,8 @@
 	import { inboxConversations } from '$lib/stores/inbox-conversation';
 	import { toast } from '$lib/stores/toast-store';
 	import { alertTypes, userActions } from '$lib/utils/common/constants';
-
+	import { onMount } from 'svelte';
+	let Window = null;
 	/**
 	 * @type {number}
 	 */
@@ -18,7 +19,6 @@
 	export let is_checked = false;
 	export let date = '';
 	let isHover = false;
-	$: console.log('ISREAD:::::::::', is_read);
 	/**
 	 * @param {string} flag
 	 */
@@ -63,9 +63,18 @@
 					toast(alertTypes.ERROR, jsonRes.message);
 				}
 			}
-			console.log(res);
 		} catch (err) {
 			console.log(err);
+		}
+	}
+
+	onMount(() => {
+		Window = window;
+	})
+	$: newMessage = atob(message)
+	$: {
+		if(newMessage.includes('<img')) {
+			newMessage = '<p>(Attachment Inside)</p>';
 		}
 	}
 </script>
@@ -121,10 +130,10 @@
 		<div class="message flex flex-1 w-[100px]">
 			<a href={$page.url.href}>
 				<div class="text-sm subject">
-					{subject} &nbsp;-&nbsp;
+					{subject ?? '(No Subject)'} &nbsp;-&nbsp;
 				</div>
 			</a>
-			<span class="text-sm">{message}</span>
+			<span class="text-sm">{@html newMessage == '' || newMessage == null ? '<p>(No Message)</p>' : newMessage}</span>
 		</div>
 		<div class="flex gap-1" class:hidden={!isHover}>
 			<div
