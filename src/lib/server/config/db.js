@@ -1,4 +1,5 @@
-import { Client } from 'pg';
+import pkg from 'pg';
+const { Client } = pkg;
 
 const client = new Client({
 	host: 'localhost',
@@ -7,6 +8,7 @@ const client = new Client({
 	password: 'ROOT',
 	database: 'mail_db'
 });
-
-client.connect();
+(async () => {
+	await client.connect();
+})();
 export default client;

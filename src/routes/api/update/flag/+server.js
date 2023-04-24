@@ -6,7 +6,7 @@ import { fail } from 'assert';
 export async function POST({ request, locals }) {
 	const { conversation_id, value, flag } = await request.json();
 
-	const { user_id } = locals.user;
+	const { id } = locals.user;
 
 	if (!checkValueInJsonObject(flag)) {
 		return new Response(
@@ -24,11 +24,11 @@ export async function POST({ request, locals }) {
 
 		switch (flag) {
 			case userActions.IS_STARRED:
-				res = await updateIsStarred(conversation_id, value, user_id);
+				res = await updateIsStarred(conversation_id, value, id);
 				break;
 
 			case userActions.IS_READ:
-				res = await updateIsRead(conversation_id, value, user_id);
+				res = await updateIsRead(conversation_id, value, id);
 				break;
 
 			default:

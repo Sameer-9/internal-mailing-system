@@ -5,7 +5,7 @@
 	import { userStore } from '$lib/stores/user-store';
 	let inputFocus = false;
 	function handleClick() {
-		$isSidebarOpened = !$isSidebarOpened;
+		isSidebarOpened.set(!$isSidebarOpened);
 	}
 </script>
 
@@ -75,19 +75,46 @@
 		</div>
 	</div>
 	<div class="flex-none w-32 flex justify-center pr-3">
+		<div class="dropdown dropdown-end">
+			<label tabindex="-1" class="btn btn-ghost btn-circle avatar" for="profile-photo">
+			  <div class="w-10 rounded-full">
+				<img src={$userStore?.profile_photo} alt="profle"  id="profile-photo"/>
+			  </div>
+			</label>
+			<ul tabindex="-1" class="z-[999999999999999] menu menu-compact dropdown-content mt-3 p-2 shadow rounded-box w-52">
+			  <li class="">
+				<div>
+					<img src="/images/profile.png" class="w-6 h-6" alt="" srcset="">				  
+					<a class="justify-between" href="/user/update-profile">
+						Update Profile
+					</a>
+				</div>
+			  </li>
+			  <li>
+				<div>
+					<img src="/images/logout.png" class="w-6 h-6" alt="" srcset="">				  				  
+					  <a href="/logout">Logout</a>
+					</div>
+			  </li>
+			</ul>
+		  </div>
 		<div
 			class="flex items-center justify-end w-12 h-12 overflow-hidden rounded-full avatar cursor-pointer"
 		>
-			<img src={$userStore?.profile_photo} alt="profle" />
+			
 		</div>
 	</div>
 </header>
 
 <style>
+	
+	ul li {
+		background-color: #2e2e2e;
+	}
+
 	header {
 		max-width: 100vw;
 		max-width: 100dvw;
-		overflow: hidden;
 	}
 	.menu {
 		background-color: transparent;

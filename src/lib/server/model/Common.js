@@ -34,6 +34,18 @@ export const findUser = (/** @type {string} */ username) => {
 	return client.query(statement);
 };
 
+export const findUserById = (/** @type {number} */ id) => {
+	const statement = {
+		text: `SELECT pu.id,pu.first_name as firstName, pu.last_name as lastName, pu.email, ui.profile_photo as profilePhoto 
+			   FROM public.user pu
+			   INNER JOIN user_info ui 
+			   ON pu.id = ui.user_lid
+			   WHERE pu.id = $1`,
+		values: [id]
+	};
+	return client.query(statement);
+};
+
 export const sendMail = (/** @type {object} */ json) => {
 	const statement = {
 		text: `SELECT create_conversation($1)`,

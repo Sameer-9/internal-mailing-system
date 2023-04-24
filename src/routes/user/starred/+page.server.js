@@ -1,8 +1,10 @@
 import { getInboxConversation } from '$lib/server/model/Common';
 
-export async function load({}) {
+export async function load({ locals, parent }) {
+	await parent();
 	try {
-		const result = await getInboxConversation(2);
+		// @ts-ignore
+		const result = await getInboxConversation(locals.user?.id);
 
 		console.log('ROWS::::::::::', result.rows[0]);
 

@@ -2,8 +2,9 @@
 	"name": "internal-mailing-system",
 	"version": "0.0.1",
 	"private": true,
+	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev && node server.js",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
@@ -12,6 +13,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
+		"@ethercorps/sveltekit-redis-session": "^0.2.0",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.5.0",
 		"@sveu/browser": "^0.20.0",
@@ -22,6 +24,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"heroicons-for-svelte": "^0.0.10",
+		"ioredis": "^5.3.2",
 		"postcss": "^8.4.21",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
@@ -31,6 +34,9 @@
 		"typescript": "^4.9.3",
 		"vite": "^4.0.0"
 	},
-	"type": "module",
-	"dependencies": {}
+	"dependencies": {
+		"pg": "^8.10.0",
+		"socket.io": "^4.6.1",
+		"socket.io-client": "^4.6.1"
+	}
 }

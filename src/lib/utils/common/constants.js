@@ -2,7 +2,7 @@ export const userActions = {
 	IS_STARRED: 'is_starred',
 	IS_READ: 'is_read',
 	IS_SPAM: 'is_spam',
-	IS_ARCHIEVE: 'is_archieve'
+	IS_ARCHIEVE: 'is_archive'
 };
 
 export const alertTypes = {

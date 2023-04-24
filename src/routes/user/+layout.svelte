@@ -4,18 +4,21 @@
 	import { MailModal } from '$lib/components/mail/index.js';
 	import { labelStore } from '$lib/stores/label-store';
 	import { isCreateModalOpen, sidebarArray } from '$lib/stores/Sidebar-store';
+	import { socketIo } from '$lib/stores/socket-store';
 	import { toast, toastStore } from '$lib/stores/toast-store';
-	import { userStore } from '$lib/stores/user-store.js';
+	import { userStore } from '$lib/stores/user-store.ts';
 	import { alertTypes } from '$lib/utils/common/constants';
+	import { onMount } from 'svelte';
+	import io from 'socket.io-client';
 
 	export let data;
 	let labelName = '';
 	let labelError = null;
-	let labelColor = '';
+	let labelColor = '#FFFFFF';
 	let closeModalBtn;
 
 	sidebarArray.set(data.sidebar);
-	userStore.set(data.userDetails[0]);
+	userStore.set(data.userDetails[0] ?? []);
 
 	async function handleSubmit() {
 		try {
@@ -50,6 +53,30 @@
 			alert(err);
 		}
 	}
+
+	/**
+	 * @type {import("socket.io-client").Socket<import("@socket.io/component-emitter").DefaultEventsMap, import("@socket.io/component-emitter").DefaultEventsMap>}
+	 */
+	let socket;
+	onMount(async () => {
+		// Connect to the Socket.IO server
+		socket = io('http://localhost:4000');
+		console.log(io.sockets?.clients());
+		// Log the socket ID when connected
+		socket.on('connect', () => {
+			console.log(`Connected with ID ${socket.id}`);
+			socket.userId = $userStore.id;
+
+			socketIo.set(socket);
+
+			$socketIo.on('askForUserId', () => {
+				console.log('ASKING FOR USERID:::::::');
+				$socketIo.emit('userIdReceived', JSON.stringify($userStore));
+			});
+			// Find the socket object associated with a particular user
+			const userId = 2;
+		});
+	});
 </script>
 
 {#if $isCreateModalOpen}

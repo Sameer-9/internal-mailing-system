@@ -7,10 +7,11 @@
 	import { onMount } from 'svelte';
 	import { isCreateModalOpen } from '$lib/stores/Sidebar-store';
 	import { quintOut } from 'svelte/easing';
-	import { page } from '$app/stores';
 	import { inboxConversations } from '$lib/stores/inbox-conversation';
 	import { userStore } from '$lib/stores/user-store';
+	import { socketIo } from '$lib/stores/socket-store';
 
+	$: console.log('SOCKET::::::::', $socketIo);
 	let isFocused = false;
 	let xDirection = 0;
 	let yDirection = 0;
@@ -26,6 +27,7 @@
 	let editor;
 	// @ts-ignore
 	let editor1;
+
 	onMount(() => {
 		setTimeout(async () => {
 			//logic goes here
