@@ -1,12 +1,61 @@
 <script>
 	import { MailTable } from '$lib/components/mail/index.js';
 	import { inboxConversations, SelectAllConversation } from '$lib/stores/inbox-conversation';
+	import { socketIo } from '$lib/stores/socket-store';
+	import { userStore } from '$lib/stores/user-store';
+	import { onMount } from 'svelte';
 	export let data;
 
 	let isAllChecked = false;
 	$: SelectAllConversation(isAllChecked);
 
 	inboxConversations.set(data.inbox?.conversations);
+
+	onMount(() => {
+		// $socketIo.on('mailsendNotification', (data) => {
+		// 	console.log(data);
+		// 	if (!data) return;
+		// 	data = JSON.parse(data);
+		// 	const { convJson: resJson, resJson: convJson } = data;
+		// 	const { conversation, users_array } = convJson;
+		// 	const isAvailableTOInbox = isAvailableToInbox(users_array);
+		// 	console.log(isAvailableTOInbox);
+		// 	if (isAvailableTOInbox) {
+		// 		const today = new Date();
+		// 		const formattedDate = today
+		// 			.toLocaleString('en-US', { month: 'short', day: '2-digit' })
+		// 			.replace(' ', ' ');
+		// 			inboxConversations.update((prev) => {
+		// 				const newObj = {
+		// 					id: resJson.conversation_lid,
+		// 					date: formattedDate,
+		// 					sender: conversation.sender_name,
+		// 					is_read: false,
+		// 					message: conversation.base64Body,
+		// 					subject: conversation.subject,
+		// 					is_checked: false,
+		// 					is_starred: false
+		// 				};
+		// 				return [newObj, ...prev];
+		// 			});
+		// 	}
+		// });
+	});
+	/**
+	 * @param {any} [users_array]
+	 */
+	function isAvailableToInbox(users_array) {
+		let isAvailable = false;
+		const types = [1, 3, 4];
+		for (let user of users_array) {
+			console.log('TEST:::', user.user_id === $userStore.id);
+			if (user.user_id === $userStore.id && types.includes(user.type_lid)) {
+				isAvailable = true;
+			}
+		}
+
+		return isAvailable;
+	}
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">

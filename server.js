@@ -19,7 +19,7 @@ const io = new Server(server, {
 // Listen for connections from clients
 io.on('connection', (socket) => {
 	console.log(`A client connected with ID ${socket.id}`);
-	socketResponse(socket);
+	socketResponse(socket, io);
 });
 
 // Start the server

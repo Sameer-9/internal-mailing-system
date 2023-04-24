@@ -7,7 +7,6 @@
 	import { onMount } from 'svelte';
 	import { isCreateModalOpen } from '$lib/stores/Sidebar-store';
 	import { quintOut } from 'svelte/easing';
-	import { inboxConversations } from '$lib/stores/inbox-conversation';
 	import { userStore } from '$lib/stores/user-store';
 	import { socketIo } from '$lib/stores/socket-store';
 
@@ -133,6 +132,7 @@
 			conversation: {
 				created_by: $userStore?.id,
 				subject: subject === '' ? null : subject,
+				sender_name: $userStore?.first_name + ' ' + $userStore?.last_name,
 				body: base64Body
 			},
 			users_array: usersArray
@@ -147,29 +147,11 @@
 
 			const resJson = await response.json();
 			if (response.ok) {
-				const isAvailableTOInbox = isAvailableToInbox();
-				console.log(isAvailableTOInbox);
-				if (isAvailableTOInbox) {
-					const today = new Date();
-					const formattedDate = today
-						.toLocaleString('en-US', { month: 'short', day: '2-digit' })
-						.replace(' ', ' ');
+				$socketIo.emit(
+					'mailSentSuccess',
+					JSON.stringify({ convJson: resJson, resJson: jsonToSend })
+				);
 
-					inboxConversations.update((prev) => {
-						const newObj = {
-							id: resJson.conversation_lid,
-							date: formattedDate,
-							sender: $userStore?.first_name + ' ' + $userStore?.last_name,
-							is_read: false,
-							message: base64Body,
-							subject: subject === '' ? null : subject,
-							is_checked: false,
-							is_starred: false
-						};
-						prev = [newObj, ...prev];
-						return prev;
-					});
-				}
 				$isCreateModalOpen = false;
 				SelectedUser.set([]);
 				subject = '';
@@ -182,19 +164,6 @@
 			console.log(err);
 			toast('error', 'Internal Server Error');
 		}
-	}
-
-	function isAvailableToInbox() {
-		let isAvailable = false;
-		const types = [1, 3, 4];
-		for (let user of $SelectedUser) {
-			console.log('TEST:::', user.id === $userStore.id);
-			if (user.id === $userStore.id && types.includes(user.type_lid)) {
-				isAvailable = true;
-			}
-		}
-
-		return isAvailable;
 	}
 </script>
 

@@ -1,3 +1,4 @@
+import { Password } from '$lib/server/config/Password';
 import { getInboxConversation } from '$lib/server/model/Common';
 
 export async function load({ locals, parent }) {

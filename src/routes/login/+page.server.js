@@ -3,6 +3,7 @@ import { findByEmail } from '$lib/server/model/User.js';
 import { redirect } from '@sveltejs/kit';
 import { sessionManager } from '$lib/server/config/redis';
 import { findUserById } from '$lib/server/model/Common';
+import { Password } from '$lib/server/config/Password';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ cookies }) {
@@ -45,8 +46,10 @@ export const actions = {
 			return fail(422, errors);
 		}
 		const { email, password, id } = dataFromDb?.rows[0];
+		// @ts-ignore
+		const isPasswordMatched = await Password.comparePassword(password, passwordFromBrowser);
 
-		if (passwordFromBrowser !== password) {
+		if (!isPasswordMatched) {
 			errors.message = 'Invalid Credentials';
 			return fail(422, errors);
 		}

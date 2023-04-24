@@ -133,9 +133,9 @@
 					{subject ?? '(No Subject)'} &nbsp;-&nbsp;
 				</div>
 			</a>
-			<span class="text-sm"
-				>{@html newMessage == '' || newMessage == null ? '<p>(No Message)</p>' : newMessage}</span
-			>
+			<span class="text-sm flex message-preview">
+				{@html newMessage == '' || newMessage == null ? '<p>(No Message)</p>' : newMessage}
+			</span>
 		</div>
 		<div class="flex gap-1" class:hidden={!isHover}>
 			<div
@@ -300,5 +300,9 @@
 	.is-read .sender-name,
 	.is-read .time {
 		color: #ffffff;
+	}
+
+	:global(.message-preview *) {
+		display: flex;
 	}
 </style>

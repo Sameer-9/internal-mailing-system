@@ -10,6 +10,7 @@
 	import { alertTypes } from '$lib/utils/common/constants';
 	import { onMount } from 'svelte';
 	import io from 'socket.io-client';
+	import { inboxConversations } from '$lib/stores/inbox-conversation.js';
 
 	export let data;
 	let labelName = '';
@@ -58,6 +59,7 @@
 	 * @type {import("socket.io-client").Socket<import("@socket.io/component-emitter").DefaultEventsMap, import("@socket.io/component-emitter").DefaultEventsMap>}
 	 */
 	let socket;
+	let audio;
 	onMount(async () => {
 		// Connect to the Socket.IO server
 		socket = io('http://localhost:4000');
@@ -73,12 +75,70 @@
 				console.log('ASKING FOR USERID:::::::');
 				$socketIo.emit('userIdReceived', JSON.stringify($userStore));
 			});
-			// Find the socket object associated with a particular user
-			const userId = 2;
+		});
+
+		socket.on('mailsendNotification', (data) => {
+			console.log(data);
+			console.log('SOCKET DATA MESSAGE RECIEVED::::::');
+
+			if (!data) return;
+
+			data = JSON.parse(data);
+
+			const { convJson: resJson, resJson: convJson } = data;
+
+			const { conversation, users_array } = convJson;
+
+			console.log('users_array::', users_array);
+			console.log('conversation::', conversation);
+
+			const isAvailableTOInbox = isAvailableToInbox(users_array);
+
+			console.log(isAvailableTOInbox);
+
+			if (isAvailableTOInbox) {
+				const today = new Date();
+				const formattedDate = today
+					.toLocaleString('en-US', { month: 'short', day: '2-digit' })
+					.replace(' ', ' ');
+
+				inboxConversations.update((prev) => {
+					const newObj = {
+						id: resJson.conversation_lid,
+						date: formattedDate,
+						sender: conversation.sender_name,
+						is_read: false,
+						message: conversation.body,
+						subject: conversation.subject,
+						is_checked: false,
+						is_starred: false
+					};
+					return [newObj, ...prev];
+				});
+
+				toast('success', 'New Email Recieved');
+				audio.play();
+			}
 		});
 	});
+
+	function isAvailableToInbox(users_array) {
+		let isAvailable = false;
+		const types = [1, 3, 4];
+		for (let user of users_array) {
+			console.log('TEST:::', user.user_id === $userStore.id);
+			if (user.user_id === $userStore.id && types.includes(user.participation_type_id)) {
+				isAvailable = true;
+			}
+		}
+
+		return isAvailable;
+	}
 </script>
 
+<svelte:head>
+	<title>{$userStore.email} ( {$userStore.first_name} {$userStore.last_name} )</title>
+</svelte:head>
 {#if $isCreateModalOpen}
 	<MailModal />
 {/if}
@@ -92,6 +152,7 @@
 		</div>
 	</div>
 {/if}
+<audio src="/audios/notification.wav" bind:this={audio} />
 <Header />
 <main class="flex gap-5">
 	<Sidebar />

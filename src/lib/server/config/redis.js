@@ -8,6 +8,7 @@ const options = {
 	redisClient: new Redis(REDIS_URL),
 	secret: SECRET,
 	useTTL: true,
+	encrypted: true,
 	cookieName: crypto.randomUUID(),
 	cookiesOptions: {
 		path: '/',
@@ -16,8 +17,7 @@ const options = {
 		secure: !dev, // From SvelteKit "$app/environment"
 		maxAge: 60 * 60 * 24 // You have to define time in seconds and it's also used for redis key expiry time
 	},
-	serializer: JSON,
-
+	serializer: JSON
 };
 // These are the required options to use RedisSessionStore.
 export const sessionManager = new RedisSessionStore(options);

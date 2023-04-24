@@ -7,16 +7,16 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		window.addEventListener("resize", function(e) {
+		window.addEventListener('resize', function (e) {
 			// if(window.innerWidth)
 			const width = window.innerWidth;
-			if(width <= 750) {
+			if (width <= 750) {
 				isSidebarOpened.set(false);
 			} else {
 				isSidebarOpened.set(true);
 			}
 		});
-	})
+	});
 </script>
 
 <aside class="h-full text-white min-w-[60px]" class:w-[224px]={$isSidebarOpened}>
