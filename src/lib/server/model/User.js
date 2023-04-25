@@ -26,3 +26,22 @@ export const findByEmail = (email) => {
 	console.log(statement);
 	return client.query(statement);
 };
+
+export const getUserLabel = (userId) => {
+	const statement = {
+		text: `SELECT user_lid, name, color_hex as color FROM user_label WHERE user_lid = $1 AND active = true;`,
+		values: [userId]
+	};
+	console.log(statement);
+	return client.query(statement);
+};
+
+export const addLabel = (userId, labelName, colorHex) => {
+	const statement = {
+		text: `INSERT INTO user_label(user_lid, name, color_hex, created_by)
+				VALUES($1,$2,$3,$1);`,
+		values: [userId, labelName, colorHex]
+	};
+	console.log(statement);
+	return client.query(statement);
+}

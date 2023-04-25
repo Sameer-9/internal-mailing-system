@@ -13,11 +13,11 @@
 	href={url}
 	on:mouseenter={() => (hidden = false)}
 	on:mouseleave={() => (hidden = true)}
-	class="px-2 py-1 relative text-sm tooltip tooltip-right"
+	class:active
+	class="px-2 my-1 relative text-sm tooltip tooltip-right hover:bg-[#ffffff4d] hover:rounded-2xl"
 >
 	<div
-		class="flex gap-4 hover:bg-[#ffffff4d] hover:rounded-2xl px-2 py-1 "
-		class:active
+		class="flex gap-4  px-2 py-1 "
 		class:justify-center={!$isSidebarOpened}
 	>
 		{#if imgUrl}

@@ -6,8 +6,6 @@ export async function load({ locals, parent }) {
 		// @ts-ignore
 		const result = await getInboxConversation(locals.user?.id);
 
-		console.log('ROWS::::::::::', result.rows[0]);
-
 		return {
 			inbox: result.rows[0]?.get_inbox_conversation
 		};

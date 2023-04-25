@@ -20,12 +20,13 @@
 
 	sidebarArray.set(data.sidebar);
 	userStore.set(data.userDetails[0] ?? []);
+	labelStore.set(data.labelDetails ?? [])
 
 	async function handleSubmit() {
 		try {
 			const res = await fetch('/api/add-label', {
 				method: 'POST',
-				body: JSON.stringify({ labelName: labelName })
+				body: JSON.stringify({ labelName: labelName, colorHex: labelColor })
 			});
 			const json = await res.json();
 			if (res.ok) {
@@ -62,7 +63,7 @@
 	let audio;
 	onMount(async () => {
 		// Connect to the Socket.IO server
-		socket = io('http://localhost:4000');
+		socket = io('http://10.130.96.136:4000');
 		console.log(io.sockets?.clients());
 		// Log the socket ID when connected
 		socket.on('connect', () => {

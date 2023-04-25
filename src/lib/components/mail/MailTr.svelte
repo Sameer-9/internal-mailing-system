@@ -129,7 +129,7 @@
 		</div>
 		<div class="message flex flex-1 w-[100px]">
 			<a href={$page.url.href}>
-				<div class="text-sm subject">
+				<div class="text-sm subject md:w-[70px] lg:w-[100%] sm:w-[70px] w-[70px]">
 					{subject ?? '(No Subject)'} &nbsp;-&nbsp;
 				</div>
 			</a>
