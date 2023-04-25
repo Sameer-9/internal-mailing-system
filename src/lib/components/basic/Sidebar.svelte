@@ -7,6 +7,13 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
+		// const width = window.innerWidth;
+		// 	if (width <= 750) {
+		// 		isSidebarOpened.set(false);
+		// 	} else {
+		// 		isSidebarOpened.set(true);
+		// 	}
+
 		window.addEventListener('resize', function (e) {
 			// if(window.innerWidth)
 			const width = window.innerWidth;
@@ -20,7 +27,7 @@
 </script>
 
 <aside class="h-full text-white min-w-[60px]" class:w-[224px]={$isSidebarOpened}>
-	<div class="border-b-2 border-zinc-400 pb-4">
+	<div class="border-b-2 border-zinc-400 pb-4 pl-4">
 		<button
 			class="px-5 py-4 bg-white text-gray-500 font-semibold rounded-2xl"
 			on:click={() => ($isCreateModalOpen = true)}
@@ -34,7 +41,7 @@
 		</button>
 	</div>
 	<div class="pt-3" id="overflow-sidebar">
-		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]">
+		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]" class:pl-4={$isSidebarOpened}>
 			{#each $sidebarArray as data}
 				<Link
 					active={$page.route?.id?.includes(data.url)}
