@@ -20,7 +20,7 @@
 
 	sidebarArray.set(data.sidebar);
 	userStore.set(data.userDetails[0] ?? []);
-	labelStore.set(data.labelDetails ?? [])
+	labelStore.set(data.labelDetails ?? []);
 
 	async function handleSubmit() {
 		try {
@@ -31,6 +31,7 @@
 			const json = await res.json();
 			if (res.ok) {
 				console.log('RESPONSE:::::', json);
+				const { idFromDB } = json;
 				labelError = null;
 				closeModalBtn.click();
 				toast(alertTypes.SUCCESS, 'Label Added Successfully');
@@ -38,7 +39,7 @@
 					prevVal = [
 						...prevVal,
 						{
-							id: crypto.randomUUID(),
+							id: idFromDB,
 							name: labelName,
 							color: labelColor
 						}

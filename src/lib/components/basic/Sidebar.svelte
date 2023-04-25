@@ -2,9 +2,11 @@
 	// @ts-nocheck
 	import { isCreateModalOpen, isSidebarOpened, sidebarArray } from '$lib/stores/Sidebar-store';
 	import { LabelLink, Link } from '$lib/components/basic/index.js';
+	import { LabelActions } from '$lib/components/mail/index.js';
 	import { page } from '$app/stores';
 	import { labelStore } from '$lib/stores/label-store';
 	import { onMount } from 'svelte';
+	import { labelAction } from '$lib/stores/label-action-store';
 
 	onMount(() => {
 		// const width = window.innerWidth;
@@ -41,7 +43,7 @@
 		</button>
 	</div>
 	<div class="pt-3" id="overflow-sidebar">
-		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]" >
+		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]">
 			{#each $sidebarArray as data}
 				<Link
 					active={$page.route?.id?.includes(data.url)}
@@ -86,6 +88,10 @@
 		</ul>
 	</div>
 </aside>
+
+{#if $labelAction.isVisible}
+	<LabelActions />
+{/if}
 
 <style>
 	.add-label {

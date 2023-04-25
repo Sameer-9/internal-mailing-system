@@ -1,11 +1,45 @@
 <script>
 	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
+	import { labelAction } from '$lib/stores/label-action-store';
+	import { onMount } from 'svelte';
 
-	export let id = '';
+	export let id = 0;
 	export let active = '';
 	export let label = '';
 	export let color = '#FF0000';
 	let hidden = false;
+
+	/**
+	 * @param {any} e
+	 */
+	function LabelActionClick(e) {
+		const clickedElement = e.target;
+		const { top, left, bottom } = clickedElement.getBoundingClientRect();
+		console.log(clickedElement);
+		console.log(clickedElement.getBoundingClientRect());
+		console.log(top + document.body.scrollTop);
+		console.log(bottom + document.body.scrollTop);
+
+		labelAction.set({
+			isVisible: true,
+			xDirection: left + 20,
+			yDirection: top - 50,
+			id: id
+		});
+	}
+
+	onMount(() => {
+		document.addEventListener('click', (e) => {
+			// @ts-ignore
+			if (e.target.classList.contains('label-action')) return;
+			labelAction.set({
+				isVisible: false,
+				xDirection: 0,
+				yDirection: 0,
+				id: 0
+			});
+		});
+	});
 </script>
 
 <div
@@ -38,9 +72,10 @@
 			{/if}
 		</div>
 	</a>
-	<div class="flex justify-center items-center">
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div class="flex justify-center items-center label-action" on:click={(e) => LabelActionClick(e)}>
 		<div
-			class="hover:bg-zinc-500 rounded-full hover:cursor-pointer py-1 tooltip tooltip-bottom"
+			class="hover:bg-zinc-500 rounded-full hover:cursor-pointer py-1 tooltip tooltip-bottom label-action"
 			data-tip="More"
 		>
 			<svg
@@ -49,9 +84,10 @@
 				viewBox="0 0 24 24"
 				stroke-width={3.5}
 				stroke="currentColor"
-				class="w-6 h-4"
+				class="w-6 h-4 label-action"
 			>
 				<path
+					class="label-action"
 					stroke-linecap="round"
 					stroke-linejoin="round"
 					d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"

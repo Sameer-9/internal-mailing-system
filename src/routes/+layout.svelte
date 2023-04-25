@@ -3,5 +3,5 @@
 	import '../app.css';
 </script>
 
-<RouteLoader/>
+<RouteLoader />
 <slot />

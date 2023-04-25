@@ -17,10 +17,7 @@
 	class="px-2 my-1 relative text-sm tooltip tooltip-right hover:bg-[#ffffff4d] hover:rounded-2xl"
 	class:pl-4={$isSidebarOpened}
 >
-	<div
-		class="flex gap-4  px-2 py-1 "
-		class:justify-center={!$isSidebarOpened}
-	>
+	<div class="flex gap-4  px-2 py-1 " class:justify-center={!$isSidebarOpened}>
 		{#if imgUrl}
 			<img src={imgUrl} width="20" alt={label} />
 		{/if}
