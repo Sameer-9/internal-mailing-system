@@ -41,7 +41,7 @@
 		</button>
 	</div>
 	<div class="pt-3" id="overflow-sidebar">
-		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]" class:pl-4={$isSidebarOpened}>
+		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]" >
 			{#each $sidebarArray as data}
 				<Link
 					active={$page.route?.id?.includes(data.url)}
