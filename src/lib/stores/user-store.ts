@@ -3,10 +3,10 @@ import { writable } from 'svelte/store';
 export const userStore = writable<UserStore>();
 
 interface UserStore {
-	id: Number;
-	first_name: String;
-	last_name: String;
+	id: number;
+	first_name: string;
+	last_name: string;
 	email: string;
-	profile_photo: String;
-	designation: String;
+	profile_photo: string;
+	designation: string;
 }

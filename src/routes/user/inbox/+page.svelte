@@ -80,12 +80,12 @@
 				<div class="flex">
 					<button on:click={() => location.reload()}>
 						<div
-						class="hover:cursor-pointer hover:bg-zinc-500 rounded-full p-2 tooltip tooltip-bottom"
-						data-tip="Refresh"
+							class="hover:cursor-pointer hover:bg-zinc-500 rounded-full p-2 tooltip tooltip-bottom"
+							data-tip="Refresh"
 						>
-						<img src="/images/refresh.png" alt="Refresh" />
-					</div>
-				</button>
+							<img src="/images/refresh.png" alt="Refresh" />
+						</div>
+					</button>
 				</div>
 				<div class="flex justify-center items-center ">
 					<div

@@ -1,6 +1,7 @@
 <script>
 	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
 	import { labelAction } from '$lib/stores/label-action-store';
+	import { isProfileDropdownOpen } from '$lib/stores/userSelection-store';
 	import { onMount } from 'svelte';
 
 	export let id = 0;

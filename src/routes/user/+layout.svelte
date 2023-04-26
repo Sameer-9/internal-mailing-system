@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { Header, Sidebar } from '$lib/components/basic/index.js';
+	import { Header, ProfileDropdown, Sidebar } from '$lib/components/basic/index.js';
 	import { MailModal } from '$lib/components/mail/index.js';
 	import { labelStore } from '$lib/stores/label-store';
 	import { isCreateModalOpen, sidebarArray } from '$lib/stores/Sidebar-store';
@@ -11,6 +11,7 @@
 	import { onMount } from 'svelte';
 	import io from 'socket.io-client';
 	import { inboxConversations } from '$lib/stores/inbox-conversation.js';
+	import { isProfileDropdownOpen } from '$lib/stores/userSelection-store';
 
 	export let data;
 	let labelName = '';
@@ -49,7 +50,6 @@
 					});
 					labelName = '';
 					labelColor = '#000000';
-
 				} else {
 					labelError = message;
 					toast(alertTypes.ERROR, message);
@@ -151,7 +151,9 @@
 {#if $isCreateModalOpen}
 	<MailModal />
 {/if}
-
+{#if $isProfileDropdownOpen}
+	<ProfileDropdown />
+{/if}
 {#if $toastStore?.type}
 	<div class="toast toast-top toast-end z-[9999999999]">
 		<div class="alert alert-{$toastStore.type}">
@@ -186,7 +188,7 @@
 					type="text"
 					id="label-name"
 					name="label-name"
-					placeholder="Type here"
+					placeholder="Label Name"
 					class="input input-bordered w-full "
 				/>
 				<p class="text-error">{labelError ?? ''}</p>
