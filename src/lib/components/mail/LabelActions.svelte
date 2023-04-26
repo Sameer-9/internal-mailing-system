@@ -11,6 +11,11 @@
 			toast('warning', 'Error In Removing Label Try Again After Refreshing!');
 			return;
 		}
+
+		const isConfirm = confirm('are you sure you want to remove label?');
+
+		if (!isConfirm) return;
+
 		try {
 			const response = await fetch('/api/delete/label', {
 				method: 'delete',
@@ -27,8 +32,7 @@
 				});
 
 				console.log(jsonResponse);
-                toast(jsonResponse.status == 200 ? 'success' : 'error', jsonResponse.message)
-                
+				toast(jsonResponse.status == 200 ? 'success' : 'error', jsonResponse.message);
 			} else {
 				toast('warning', 'Error In Removing Label Try Again After Refreshing!');
 			}

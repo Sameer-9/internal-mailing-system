@@ -28,10 +28,11 @@ export const POST = async ({ cookies, request, locals }) => {
 			});
 		}
 
-		console.log(resFromDb);
-		return json({ success: true, idFromDB: 1 });
+		const _res = resFromDb.rows[0].add_label;
+		console.log(_res);
+		return json({ success: true, _res });
 	} catch (error) {
-		
-		throw fail(500, {message: 'Error'})
+		console.log(error);
+		throw fail(500, { message: 'Error' });
 	}
 };

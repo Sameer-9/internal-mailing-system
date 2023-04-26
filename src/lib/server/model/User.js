@@ -38,8 +38,7 @@ export const getUserLabel = (userId) => {
 
 export const addLabel = (userId, labelName, colorHex) => {
 	const statement = {
-		text: `INSERT INTO user_label(user_lid, name, color_hex, created_by)
-				VALUES($1,$2,$3,$1) RETURNING id;`,
+		text: `SELECT * FROM add_label($1,$2,$3)`,
 		values: [userId, labelName, colorHex]
 	};
 	console.log(statement);

@@ -29,7 +29,7 @@
 				/>
 			</svg>
 		</button>
-		<p class="text-gray-200 font-bold text-2xl flex-1 pl-6 font-mono">Mail</p>
+		<p class="text-gray-200 font-bold text-2xl flex-1 pl-6 font-sans">Mail</p>
 	</div>
 	<div class="flex-1">
 		<div

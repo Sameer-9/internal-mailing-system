@@ -133,7 +133,7 @@
 					{subject ?? '(No Subject)'} &nbsp;-&nbsp;
 				</div>
 			</a>
-			<span class="text-sm flex message-preview">
+			<span class="text-sm flex gap-1 message-preview">
 				{@html newMessage == '' || newMessage == null ? '<p>(No Message)</p>' : newMessage}
 			</span>
 		</div>

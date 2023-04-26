@@ -59,7 +59,7 @@
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
-	<div class="grey-md rounded-tl-md rounded-tr-md">
+	<div class="grey-md rounded-t-3xl">
 		<div class="h-12 flex text-gray-300 font-thin justify-between items-center">
 			<div class="pl-3 flex text-center">
 				<div class="flex items-center">
@@ -73,17 +73,19 @@
 							class="checkbox h-3 w-3 rounded-sm"
 						/>
 					</div>
-					<div class="h-full hover:bg-zinc-500 pt-1">
+					<div class="h-full hover:bg-zinc-500 pt-2.5 cursor-pointer">
 						<img src="/images/down-arrow.png" alt="" />
 					</div>
 				</div>
 				<div class="flex">
-					<div
+					<button on:click={() => location.reload()}>
+						<div
 						class="hover:cursor-pointer hover:bg-zinc-500 rounded-full p-2 tooltip tooltip-bottom"
 						data-tip="Refresh"
-					>
+						>
 						<img src="/images/refresh.png" alt="Refresh" />
 					</div>
+				</button>
 				</div>
 				<div class="flex justify-center items-center ">
 					<div
@@ -150,7 +152,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="h-[81vh] overflow-x-hidden bg-[#1b1b1b] rounded-bl-3xl">
+	<div class="h-[81vh] overflow-x-hidden bg-[#1b1b1b] rounded-b-3xl">
 		<MailTable />
 	</div>
 </div>

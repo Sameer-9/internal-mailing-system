@@ -15,7 +15,7 @@
 	export let data;
 	let labelName = '';
 	let labelError = null;
-	let labelColor = '#FFFFFF';
+	let labelColor = '#000000';
 	let closeModalBtn;
 
 	sidebarArray.set(data.sidebar);
@@ -31,22 +31,29 @@
 			const json = await res.json();
 			if (res.ok) {
 				console.log('RESPONSE:::::', json);
-				const { idFromDB } = json;
-				labelError = null;
-				closeModalBtn.click();
-				toast(alertTypes.SUCCESS, 'Label Added Successfully');
-				labelStore.update((prevVal) => {
-					prevVal = [
-						...prevVal,
-						{
-							id: idFromDB,
-							name: labelName,
-							color: labelColor
-						}
-					];
-					return prevVal;
-				});
-				labelName = '';
+				const { id, status, message } = json?._res;
+				if (status === 200) {
+					labelError = null;
+					closeModalBtn.click();
+					toast(alertTypes.SUCCESS, message);
+					labelStore.update((prevVal) => {
+						prevVal = [
+							...prevVal,
+							{
+								id: id,
+								name: labelName,
+								color: labelColor
+							}
+						];
+						return prevVal;
+					});
+					labelName = '';
+					labelColor = '#000000';
+
+				} else {
+					labelError = message;
+					toast(alertTypes.ERROR, message);
+				}
 			} else {
 				console.log('ERROR HANDLED::::::', json);
 				toast(alertTypes.ERROR, json?.message);
@@ -184,7 +191,7 @@
 				/>
 				<p class="text-error">{labelError ?? ''}</p>
 			</div>
-			<div class="">
+			<div>
 				<label class="label" for="label-name">
 					<span class="label-text">Select Label Color</span>
 				</label>

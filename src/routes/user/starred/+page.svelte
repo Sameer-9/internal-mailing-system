@@ -24,17 +24,19 @@
 							class="checkbox h-3 w-3 rounded-sm"
 						/>
 					</div>
-					<div class="h-full hover:bg-zinc-500 pt-1">
+					<div class="h-full hover:bg-zinc-500 pt-2.5 cursor-pointer">
 						<img src="/images/down-arrow.png" alt="" />
 					</div>
 				</div>
 				<div class="flex">
-					<div
-						class="hover:cursor-pointer hover:bg-zinc-500 rounded-full p-2 tooltip tooltip-bottom"
-						data-tip="Refresh"
-					>
-						<img src="/images/refresh.png" alt="Refresh" />
-					</div>
+					<button on:click={() => location.reload()}>
+						<div
+							class="hover:cursor-pointer hover:bg-zinc-500 rounded-full p-2 tooltip tooltip-bottom"
+							data-tip="Refresh"
+						>
+							<img src="/images/refresh.png" alt="Refresh" />
+						</div>
+					</button>
 				</div>
 				<div class="flex justify-center items-center ">
 					<div
