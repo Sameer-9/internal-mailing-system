@@ -19,9 +19,9 @@
 	let labelColor = '#000000';
 	let closeModalBtn;
 
-	sidebarArray.set(data.sidebar);
-	userStore.set(data.userDetails[0] ?? []);
-	labelStore.set(data.labelDetails ?? []);
+	$: sidebarArray.set(data.sidebar);
+	$: userStore.set(data.userDetails[0] ?? []);
+	$: labelStore.set(data.labelDetails ?? []);
 
 	async function handleSubmit() {
 		try {

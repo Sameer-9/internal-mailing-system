@@ -9,4 +9,6 @@ interface UserStore {
 	email: string;
 	profile_photo: string;
 	designation: string;
+	bio: string;
+	file_id: string;
 }

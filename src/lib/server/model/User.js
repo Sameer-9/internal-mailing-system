@@ -62,3 +62,13 @@ export const deleteLabel = (userId, labelId) => {
 	console.log(statement);
 	return client.query(statement);
 };
+
+export const updateProfile = (data) => {
+
+	const statement = {
+		text: `SELECT * FROM update_profile($1)`,
+		values: [data]
+	};
+	console.log(statement);
+	return client.query(statement);
+}

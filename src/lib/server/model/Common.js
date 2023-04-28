@@ -24,7 +24,7 @@ export const getInboxConversation = (/** @type {number} */ userId) => {
 
 export const findUser = (/** @type {string} */ username) => {
 	const statement = {
-		text: `SELECT pu.id,pu.first_name as firstName, pu.last_name as lastName, pu.email, ui.profile_photo as profilePhoto 
+		text: `SELECT pu.id,pu.first_name as firstName, pu.last_name as lastName, pu.email, ui.profile_photo as profilePhoto, ui.bio 
 			   FROM public.user pu
 			   INNER JOIN user_info ui 
 			   ON pu.id = ui.user_lid
@@ -36,7 +36,7 @@ export const findUser = (/** @type {string} */ username) => {
 
 export const findUserById = (/** @type {number} */ id) => {
 	const statement = {
-		text: `SELECT pu.id,pu.first_name as firstName, pu.last_name as lastName, pu.email, ui.profile_photo as profilePhoto 
+		text: `SELECT pu.id,pu.first_name as firstName, pu.last_name as lastName, pu.email, ui.profile_photo as profilePhoto,ui.bio 
 			   FROM public.user pu
 			   INNER JOIN user_info ui 
 			   ON pu.id = ui.user_lid

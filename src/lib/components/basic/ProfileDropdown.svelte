@@ -9,7 +9,7 @@
 	class="fixed rounded-2xl md:right-[50px] sm:right-14 right-14 lg:right-[45px] z-[9999999999] top-16 lg:w-80 md:w-64 w-52 bg-white min-h-[220px] text-gray-800 shadow"
 	transition:scale={{ delay: 0, duration: 600, easing: backInOut }}
 >
-	<div class="bg-gray-100 rounded-2xl min-h-[100px] border border-b-2 outline-gray-200 flex">
+	<div class="bg-gray-100 rounded-2xl min-h-[100px]  border border-b-2 outline-gray-200 flex">
 		<div class="flex-none w-20 flex justify-center items-center">
 			<div class="btn btn-lg btn-ghost btn-circle avatar">
 				<div class="w-full rounded-full">
@@ -59,16 +59,14 @@
 	</div>
 	<ul class="menu menu-compact dropdown-content mt-3 p-2  rounded-box w-full">
 		<li>
-			<div>
-				<img src="/images/profile.png" class="w-6 h-6" alt="" srcset="" />
-				<a class="justify-between" href="/user/update-profile"> Update Profile </a>
-			</div>
+			<a class="flex gap-3" href="/user/update-profile"
+				><img src="/images/profile.png" class="w-6 h-6" alt="Update Profile" /> Profile
+			</a>
 		</li>
 		<li>
-			<div>
-				<img src="/images/logout.png" class="w-6 h-6" alt="" srcset="" />
-				<a href="/logout">Logout</a>
-			</div>
+			<a href="/logout" class="flex gap-3"
+				><img src="/images/logout.png" class="w-6 h-6" alt="Logout" />Logout</a
+			>
 		</li>
 	</ul>
 </div>

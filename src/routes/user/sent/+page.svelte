@@ -1,4 +1,5 @@
 <script>
+	import { invalidateAll } from '$app/navigation';
 	import { MailSentTable } from '$lib/components/mail/index.js';
 </script>
 
@@ -18,7 +19,7 @@
 					</div>
 				</div>
 				<div class="flex">
-					<button on:click={() => location.reload()}>
+					<button on:click={async () => await invalidateAll()}>
 						<div
 							class="hover:cursor-pointer hover:bg-zinc-500 rounded-full p-2 tooltip tooltip-bottom"
 							data-tip="Refresh"

@@ -1,4 +1,5 @@
 <script>
+	import { invalidateAll } from '$app/navigation';
 	import { MailTable } from '$lib/components/mail/index.js';
 	import { inboxConversations, SelectAllConversation } from '$lib/stores/inbox-conversation';
 	export let data;
@@ -29,7 +30,7 @@
 					</div>
 				</div>
 				<div class="flex">
-					<button on:click={() => location.reload()}>
+					<button on:click={async () => await invalidateAll()}>
 						<div
 							class="hover:cursor-pointer hover:bg-zinc-500 rounded-full p-2 tooltip tooltip-bottom"
 							data-tip="Refresh"
