@@ -10,12 +10,15 @@
 	import { userStore } from '$lib/stores/user-store';
 	import { socketIo } from '$lib/stores/socket-store';
 
-	$: console.log('SOCKET::::::::', $socketIo);
 	let isFocused = false;
 	let xDirection = 0;
 	let yDirection = 0;
 	let isSelectFocused = false;
 	let subject = '';
+	/**
+	 * @type {HTMLInputElement}
+	 */
+	let toInput;
 	/**
 	 * @type {any[]}
 	 */
@@ -92,7 +95,7 @@
 			isSelectFocused = false;
 		}
 	}
-
+	$: { toInput && toInput.focus()}
 	/**
 	 * @param {number} id
 	 * @this {any}
@@ -165,6 +168,51 @@
 			toast('error', 'Internal Server Error');
 		}
 	}
+
+	let selectedIndex = 0; // set the initial selected index to null
+  
+  /**
+	 * @param {KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement; }} event
+	 */
+  function handleEvent(event) {
+
+	if(!event.target) return;
+    const divs = document.querySelectorAll(".custom-option");
+    
+    if (event.key === "Enter") {	
+      // @ts-ignore
+      document.querySelector('.custom-option[aria-selected="true"]')?.click()
+    } else if (event.key === "ArrowUp") {
+      // highlight the previous element on "ArrowUp" key press
+      if (selectedIndex !== null && selectedIndex > 0) {
+        selectedIndex--;
+      } else {
+        selectedIndex = divs.length - 1;
+      }
+    } else if (event.key === "ArrowDown") {
+      // highlight the next element on "ArrowDown" key press
+      if (selectedIndex !== null && selectedIndex < divs.length - 1) {
+        selectedIndex++;
+      } else {
+        selectedIndex = 0;
+      }
+    } else {
+      // select the clicked element
+      selectedIndex = 0;
+    }
+    
+    // update the selected and highlighted divs
+    divs.forEach((div, index) => {
+      if (index === selectedIndex) {
+        div.classList.add("bg-gray-200");
+        div.setAttribute("aria-selected", "true");
+
+      } else {
+        div.classList.remove("bg-gray-200");
+        div.setAttribute("aria-selected", "false");
+      }
+    });
+  }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -242,6 +290,8 @@
 					{/if}
 					<span class="flex-1 bg-white p-0">
 						<input
+							bind:this={toInput}
+							on:keyup={(e) => handleEvent(e)}
 							id="to"
 							type="search"
 							on:input={(e) => searchUsers(e, 1)}
@@ -302,6 +352,7 @@
 						<input
 							id="cc"
 							type="search"
+							on:keyup={(e) => handleEvent(e)}
 							on:input={(e) => searchUsers(e, 3)}
 							on:focusin={(e) => searchUsers(e, 3)}
 							on:click={(e) => searchUsers(e, 3)}
@@ -360,6 +411,7 @@
 						<input
 							id="bcc"
 							type="search"
+							on:keyup={(e) => handleEvent(e)}
 							on:input={(e) => searchUsers(e, 4)}
 							on:focusin={(e) => searchUsers(e, 4)}
 							on:click={(e) => searchUsers(e, 4)}
@@ -455,13 +507,13 @@
 		id="select-wrapper"
 		class="fixed z-[9999999999] bg-white w-80"
 		style={`left: ${xDirection}px;top: ${yDirection}px`}
-		in:scale={{ delay: 250, duration: 200, easing: quintOut }}
+		transition:scale={{ delay: 250, duration: 200, easing: quintOut }}
 	>
 		<div class="py-4 rounded-md">
 			<ul>
 				{#if searchedUsers.length > 0}
-					{#each searchedUsers as user, index}
-						<UserOption {...user} {index} />
+					{#each searchedUsers as {bio, ...rest}, index}
+						<UserOption {...rest} />
 					{/each}
 				{:else}
 					<div class="text-center text-black">No Users Found</div>

@@ -53,7 +53,7 @@
 				/>
 			{/each}
 
-			<div class="pl-3 pt-2 text-lg flex font-sans justify-between">
+			<div class="pl-3 pt-2 text-lg flex font-sans" class:justify-between={$isSidebarOpened} class:justify-center={!$isSidebarOpened}>
 				{#if $isSidebarOpened}
 					<pe>Label</pe>
 				{/if}
@@ -94,6 +94,11 @@
 {/if}
 
 <style>
+
+	aside {
+		transition: all 300mx ease-in-out;
+	}
+	
 	.add-label {
 		position: relative;
 		z-index: 1 !important;

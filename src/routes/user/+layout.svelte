@@ -71,7 +71,7 @@
 	let audio;
 	onMount(async () => {
 		// Connect to the Socket.IO server
-		socket = io('http://10.130.96.136:4000');
+		socket = io('http://localhost:4000');
 		console.log(io.sockets?.clients());
 		// Log the socket ID when connected
 		socket.on('connect', () => {

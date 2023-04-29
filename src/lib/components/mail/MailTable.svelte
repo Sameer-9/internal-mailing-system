@@ -16,12 +16,12 @@
 			{/if}
 		{/each}
 	{:else}
-		<div class="flex justify-center items-center py-2 bg-[#2e2e2e] mt-4">No Conversations</div>
+		<div class="flex justify-center items-center py-2 bg-[#2e2e2e] mt-4">No {isStarred ? ' Starred ' : ''} Conversations</div>
 	{/if}
 
 	{#if isStarred}
 		{#if $inboxConversations?.every((/** @type {{ is_starred: boolean; }} */ obj) => obj.is_starred === false)}
-			<div class="flex justify-center items-center py-2 bg-[#2e2e2e] mt-4">No Conversations</div>
+			<div class="flex justify-center items-center py-2 bg-[#2e2e2e] mt-4">No {isStarred ? ' Starred ' : ''} Conversations</div>
 		{/if}
 	{/if}
 </div>

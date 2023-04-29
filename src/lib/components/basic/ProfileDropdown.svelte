@@ -6,7 +6,7 @@
 
 <div
 	id="profile-dropdown"
-	class="fixed rounded-2xl md:right-[50px] sm:right-14 right-14 lg:right-[45px] z-[9999999999] top-16 lg:w-80 md:w-64 w-52 bg-white min-h-[220px] text-gray-800 shadow"
+	class="fixed rounded-2xl md:right-[50px] sm:right-14 right-14 lg:right-[45px] z-[9999999999] top-16 lg:w-[350px] md:w-[300px] w-[220px] bg-white min-h-[220px] text-gray-800 shadow"
 	transition:scale={{ delay: 0, duration: 600, easing: backInOut }}
 >
 	<div class="bg-gray-100 rounded-2xl min-h-[100px]  border border-b-2 outline-gray-200 flex">
@@ -17,7 +17,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="flex-1 flex justify-center items-center">
+		<div class="flex-1 flex max:w-[160px] justify-center items-center">
 			<div class="flex flex-col">
 				<div
 					class="lg:text-xl text-sm md:text-lg font-semibold break-words"
@@ -27,8 +27,7 @@
 					{$userStore.last_name}
 				</div>
 				<div
-					class="badge badge-[#2e2e2e] sm:text-[7px] md:text-sm lg:text-sm text-[7px] text-white break-words"
-					style="line-height: 1;"
+					class="badge badge-[#2e2e2e] sm:text-[7px] md:text-[11px] lg:text-sm text-[7px] text-white text-ellipsis w-min"
 				>
 					{$userStore.email}
 				</div>
@@ -48,7 +47,7 @@
 						/>
 					</svg>
 					<p
-						class="font-semibold font-serif text-xs text-gray-600 break-words"
+						class="font-semibold font-serif text-xs text-gray-600 break-all"
 						style="line-height: 1;"
 					>
 						{$userStore.designation}

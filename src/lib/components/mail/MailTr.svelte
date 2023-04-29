@@ -6,7 +6,7 @@
 	import { toast } from '$lib/stores/toast-store';
 	import { alertTypes, userActions } from '$lib/utils/common/constants';
 	import { onMount } from 'svelte';
-	let Window = null;
+
 	/**
 	 * @type {number}
 	 */

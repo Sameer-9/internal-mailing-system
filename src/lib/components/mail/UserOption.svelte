@@ -24,10 +24,6 @@
 	 * @type {number}
 	 */
 	export let type_lid;
-	/**
-	 * @type {number}
-	 */
-	export let index;
 
 	$: selected = $SelectedUser ? $SelectedUser.some((obj) => obj.id === id) : false;
 
@@ -79,13 +75,11 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	on:click={handleClick}
-	class:bg-gray-200={index === 0 && !selected}
 	class:bg-[#E1E1E1]={selected}
 	role="option"
 	data-id={id}
 	aria-selected="false"
 	class="custom-option cursor-pointer"
-	class:hover:bg-gray-100={index !== 0 && !selected}
 >
 	<div class="h-14  flex gap-3 items-center px-4" class:text-gray-700={!selected}>
 		<div>
