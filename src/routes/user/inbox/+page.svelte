@@ -30,7 +30,7 @@
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
-	<div class="grey-md rounded-t-3xl">
+	<div class="grey-md rounded-tl-lg rounded-tr-3xl">
 		<div class="h-12 flex text-gray-300 font-thin justify-between items-center">
 			<div class="pl-3 flex text-center">
 				<div class="flex items-center">
