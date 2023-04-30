@@ -118,7 +118,7 @@
 					return [newObj, ...prev];
 				});
 
-				toast('success', 'New Email Recieved');
+				toast(alertTypes.SUCCESS, 'New Email Recieved');
 				audio.play();
 			}
 		});

@@ -3,7 +3,6 @@ import { userActions } from './constants';
 /**
  * @param {string} value
  */
-// @ts-ignore
 export function checkValueInJsonObject(value) {
 	const jsonObject = userActions;
 	for (var key in jsonObject) {

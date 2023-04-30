@@ -2,12 +2,13 @@
 	import { labelAction } from '$lib/stores/label-action-store';
 	import { labelStore } from '$lib/stores/label-store';
 	import { toast } from '$lib/stores/toast-store';
+	import { alertTypes } from '$lib/utils/common/constants';
 
 	async function handleRemoveLabel() {
 		const id = $labelAction.id;
 
 		if (id === 0) {
-			toast('warning', 'Error In Removing Label Try Again After Refreshing!');
+			toast(alertTypes.WARNING, 'Error In Removing Label Try Again After Refreshing!');
 			return;
 		}
 
@@ -30,13 +31,13 @@
 					return prev.filter((val) => val.id !== id);
 				});
 
-				toast(jsonResponse.status == 200 ? 'success' : 'error', jsonResponse.message);
+				toast(jsonResponse.status == 200 ? alertTypes.SUCCESS : alertTypes.ERROR, jsonResponse.message);
 			} else {
-				toast('warning', 'Error In Removing Label Try Again After Refreshing!');
+				toast(alertTypes.WARNING, 'Error In Removing Label Try Again After Refreshing!');
 			}
 		} catch (error) {
 			console.log(error);
-			toast('error', 'Internal Server Error');
+			toast(alertTypes.ERROR, 'Internal Server Error');
 		}
 	}
 </script>

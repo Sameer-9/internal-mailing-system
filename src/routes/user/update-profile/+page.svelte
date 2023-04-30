@@ -4,6 +4,7 @@
 	import { toast } from '$lib/stores/toast-store';
 	import { userStore } from '$lib/stores/user-store';
 	import { isProfileDropdownOpen } from '$lib/stores/userSelection-store';
+	import { alertTypes } from '$lib/utils/common/constants';
 	import { onMount } from 'svelte';
 	import { quintIn } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
@@ -24,7 +25,7 @@
 		if (!target.files) return;
 
 		if (!target.files[0].type.includes('image')) {
-			toast('error', 'Only Images Are Accepted');
+			toast(alertTypes.ERROR, 'Only Images Are Accepted');
 			return;
 		}
 
@@ -52,12 +53,12 @@
 			if (response.ok) {
 				loading = false;
 				success = true;
-				toast('success', 'Profile Updated Successfully');
+				toast(alertTypes.SUCCESS, 'Profile Updated Successfully');
 				setTimeout(() => {
 					success = false;
 				}, 1000);
 			} else {
-				toast('error', result.message as string);
+				toast(alertTypes.ERROR, result.message as string);
 			}
 			await invalidateAll();
 			applyAction(result);

@@ -9,6 +9,7 @@
 	import { quintOut } from 'svelte/easing';
 	import { userStore } from '$lib/stores/user-store';
 	import { socketIo } from '$lib/stores/socket-store';
+	import { alertTypes } from '$lib/utils/common/constants';
 
 	let isFocused = false;
 	let xDirection = 0;
@@ -86,12 +87,12 @@
 				// const highlightedText = text.replace(regex, '<mark>$&</mark>');
 				// document.querySelector('p').innerHTML = highlightedText;
 			} else {
-				toast('error', 'Invalid Request');
+				toast(alertTypes.ERROR, 'Invalid Request');
 				isSelectFocused = false;
 			}
 		} catch (err) {
 			console.log(err);
-			toast('error', 'Internal Server Error');
+			toast(alertTypes.ERROR, 'Internal Server Error');
 			isSelectFocused = false;
 		}
 	}
@@ -117,7 +118,7 @@
 		let editorData = await editor1.getData();
 
 		if (!$SelectedUser || $SelectedUser.length === 0) {
-			toast('error', 'Please specify at least one recipient.');
+			toast(alertTypes.ERROR, 'Please specify at least one recipient.');
 			return;
 		}
 
@@ -161,13 +162,13 @@
 				SelectedUser.set([]);
 				subject = '';
 				// @ts-ignore
-				toast('success', 'Email Sent Successfully');
+				toast(alertTypes.SUCCESS, 'Email Sent Successfully');
 			} else {
-				toast('error', 'Error In Sending Mail');
+				toast(alertTypes.ERROR, 'Error In Sending Mail');
 			}
 		} catch (err) {
 			console.log(err);
-			toast('error', 'Internal Server Error');
+			toast(alertTypes.ERROR, 'Internal Server Error');
 		}
 	}
 

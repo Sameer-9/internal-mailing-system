@@ -5,7 +5,7 @@ export const toastStore = writable<Toast>();
 
 let timeoutId: NodeJS.Timeout | undefined | number | string;
 export function toast(_type: string, _message: string) {
-	toastStore.update((prev) => {
+	toastStore.update((_) => {
 		return {
 			type: _type,
 			message: _message
@@ -16,7 +16,7 @@ export function toast(_type: string, _message: string) {
 }
 
 function removeToast() {
-	toastStore.update((prev) => {
+	toastStore.update((_) => {
 		return {
 			type: null,
 			message: null
