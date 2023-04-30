@@ -7,7 +7,6 @@ const server = http.createServer();
 
 import crypto from 'crypto';
 
-console.log(crypto.randomBytes(128).toString('base64'));
 // Create a new Socket.IO server
 const io = new Server(server, {
 	cors: {

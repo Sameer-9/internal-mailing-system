@@ -95,7 +95,9 @@
 			isSelectFocused = false;
 		}
 	}
-	$: { toInput && toInput.focus()}
+	$: {
+		toInput && toInput.focus();
+	}
 	/**
 	 * @param {number} id
 	 * @this {any}
@@ -170,49 +172,47 @@
 	}
 
 	let selectedIndex = 0; // set the initial selected index to null
-  
-  /**
+
+	/**
 	 * @param {KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement; }} event
 	 */
-  function handleEvent(event) {
+	function handleEvent(event) {
+		if (!event.target) return;
+		const divs = document.querySelectorAll('.custom-option');
 
-	if(!event.target) return;
-    const divs = document.querySelectorAll(".custom-option");
-    
-    if (event.key === "Enter") {	
-      // @ts-ignore
-      document.querySelector('.custom-option[aria-selected="true"]')?.click()
-    } else if (event.key === "ArrowUp") {
-      // highlight the previous element on "ArrowUp" key press
-      if (selectedIndex !== null && selectedIndex > 0) {
-        selectedIndex--;
-      } else {
-        selectedIndex = divs.length - 1;
-      }
-    } else if (event.key === "ArrowDown") {
-      // highlight the next element on "ArrowDown" key press
-      if (selectedIndex !== null && selectedIndex < divs.length - 1) {
-        selectedIndex++;
-      } else {
-        selectedIndex = 0;
-      }
-    } else {
-      // select the clicked element
-      selectedIndex = 0;
-    }
-    
-    // update the selected and highlighted divs
-    divs.forEach((div, index) => {
-      if (index === selectedIndex) {
-        div.classList.add("bg-gray-200");
-        div.setAttribute("aria-selected", "true");
+		if (event.key === 'Enter') {
+			// @ts-ignore
+			document.querySelector('.custom-option[aria-selected="true"]')?.click();
+		} else if (event.key === 'ArrowUp') {
+			// highlight the previous element on "ArrowUp" key press
+			if (selectedIndex !== null && selectedIndex > 0) {
+				selectedIndex--;
+			} else {
+				selectedIndex = divs.length - 1;
+			}
+		} else if (event.key === 'ArrowDown') {
+			// highlight the next element on "ArrowDown" key press
+			if (selectedIndex !== null && selectedIndex < divs.length - 1) {
+				selectedIndex++;
+			} else {
+				selectedIndex = 0;
+			}
+		} else {
+			// select the clicked element
+			selectedIndex = 0;
+		}
 
-      } else {
-        div.classList.remove("bg-gray-200");
-        div.setAttribute("aria-selected", "false");
-      }
-    });
-  }
+		// update the selected and highlighted divs
+		divs.forEach((div, index) => {
+			if (index === selectedIndex) {
+				div.classList.add('bg-gray-200');
+				div.setAttribute('aria-selected', 'true');
+			} else {
+				div.classList.remove('bg-gray-200');
+				div.setAttribute('aria-selected', 'false');
+			}
+		});
+	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -512,7 +512,7 @@
 		<div class="py-4 rounded-md">
 			<ul>
 				{#if searchedUsers.length > 0}
-					{#each searchedUsers as {bio, ...rest}, index}
+					{#each searchedUsers as { bio, ...rest }, index}
 						<UserOption {...rest} />
 					{/each}
 				{:else}

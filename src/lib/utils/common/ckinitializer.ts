@@ -1,7 +1,4 @@
-/**
- * @param {any} element
- */
-export async function initializeCK(element) {
+export async function initializeCK(element: HTMLElement) {
 	// @ts-ignore
 	return CKEDITOR.ClassicEditor.create(element, {
 		// https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format,
@@ -247,12 +244,10 @@ export async function initializeCK(element) {
 			'MathType'
 		]
 	})
-		.then((/** @type {any} */ editor) => {
+		.then((editor: any) => {
 			return editor;
-			// const toolbarContainer = document.querySelector('#toolbar-container');
-			// toolbarContainer.appendChild(editor.ui.view.toolbar.element);
 		})
-		.catch((/** @type {any} */ error) => {
+		.catch(( error: any) => {
 			console.error(error);
 			return null;
 		});

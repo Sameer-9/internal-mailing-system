@@ -1,13 +1,11 @@
+import type { Conversation } from '$lib/utils/common/types';
 import { writable } from 'svelte/store';
 
-export const inboxConversations = writable();
+export const inboxConversations = writable<Conversation[]>([]);
 
-/**
- * @param {any} conversationObject
- */
-export function updateInboxConversation(conversationObject) {
+export function updateInboxConversation(conversationObject: Conversation) {
 	inboxConversations.update((state) => {
-		return state?.map((/** @type {{ id: any; }} */ obj) => {
+		return state?.map((obj) => {
 			if (conversationObject?.id == obj?.id) {
 				obj = conversationObject;
 			}
@@ -18,7 +16,7 @@ export function updateInboxConversation(conversationObject) {
 
 export function SelectAllConversation(is_checked = false) {
 	inboxConversations.update((state) => {
-		return state?.map((/** @type {{ is_checked: boolean; }} */ obj) => {
+		return state?.map((obj) => {
 			obj.is_checked = is_checked;
 			return obj;
 		});

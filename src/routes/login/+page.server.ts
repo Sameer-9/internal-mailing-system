@@ -4,18 +4,17 @@ import { redirect } from '@sveltejs/kit';
 import { sessionManager } from '$lib/server/config/redis';
 import { findUserById } from '$lib/server/model/Common';
 import { Password } from '$lib/server/config/Password';
+import type { Actions, PageServerLoad } from '../$types.js';
 
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ cookies }) {
+export const load = (async ({ cookies }) => {
 	const userSession = await sessionManager.getSession(await cookies);
 
 	if (userSession.data) {
 		throw redirect(303, '/user/inbox');
 	}
-}
+}) satisfies PageServerLoad;
 
-/** @type {import('./$types').Actions} */
-export const actions = {
+export const actions: Actions = {
 	login: async ({ request, cookies }) => {
 		console.log('HIT:::::');
 		const dataFromBrowser = Object.fromEntries(await request.formData());

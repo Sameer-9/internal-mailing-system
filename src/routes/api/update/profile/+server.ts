@@ -1,4 +1,3 @@
-import { IMAGE_KIT_URL } from '$env/static/private';
 import { imagekit } from '$lib/server/config/imagekit';
 import { updateProfile } from '$lib/server/model/User.js';
 import { fileToBuffer } from '$lib/server/utils/util.js';
@@ -14,23 +13,18 @@ export async function POST({ request, locals }) {
 
 	console.log(profilePhoto);
 
-    if(!locals.user?.id) {
+	if (!locals.user?.id) {
+		throw error(400, { message: 'Invalid Request' });
+	}
 
-        throw error(400, {message: 'Invalid Request'})
-    }
-
-    if(profilePhoto.size !== 0 && !profilePhoto.type.includes('image')){
-
-        throw error(400, {message: 'Invalid Image Type'})
-        
-    }
+	if (profilePhoto.size !== 0 && !profilePhoto.type.includes('image')) {
+		throw error(400, { message: 'Invalid Image Type' });
+	}
 
 	let fileName = null;
-    let fileId = ''
+	let fileId = '';
 	if (profilePhoto.size !== 0) {
-
 		try {
-
 			const buffer = await fileToBuffer(profilePhoto);
 			if (!buffer) {
 				throw fail(400, { message: 'Invalid Image' });
@@ -40,20 +34,18 @@ export async function POST({ request, locals }) {
 			const imageResponse = await imagekit.upload({
 				file: buffer, //required
 				fileName: fileName, //required
-                folder: 'mail'
+				folder: 'mail'
 			});
-            console.log(imageResponse);
-            
-			fileName = imageResponse.url;
-            fileId = imageResponse.fileId;
+			console.log(imageResponse);
 
-		} catch (err) {
-            
-            console.error('ERROR<><><><>', err);
-            const errorMessage = err?.message as string;
-            console.log("ERRORMESSAGE:::", errorMessage);
-            
-            throw error(400, {message: errorMessage})
+			fileName = imageResponse.url;
+			fileId = imageResponse.fileId;
+		} catch (err: any) {
+			console.error('ERROR<><><><>', err);
+			const errorMessage = err?.message ?? 'Invalid File Type';
+			console.log('ERRORMESSAGE:::', errorMessage);
+
+			throw error(400, { message: errorMessage });
 		}
 	}
 
@@ -63,35 +55,29 @@ export async function POST({ request, locals }) {
 		designation: data.get('designation'),
 		bio: data.get('bio') === '' ? null : data.get('bio'),
 		profile_photo: fileName,
-        file_id: fileId,
-        user_lid: locals.user?.id
+		file_id: fileId,
+		user_lid: locals.user?.id
 	};
 
-    const dataTODb = [];
-    dataTODb.push(obj);
+	const dataTODb = [];
+	dataTODb.push(obj);
 	console.log(dataTODb);
-    try {
+	try {
+		const res = await updateProfile(JSON.stringify(dataTODb));
 
-        const res = await updateProfile(JSON.stringify(dataTODb));
+		console.log(res.rows[0]);
 
-        console.log(res.rows[0]);
-
-        imagekit.deleteFile(data.get('file-id') as string,(err, res) => {
-            if(err) {
-
-                console.log("ERROR",err);
-            } else {
-                console.log("RESPONSE:::", res);
-                
-            }
-            
-        })
-        
-    } catch(err) {
-
-        console.log(err);
-        throw error(400, 'Internal Server Error');
-    }
+		imagekit.deleteFile(data.get('file-id') as string, (err, res) => {
+			if (err) {
+				console.log('ERROR', err);
+			} else {
+				console.log('RESPONSE:::', res);
+			}
+		});
+	} catch (err) {
+		console.log(err);
+		throw error(400, 'Internal Server Error');
+	}
 
 	return json({ success: true });
 }

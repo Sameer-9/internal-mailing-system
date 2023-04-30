@@ -1,6 +1,7 @@
 import { getInboxConversation } from '$lib/server/model/Common';
+import type { PageServerLoad } from './$types.js';
 
-export async function load({ locals, parent }) {
+export const load = (async ({ locals, parent }) => {
 	await parent();
 	try {
 		// @ts-ignore
@@ -12,4 +13,4 @@ export async function load({ locals, parent }) {
 	} catch (err) {
 		console.log(err);
 	}
-}
+}) satisfies PageServerLoad;

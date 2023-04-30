@@ -30,7 +30,9 @@
 				/>
 			</svg>
 		</button>
-		<p class="text-gray-200 font-bold text-2xl flex-1 pl-6 font-sans">Mail</p>
+		<p class="text-gray-200 font-bold text-2xl flex-1 pl-6 font-sans">
+			<img src="/images/logo3.png" class="w-32 h-14 rounded-lg" alt="" />
+		</p>
 	</div>
 	<div class="flex-1">
 		<div

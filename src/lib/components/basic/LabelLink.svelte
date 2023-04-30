@@ -1,7 +1,6 @@
 <script>
 	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
 	import { labelAction } from '$lib/stores/label-action-store';
-	import { isProfileDropdownOpen } from '$lib/stores/userSelection-store';
 	import { onMount } from 'svelte';
 
 	export let id = 0;
@@ -16,10 +15,6 @@
 	function LabelActionClick(e) {
 		const clickedElement = e.target;
 		const { top, left, bottom } = clickedElement.getBoundingClientRect();
-		console.log(clickedElement);
-		console.log(clickedElement.getBoundingClientRect());
-		console.log(top + document.body.scrollTop);
-		console.log(bottom + document.body.scrollTop);
 
 		labelAction.set({
 			isVisible: true,

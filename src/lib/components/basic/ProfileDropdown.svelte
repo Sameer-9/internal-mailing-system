@@ -63,7 +63,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="/logout" class="flex gap-3"
+			<a href="/logout" data-sveltekit-reload data-sveltekit-preload-data="off" class="flex gap-3"
 				><img src="/images/logout.png" class="w-6 h-6" alt="Logout" />Logout</a
 			>
 		</li>

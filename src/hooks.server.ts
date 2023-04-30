@@ -1,8 +1,8 @@
 import { sessionManager } from '$lib/server/config/redis';
+import type { Handle } from '@sveltejs/kit';
 
-/** @type {import('@sveltejs/kit').Handle} */
-export async function handle({ event, resolve }) {
-	const userSession = await sessionManager.getSession(await event.cookies);
+export const handle = ( async ({ event, resolve }) => {
+	const userSession = await sessionManager.getSession(event.cookies);
 
 	event.locals = {
 		isUserLoggedIn: false,
@@ -10,8 +10,7 @@ export async function handle({ event, resolve }) {
 	};
 
 	if (userSession.error) {
-		console.log(userSession);
-		await sessionManager.deleteCookie(await event.cookies);
+		await sessionManager.deleteCookie(event.cookies);
 		return resolve(event);
 	}
 	if (userSession && userSession.data) {
@@ -21,4 +20,4 @@ export async function handle({ event, resolve }) {
 		};
 	}
 	return resolve(event);
-}
+}) satisfies Handle

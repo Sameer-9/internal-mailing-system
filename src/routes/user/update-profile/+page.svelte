@@ -19,8 +19,6 @@
 	});
 
 	function handleImageChange(e: Event) {
-		console.log('CHANGES:::::');
-
 		const target = e.target as HTMLInputElement;
 
 		if (!target.files) return;
@@ -29,8 +27,6 @@
 			toast('error', 'Only Images Are Accepted');
 			return;
 		}
-		console.log('CHANGES:::::', target.files);
-		console.log('CHANGES:::::', window.URL.createObjectURL(target.files[0]));
 
 		profilePhoto = window.URL.createObjectURL(target.files[0]);
 		isPhotoChanges = true;
@@ -44,41 +40,32 @@
 		try {
 			const target = event.target as HTMLFormElement;
 			const data = new FormData(target);
-			console.log(...data);
 
 			const response = await fetch(target.action, {
 				method: 'POST',
 				body: data
 			});
-            console.log(response);
-            
-            /** @type {import('@sveltejs/kit').ActionResult} */
-            const result = await response.json();
 
-            if(response.ok) {
+			/** @type {import('@sveltejs/kit').ActionResult} */
+			const result = await response.json();
 
-                loading = false;
-                success = true;
-                toast('success', 'Profile Updated Successfully');
-                setTimeout(() => {
-                    success = false;
-                }, 1000);
-
-            } else{ 
-                toast('error', result.message as string);
-            }
-            await invalidateAll();
-            applyAction(result);
-
+			if (response.ok) {
+				loading = false;
+				success = true;
+				toast('success', 'Profile Updated Successfully');
+				setTimeout(() => {
+					success = false;
+				}, 1000);
+			} else {
+				toast('error', result.message as string);
+			}
+			await invalidateAll();
+			applyAction(result);
 		} catch (error) {
-
-            console.log("ERROR:::::::::::::::::",error);
-            loading = false
-            
-        }
-        
+			console.log('ERROR:::::::::::::::::', error);
+			loading = false;
+		}
 	}
-    
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">

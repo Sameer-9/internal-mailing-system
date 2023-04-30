@@ -4,7 +4,6 @@
 	import { toast } from '$lib/stores/toast-store';
 
 	async function handleRemoveLabel() {
-		console.log($labelAction.id);
 		const id = $labelAction.id;
 
 		if (id === 0) {
@@ -31,7 +30,6 @@
 					return prev.filter((val) => val.id !== id);
 				});
 
-				console.log(jsonResponse);
 				toast(jsonResponse.status == 200 ? 'success' : 'error', jsonResponse.message);
 			} else {
 				toast('warning', 'Error In Removing Label Try Again After Refreshing!');

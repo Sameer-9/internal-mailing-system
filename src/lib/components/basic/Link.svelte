@@ -8,7 +8,6 @@
 	export let label = '';
 	export let active = false;
 	let hidden = true;
-	
 </script>
 
 <a

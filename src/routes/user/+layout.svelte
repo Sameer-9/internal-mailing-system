@@ -10,7 +10,7 @@
 	import { alertTypes } from '$lib/utils/common/constants';
 	import { onMount } from 'svelte';
 	import io from 'socket.io-client';
-	import { inboxConversations } from '$lib/stores/inbox-conversation.js';
+	import { inboxConversations } from '$lib/stores/inbox-conversation';
 	import { isProfileDropdownOpen } from '$lib/stores/userSelection-store';
 
 	export let data;
@@ -81,14 +81,12 @@
 			socketIo.set(socket);
 
 			$socketIo.on('askForUserId', () => {
-				console.log('ASKING FOR USERID:::::::');
 				$socketIo.emit('userIdReceived', JSON.stringify($userStore));
 			});
 		});
 
 		socket.on('mailsendNotification', (data) => {
-			console.log(data);
-			console.log('SOCKET DATA MESSAGE RECIEVED::::::');
+			console.log('SOCKET DATA MESSAGE RECIEVED::::::', data);
 
 			if (!data) return;
 
@@ -98,12 +96,7 @@
 
 			const { conversation, users_array } = convJson;
 
-			console.log('users_array::', users_array);
-			console.log('conversation::', conversation);
-
 			const isAvailableTOInbox = isAvailableToInbox(users_array);
-
-			console.log(isAvailableTOInbox);
 
 			if (isAvailableTOInbox) {
 				const today = new Date();
@@ -135,7 +128,6 @@
 		let isAvailable = false;
 		const types = [1, 3, 4];
 		for (let user of users_array) {
-			console.log('TEST:::', user.user_id === $userStore.id);
 			if (user.user_id === $userStore.id && types.includes(user.participation_type_id)) {
 				isAvailable = true;
 			}

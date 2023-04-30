@@ -8,8 +8,6 @@
 	let isAllChecked = false;
 	$: SelectAllConversation(isAllChecked);
 
-	$: console.log(data);
-
 	inboxConversations.set(data.inbox?.conversations);
 
 	/**
