@@ -2,7 +2,7 @@ import { sessionManager } from '$lib/server/config/redis.js';
 import { getSidebar, getUser } from '$lib/server/model/Common';
 import { getUserLabel } from '$lib/server/model/User.js';
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from '../$types';
+import type { LayoutServerLoad } from './$types';
 
 // @ts-ignore
 export const load = (async ({ locals, cookies, event }) => {
@@ -29,6 +29,10 @@ export const load = (async ({ locals, cookies, event }) => {
 			labelDetails: labelStore.rows
 		};
 	} catch (err) {
-		return null;
+		return {
+			sidebar: [],
+			userDetails: [],
+			labelDetails: []
+		};
 	}
-}) satisfies PageServerLoad;
+}) satisfies LayoutServerLoad;

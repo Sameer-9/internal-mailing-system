@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { RouteLoader } from '$lib/components/basic';
 	import '../app.css';
 </script>

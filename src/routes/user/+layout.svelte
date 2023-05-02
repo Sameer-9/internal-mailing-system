@@ -1,23 +1,24 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import { Header, ProfileDropdown, Sidebar } from '$lib/components/basic/index.js';
 	import { MailModal } from '$lib/components/mail/index.js';
 	import { labelStore } from '$lib/stores/label-store';
 	import { isCreateModalOpen, sidebarArray } from '$lib/stores/Sidebar-store';
 	import { socketIo } from '$lib/stores/socket-store';
 	import { toast, toastStore } from '$lib/stores/toast-store';
-	import { userStore } from '$lib/stores/user-store.ts';
-	import { alertTypes } from '$lib/utils/common/constants';
+	import { userStore } from '$lib/stores/user-store';
+	import { alertTypes, participationTypes } from '$lib/utils/common/constants';
 	import { onMount } from 'svelte';
-	import io from 'socket.io-client';
+	import io, { Socket } from 'socket.io-client';
 	import { inboxConversations } from '$lib/stores/inbox-conversation';
 	import { isProfileDropdownOpen } from '$lib/stores/userSelection-store';
+    import type { LayoutData } from './$types';
+	import type { UserArray } from '$lib/utils/common/types';
 
-	export let data;
+	export let data: LayoutData;
 	let labelName = '';
-	let labelError = null;
+	let labelError: string | null;
 	let labelColor = '#000000';
-	let closeModalBtn;
+	let closeModalBtn: HTMLElement;
 
 	$: sidebarArray.set(data.sidebar);
 	$: userStore.set(data.userDetails[0] ?? []);
@@ -64,14 +65,13 @@
 		}
 	}
 
-	/**
-	 * @type {import("socket.io-client").Socket<import("@socket.io/component-emitter").DefaultEventsMap, import("@socket.io/component-emitter").DefaultEventsMap>}
-	 */
-	let socket;
-	let audio;
+
+	let socket: Socket;
+	let audio: HTMLAudioElement;
 	onMount(async () => {
 		// Connect to the Socket.IO server
 		socket = io('http://localhost:4000');
+		// @ts-ignore
 		console.log(io.sockets?.clients());
 		// Log the socket ID when connected
 		socket.on('connect', () => {
@@ -124,11 +124,10 @@
 		});
 	});
 
-	function isAvailableToInbox(users_array) {
+	function isAvailableToInbox(users_array: UserArray[]) {
 		let isAvailable = false;
-		const types = [1, 3, 4];
 		for (let user of users_array) {
-			if (user.user_id === $userStore.id && types.includes(user.participation_type_id)) {
+			if (user.user_id === $userStore.id && participationTypes.includes(user.participation_type_id)) {
 				isAvailable = true;
 			}
 		}

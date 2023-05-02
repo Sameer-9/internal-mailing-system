@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import { MailSentTable } from '$lib/components/mail/index.js';
 </script>

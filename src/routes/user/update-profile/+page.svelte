@@ -11,7 +11,6 @@
 
 	let showImage = false;
 	$: profilePhoto = $userStore.profile_photo;
-	let isPhotoChanges = false;
 	let loading = false;
 	let success = false;
 
@@ -30,7 +29,6 @@
 		}
 
 		profilePhoto = window.URL.createObjectURL(target.files[0]);
-		isPhotoChanges = true;
 	}
 
 	async function handleSubmit(event: SubmitEvent) {

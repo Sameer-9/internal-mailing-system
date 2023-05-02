@@ -9,12 +9,12 @@
 	import { labelAction } from '$lib/stores/label-action-store';
 
 	onMount(() => {
-		// const width = window.innerWidth;
-		// 	if (width <= 750) {
-		// 		isSidebarOpened.set(false);
-		// 	} else {
-		// 		isSidebarOpened.set(true);
-		// 	}
+			let width = window.innerWidth;
+			if (width <= 750) {
+				isSidebarOpened.set(false);
+			} else {
+				isSidebarOpened.set(true);
+			}
 
 		window.addEventListener('resize', function (e) {
 			// if(window.innerWidth)

@@ -1,4 +1,4 @@
-import { imagekit } from '$lib/server/config/imagekit';
+import { imagekit, uploadImage } from '$lib/server/config/imagekit';
 import { updateProfile } from '$lib/server/model/User.js';
 import { fileToBuffer } from '$lib/server/utils/util.js';
 import { fail, json, error } from '@sveltejs/kit';
@@ -31,11 +31,7 @@ export async function POST({ request, locals }) {
 			}
 
 			fileName = crypto.randomUUID() + profilePhoto.name;
-			const imageResponse = await imagekit.upload({
-				file: buffer, //required
-				fileName: fileName, //required
-				folder: 'mail'
-			});
+			const imageResponse = await uploadImage(fileName, buffer);
 			console.log(imageResponse);
 
 			fileName = imageResponse.url;

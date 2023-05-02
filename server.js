@@ -5,8 +5,6 @@ import { socketResponse } from './SocketServer.js';
 // Create a new HTTP server
 const server = http.createServer();
 
-import crypto from 'crypto';
-
 // Create a new Socket.IO server
 const io = new Server(server, {
 	cors: {

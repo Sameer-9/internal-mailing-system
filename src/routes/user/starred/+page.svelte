@@ -7,7 +7,7 @@
 	let isAllChecked = false;
 	$: SelectAllConversation(isAllChecked);
 
-	inboxConversations.set(data.inbox?.conversations);
+	$: inboxConversations.set(data.inbox?.conversations);
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">

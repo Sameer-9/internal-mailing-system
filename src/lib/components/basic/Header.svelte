@@ -11,7 +11,7 @@
 </script>
 
 <header class="h-16 p-2 flex gap-3 text-gray-300">
-	<div class="lg:w-56 w-28 md:w-40 flex-none flex items-center">
+	<div class="lg:w-56 w-46 md:w-64 sm:w-56 flex-none flex items-center">
 		<button
 			class:opened={!$isSidebarOpened}
 			class="menu"
@@ -30,14 +30,14 @@
 				/>
 			</svg>
 		</button>
-		<p class="text-gray-200 font-bold text-2xl flex-1 pl-6 font-sans">
-			<img src="/images/logo3.png" class="w-32 h-14 rounded-lg" alt="" />
+		<p class="text-gray-200 font-bold text-2xl flex-1 md:min-w-[128px] lg:min-w-[128px] sm:min-w-[80px] min-w-[60px] pl-6 font-sans">
+			<img src="/images/logo3.png" class="md:w-32 lg:w-32 sm:w-20 w-16 h-14 rounded-lg" alt="" />
 		</p>
 	</div>
 	<div class="flex-1">
 		<div
 			class:grey-md={!inputFocus}
-			class="w-3/4 max-w-[600px] min-w-[150px] bg-white h-full rounded-lg px-2 flex items-center"
+			class="md:w-3/4 lg:w-3/4 sm:w-full w-full max-w-[600px] min-w-[150px] bg-white h-full rounded-lg px-2 flex items-center"
 			class:text-black={inputFocus}
 			class:bg-white={inputFocus}
 		>
@@ -77,7 +77,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="flex-none w-32 flex justify-center pr-3">
+	<div class="flex-none md:w-32 lg:w-32 sm:w-16 w-12 flex justify-center lg:pr-3 md:pr-3">
 		<button
 			class="btn btn-ghost btn-circle avatar"
 			on:click={() => isProfileDropdownOpen.set(!$isProfileDropdownOpen)}

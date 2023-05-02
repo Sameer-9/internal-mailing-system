@@ -30,3 +30,8 @@ export type Toast = {
 	type: string | null;
 	message: string | null;
 }
+
+export type UserArray = {
+	user_id: number;
+	participation_type_id: number;
+}

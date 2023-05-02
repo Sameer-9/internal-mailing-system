@@ -10,3 +10,5 @@ export const alertTypes = {
 	ERROR: 'error',
 	WARNING: 'warning'
 };
+
+export const participationTypes = [1, 3, 4];

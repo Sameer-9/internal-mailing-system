@@ -1,30 +1,14 @@
-<script>
+<script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import { MailTable } from '$lib/components/mail/index.js';
 	import { inboxConversations, SelectAllConversation } from '$lib/stores/inbox-conversation';
-	import { userStore } from '$lib/stores/user-store';
 	export let data;
 
 	let isAllChecked = false;
 	$: SelectAllConversation(isAllChecked);
 
-	inboxConversations.set(data.inbox?.conversations);
+	$: inboxConversations.set(data.inbox?.conversations);
 
-	/**
-	 * @param {any} [users_array]
-	 */
-	function isAvailableToInbox(users_array) {
-		let isAvailable = false;
-		const types = [1, 3, 4];
-		for (let user of users_array) {
-			console.log('TEST:::', user.user_id === $userStore.id);
-			if (user.user_id === $userStore.id && types.includes(user.type_lid)) {
-				isAvailable = true;
-			}
-		}
-
-		return isAvailable;
-	}
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
