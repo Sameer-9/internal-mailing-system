@@ -1,30 +1,24 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { inboxConversations } from '$lib/stores/inbox-conversation';
 	import { toast } from '$lib/stores/toast-store';
+	import { userStore } from '$lib/stores/user-store';
+	import { Base64 } from '$lib/utils/common/base64';
 	import { alertTypes, userActions } from '$lib/utils/common/constants';
-	import { onMount } from 'svelte';
 
-	/**
-	 * @type {number}
-	 */
-	export let id;
+	export let id: number;
 	export let is_read = false;
 	export let is_starred = false;
 	export let sender = '';
 	export let subject = '(No Subject)';
-	export let message = '(No Message)';
+	export let message = '';
 	export let is_checked = false;
 	export let date = '';
 	let isHover = false;
-	/**
-	 * @param {string} flag
-	 */
-	async function updateFlag(flag) {
-		let value = null;
 
+	let value: boolean;
+	async function updateFlag(flag: string) {
 		switch (flag) {
 			case userActions.IS_STARRED:
 				value = !is_starred;
@@ -48,14 +42,7 @@
 			const jsonRes = await res.json();
 			if (res.ok) {
 				if (jsonRes.success) {
-					inboxConversations.update((state) => {
-						return state?.map((obj) => {
-							if (id == obj.id) {
-								obj[flag] = value;
-							}
-							return obj;
-						});
-					});
+					await invalidateAll();
 					toast(alertTypes.SUCCESS, jsonRes.message);
 				} else if (jsonRes.warning) {
 					toast(alertTypes.WARNING, jsonRes.message);
@@ -68,10 +55,7 @@
 		}
 	}
 
-	onMount(() => {
-		Window = window;
-	});
-	$: newMessage = atob(message);
+	$: newMessage = Base64.decode(message);
 	$: {
 		if (newMessage.includes('<img')) {
 			newMessage = '<p>(Attachment Inside)</p>';
@@ -123,7 +107,7 @@
 				<div
 					class="sender-name w-24 md:w-30 sm:w-32 sm:whitespace-normal md:whitespace-nowrap min-w-[30px] text-sm"
 				>
-					{sender}
+					{sender === $userStore.first_name + ' ' + $userStore.last_name ? ' me ' : sender}
 				</div>
 			</a>
 		</div>

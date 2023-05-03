@@ -22,6 +22,22 @@ export const getInboxConversation = (/** @type {number} */ userId) => {
 	return client.query(statement);
 };
 
+export const getStarredConversations = (/** @type {number} */ userId) => {
+	const statement = {
+		text: `SELECT get_starred_conversation($1)`,
+		values: [userId]
+	};
+	return client.query(statement);
+};
+
+export const getSentConversations = (/** @type {number} */ userId) => {
+	const statement = {
+		text: `SELECT get_sent_conversation($1)`,
+		values: [userId]
+	};
+	return client.query(statement);
+};
+
 export const findUser = (/** @type {string} */ username) => {
 	const statement = {
 		text: `SELECT pu.id,pu.first_name as firstName, pu.last_name as lastName, pu.email, ui.profile_photo as profilePhoto, ui.bio 

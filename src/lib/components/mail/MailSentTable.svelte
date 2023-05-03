@@ -1,19 +1,19 @@
 <script>
+	import { sentConversations } from '$lib/stores/sent-conversations';
 	import { MailSentTr } from './index';
+
+	$: console.log($sentConversations);
 </script>
 
-<table class="text-zinc-400 font-sans table-fixed w-full min-h-[51vh]">
-	<MailSentTr isStarred={true} />
-	<MailSentTr />
-	<MailSentTr isStarred={true} />
-	<MailSentTr />
-	<MailSentTr isStarred={true} />
-	<MailSentTr />
-	<MailSentTr />
-	<MailSentTr />
-	<MailSentTr />
-	<MailSentTr />
-</table>
+<div class="text-zinc-400 font-sans table-fixed w-full min-h-[51vh]">
+	{#if $sentConversations.length > 0}
+		{#each $sentConversations as conv}
+			<MailSentTr {...conv} />
+		{/each}
+	{:else}
+		<div class="flex justify-center items-center py-2 bg-[#2e2e2e] mt-4">No Conversations</div>
+	{/if}
+</div>
 
 <style>
 	/* .grey-md {

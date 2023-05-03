@@ -247,7 +247,7 @@ export async function initializeCK(element: HTMLElement) {
 		.then((editor: any) => {
 			return editor;
 		})
-		.catch(( error: any) => {
+		.catch((error: any) => {
 			console.error(error);
 			return null;
 		});

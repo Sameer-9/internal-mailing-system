@@ -1,7 +1,7 @@
 import { sessionManager } from '$lib/server/config/redis';
 import type { Handle } from '@sveltejs/kit';
 
-export const handle = ( async ({ event, resolve }) => {
+export const handle = (async ({ event, resolve }) => {
 	const userSession = await sessionManager.getSession(event.cookies);
 
 	event.locals = {
@@ -20,4 +20,4 @@ export const handle = ( async ({ event, resolve }) => {
 		};
 	}
 	return resolve(event);
-}) satisfies Handle
+}) satisfies Handle;

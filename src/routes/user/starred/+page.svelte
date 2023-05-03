@@ -1,13 +1,18 @@
-<script>
+<script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	import { MailTable } from '$lib/components/mail/index.js';
-	import { inboxConversations, SelectAllConversation } from '$lib/stores/inbox-conversation';
+	import { StarredMailWrapper } from '$lib/components/mail/index';
+	import {
+		SelectAllStarredConversation,
+		starredConversations
+	} from '$lib/stores/starred-conversations';
 	export let data;
 
 	let isAllChecked = false;
-	$: SelectAllConversation(isAllChecked);
+	$: SelectAllStarredConversation(isAllChecked);
 
-	$: inboxConversations.set(data.inbox?.conversations);
+	$: starredConversations.set(data.starred.conversations ?? []);
+
+	$: console.log($starredConversations);
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
@@ -63,7 +68,9 @@
 			</div>
 			<div class="pr-6 flex">
 				<div>
-					<div class="hover:bg-zinc-500 rounded-md hover:cursor-pointer p-1">1-50 of 1700</div>
+					<div class="hover:bg-zinc-500 rounded-md hover:cursor-pointer p-1">
+						1-50 of {$starredConversations.length}
+					</div>
 				</div>
 				<div class="flex gap-2">
 					<div
@@ -106,7 +113,7 @@
 	</div>
 
 	<div class="h-[81vh] overflow-x-hidden bg-[#1b1b1b] rounded-bl-3xl">
-		<MailTable isStarred={true} />
+		<StarredMailWrapper />
 	</div>
 </div>
 

@@ -62,6 +62,7 @@ export async function POST({ request, locals }) {
 		const res = await updateProfile(JSON.stringify(dataTODb));
 
 		console.log(res.rows[0]);
+		console.log('FILE ID:::::::::::', data.get('file-id'));
 
 		imagekit.deleteFile(data.get('file-id') as string, (err, res) => {
 			if (err) {

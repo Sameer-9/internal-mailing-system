@@ -8,7 +8,6 @@ const imagekit: ImageKit = new ImageKit({
 	urlEndpoint: IMAGE_KIT_URL
 });
 
-
 async function uploadImage(fileName: string, buffer: Buffer) {
 	return await imagekit.upload({
 		file: buffer, //required

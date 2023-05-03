@@ -4,15 +4,15 @@
 	import { labelStore } from '$lib/stores/label-store';
 	import { isCreateModalOpen, sidebarArray } from '$lib/stores/Sidebar-store';
 	import { socketIo } from '$lib/stores/socket-store';
-	import { toast, toastStore } from '$lib/stores/toast-store';
+	import { toast } from '$lib/stores/toast-store';
 	import { userStore } from '$lib/stores/user-store';
 	import { alertTypes, participationTypes } from '$lib/utils/common/constants';
 	import { onMount } from 'svelte';
 	import io, { Socket } from 'socket.io-client';
-	import { inboxConversations } from '$lib/stores/inbox-conversation';
 	import { isProfileDropdownOpen } from '$lib/stores/userSelection-store';
-    import type { LayoutData } from './$types';
+	import type { LayoutData } from './$types';
 	import type { UserArray } from '$lib/utils/common/types';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: LayoutData;
 	let labelName = '';
@@ -65,12 +65,11 @@
 		}
 	}
 
-
 	let socket: Socket;
 	let audio: HTMLAudioElement;
 	onMount(async () => {
 		// Connect to the Socket.IO server
-		socket = io('http://localhost:4000');
+		socket = io('http://10.130.97.5:4000');
 		// @ts-ignore
 		console.log(io.sockets?.clients());
 		// Log the socket ID when connected
@@ -97,27 +96,8 @@
 			const { conversation, users_array } = convJson;
 
 			const isAvailableTOInbox = isAvailableToInbox(users_array);
-
+			invalidateAll();
 			if (isAvailableTOInbox) {
-				const today = new Date();
-				const formattedDate = today
-					.toLocaleString('en-US', { month: 'short', day: '2-digit' })
-					.replace(' ', ' ');
-
-				inboxConversations.update((prev) => {
-					const newObj = {
-						id: resJson.conversation_lid,
-						date: formattedDate,
-						sender: conversation.sender_name,
-						is_read: false,
-						message: conversation.body,
-						subject: conversation.subject,
-						is_checked: false,
-						is_starred: false
-					};
-					return [newObj, ...prev];
-				});
-
 				toast(alertTypes.SUCCESS, 'New Email Recieved');
 				audio.play();
 			}
@@ -127,7 +107,10 @@
 	function isAvailableToInbox(users_array: UserArray[]) {
 		let isAvailable = false;
 		for (let user of users_array) {
-			if (user.user_id === $userStore.id && participationTypes.includes(user.participation_type_id)) {
+			if (
+				user.user_id === $userStore.id &&
+				participationTypes.includes(user.participation_type_id)
+			) {
 				isAvailable = true;
 			}
 		}
@@ -145,15 +128,7 @@
 {#if $isProfileDropdownOpen}
 	<ProfileDropdown />
 {/if}
-{#if $toastStore?.type}
-	<div class="toast toast-top toast-end z-[9999999999]">
-		<div class="alert alert-{$toastStore.type}">
-			<div>
-				<span>{$toastStore.message}</span>
-			</div>
-		</div>
-	</div>
-{/if}
+
 <audio src="/audios/notification.wav" bind:this={audio} />
 <Header />
 <main class="flex gap-5">

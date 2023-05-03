@@ -31,7 +31,10 @@
 					return prev.filter((val) => val.id !== id);
 				});
 
-				toast(jsonResponse.status == 200 ? alertTypes.SUCCESS : alertTypes.ERROR, jsonResponse.message);
+				toast(
+					jsonResponse.status == 200 ? alertTypes.SUCCESS : alertTypes.ERROR,
+					jsonResponse.message
+				);
 			} else {
 				toast(alertTypes.WARNING, 'Error In Removing Label Try Again After Refreshing!');
 			}

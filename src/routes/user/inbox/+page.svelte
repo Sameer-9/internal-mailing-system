@@ -8,7 +8,6 @@
 	$: SelectAllConversation(isAllChecked);
 
 	$: inboxConversations.set(data.inbox?.conversations);
-
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
@@ -64,7 +63,9 @@
 			</div>
 			<div class="pr-6 flex">
 				<div>
-					<div class="hover:bg-zinc-500 rounded-md hover:cursor-pointer p-1">1-50 of 1700</div>
+					<div class="hover:bg-zinc-500 rounded-md hover:cursor-pointer p-1">
+						1-50 of {$inboxConversations.length}
+					</div>
 				</div>
 				<div class="flex gap-2">
 					<div

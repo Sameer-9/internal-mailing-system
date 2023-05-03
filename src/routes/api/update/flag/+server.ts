@@ -35,6 +35,8 @@ export async function POST({ request, locals }) {
 				break;
 		}
 
+		console.log(res);
+
 		if (!res) {
 			JSON.stringify({
 				success: false,

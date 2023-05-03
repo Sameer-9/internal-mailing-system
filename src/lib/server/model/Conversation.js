@@ -11,6 +11,7 @@ export const updateIsStarred = (
 			    WHERE conversation_lid = $2 AND user_lid = $3`,
 		values: [isStarred, id, user_id]
 	};
+	console.log(statement);
 	return client.query(statement);
 };
 

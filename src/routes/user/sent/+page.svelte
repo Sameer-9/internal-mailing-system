@@ -1,6 +1,14 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import { MailSentTable } from '$lib/components/mail/index.js';
+	import { SelectAllSentConversation, sentConversations } from '$lib/stores/sent-conversations.js';
+
+	export let data;
+
+	let isAllChecked = false;
+	$: SelectAllSentConversation(isAllChecked);
+
+	$: sentConversations.set(data.sent.conversations ?? []);
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
@@ -12,7 +20,11 @@
 						class="hover:bg-zinc-500 p-1 rounded-md ml-2 tooltip tooltip-bottom"
 						data-tip="Select All"
 					>
-						<input type="checkbox" class="checkbox h-3 w-3 rounded-sm" />
+						<input
+							type="checkbox"
+							bind:checked={isAllChecked}
+							class="checkbox h-3 w-3 rounded-sm"
+						/>
 					</div>
 					<div class="h-full hover:bg-zinc-500 pt-2.5 cursor-pointer">
 						<img src="/images/down-arrow.png" alt="" />
@@ -52,7 +64,9 @@
 			</div>
 			<div class="pr-6 flex">
 				<div>
-					<div class="hover:bg-zinc-500 rounded-md hover:cursor-pointer p-1">1-50 of 1700</div>
+					<div class="hover:bg-zinc-500 rounded-md hover:cursor-pointer p-1">
+						1-50 of {$sentConversations.length}
+					</div>
 				</div>
 				<div class="flex gap-2">
 					<div

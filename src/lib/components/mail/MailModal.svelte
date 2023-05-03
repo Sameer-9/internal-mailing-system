@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { toast } from '$lib/stores/toast-store';
 	import { SelectedUser } from '$lib/stores/userSelection-store';
 	import { initializeCK } from '$lib/utils/common/ckinitializer';
@@ -10,55 +10,39 @@
 	import { userStore } from '$lib/stores/user-store';
 	import { socketIo } from '$lib/stores/socket-store';
 	import { alertTypes } from '$lib/utils/common/constants';
+	import { Base64 } from '$lib/utils/common/base64';
 
 	let isFocused = false;
 	let xDirection = 0;
 	let yDirection = 0;
 	let isSelectFocused = false;
 	let subject = '';
-	/**
-	 * @type {HTMLInputElement}
-	 */
-	let toInput;
-	/**
-	 * @type {any[]}
-	 */
-	let searchedUsers = [];
-	/**
-	 * @type {any}
-	 */
-	let editor;
-	// @ts-ignore
-	let editor1;
+
+	let toInput: HTMLInputElement;
+
+	let searchedUsers: any[] = [];
+
+	let editor: any;
+	let editor1: any;
 
 	onMount(() => {
 		setTimeout(async () => {
-			//logic goes here
 			editor1 = await initializeCK(editor);
 		}, 10);
 	});
 
-	/**
-	 * @param {any} e
-	 */
-	function submitTypeSelect(e) {
-		const clickedElement = e.target;
+	function submitTypeSelect(e: Event) {
+		const clickedElement = e.target as HTMLElement;
 		const { top, left } = clickedElement.getBoundingClientRect();
 		yDirection = top - 40;
 		xDirection = left - 50;
 		isFocused = !isFocused;
 	}
 
-	/**
-	 * @param {any} e
-	 * @param {number} type_lid
-	 */
-	function searchUsers(e, type_lid) {
+	function searchUsers(e: Event, type_lid: number) {
 		e.stopPropagation();
-		const target = e.target;
-		// @ts-ignore
+		const target = e.target as HTMLInputElement;
 		const query = target.value;
-		// @ts-ignore
 		const { top, left } = target.getBoundingClientRect();
 		yDirection = top + 40;
 		xDirection = left;
@@ -67,21 +51,16 @@
 			return;
 		}
 		isSelectFocused = true;
-		// @ts-ignore
 		fetchUser(query, type_lid);
 	}
 
-	/**
-	 * @param {string} query
-	 * @param {number} type_lid
-	 */
-	async function fetchUser(query, type_lid) {
+	async function fetchUser(query: string, type_lid: number) {
 		try {
 			isSelectFocused = true;
 			const response = await fetch(`/api/get/user?query=${query}`);
 			if (response.ok) {
-				const jsonResponse = await response.json();
-				searchedUsers = jsonResponse?.map((/** @type {any} */ e) => ({ ...e, type_lid }));
+				const jsonResponse: any[] = await response.json();
+				searchedUsers = jsonResponse?.map((e) => ({ ...e, type_lid }));
 				// const text = document.querySelector('p').textContent;
 				// const regex = /brown/g;
 				// const highlightedText = text.replace(regex, '<mark>$&</mark>');
@@ -99,22 +78,16 @@
 	$: {
 		toInput && toInput.focus();
 	}
-	/**
-	 * @param {number} id
-	 * @this {any}
-	 * @param {MouseEvent & { currentTarget: EventTarget & HTMLDivElement; }} e
-	 */
-	function handleRemoveUser(id, e) {
-		// @ts-ignore
+
+	function handleRemoveUser(id: number, e: Event) {
 		SelectedUser.update((prev) => {
 			return prev.filter((obj) => obj.id !== id);
 		});
-		// @ts-ignore
-		e.target.closest('.input-group').querySelector('input').click();
+		const target = e.target as HTMLElement;
+		target.closest('.input-group')?.querySelector('input')?.click();
 	}
 
 	async function sendMail() {
-		// @ts-ignore
 		let editorData = await editor1.getData();
 
 		if (!$SelectedUser || $SelectedUser.length === 0) {
@@ -126,14 +99,16 @@
 			const isConfirm = confirm('Send this message without a subject or text in the body?');
 			if (!isConfirm) return;
 		}
-		// @ts-ignore
-		const base64Body = window.btoa(editorData);
+
+		const base64Body = Base64.encode(editorData);
 		const usersArray = $SelectedUser?.map((val) => {
 			return {
 				user_id: val.id,
 				participation_type_id: val.type_lid
 			};
 		});
+
+		usersArray.push({ user_id: $userStore.id, participation_type_id: 2 });
 		const jsonToSend = {
 			conversation: {
 				created_by: $userStore?.id,
@@ -174,10 +149,7 @@
 
 	let selectedIndex = 0; // set the initial selected index to null
 
-	/**
-	 * @param {KeyboardEvent & { currentTarget: EventTarget & HTMLInputElement; }} event
-	 */
-	function handleEvent(event) {
+	function handleEvent(event: any) {
 		if (!event.target) return;
 		const divs = document.querySelectorAll('.custom-option');
 

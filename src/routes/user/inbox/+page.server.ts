@@ -1,11 +1,10 @@
 import { getInboxConversation } from '$lib/server/model/Common';
 import type { PageServerLoad } from './$types.js';
 
-export const load = (async ({ locals, parent }) => {
+export const load: PageServerLoad = async ({ locals, parent }) => {
 	await parent();
 	try {
-		// @ts-ignore
-		const result = await getInboxConversation(locals.user?.id);
+		const result = await getInboxConversation(locals.user?.id ?? 0);
 
 		return {
 			inbox: result.rows[0]?.get_inbox_conversation
@@ -13,4 +12,4 @@ export const load = (async ({ locals, parent }) => {
 	} catch (err) {
 		console.log(err);
 	}
-}) satisfies PageServerLoad;
+};
