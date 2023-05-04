@@ -2,9 +2,9 @@ import { imagekit, uploadImage } from '$lib/server/config/imagekit';
 import { updateProfile } from '$lib/server/model/User.js';
 import { fileToBuffer } from '$lib/server/utils/util.js';
 import { fail, json, error } from '@sveltejs/kit';
+import type { RequestEvent } from './$types';
 
-/** @type {import('./$types').RequestHandler} */
-export async function POST({ request, locals }) {
+export async function POST({ request, locals }: RequestEvent) {
 	const data = (await request.formData()) as FormData;
 
 	console.log('DATA::::::', data);

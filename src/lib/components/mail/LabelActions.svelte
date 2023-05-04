@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { labelAction } from '$lib/stores/label-action-store';
 	import { labelStore } from '$lib/stores/label-store';
 	import { toast } from '$lib/stores/toast-store';

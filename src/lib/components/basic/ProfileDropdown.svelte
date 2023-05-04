@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { userStore } from '$lib/stores/user-store';
 	import { backInOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';

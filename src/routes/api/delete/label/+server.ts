@@ -1,8 +1,8 @@
 import { deleteLabel } from '$lib/server/model/User';
 import { fail, json } from '@sveltejs/kit';
+import type { RequestEvent } from './$types';
 
-/** @type {import('./$types').RequestHandler} */
-export async function DELETE({ request, cookies, locals }) {
+export async function DELETE({ request, cookies, locals }: RequestEvent) {
 	try {
 		const userId = locals.user?.id;
 		const { labelId } = await request.json();

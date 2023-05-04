@@ -1,8 +1,8 @@
 import { findUser } from '$lib/server/model/Common';
 import { fail, json } from '@sveltejs/kit';
+import type { RequestEvent } from './$types';
 
-/** @type {import('./$types').RequestHandler} */
-export async function GET({ url }) {
+export async function GET({ url }: RequestEvent) {
 	const query = url.searchParams.get('query');
 	console.log(query);
 	if (!query) throw fail(500, { message: 'Invalid Request' });

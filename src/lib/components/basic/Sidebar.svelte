@@ -1,5 +1,4 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import { isCreateModalOpen, isSidebarOpened, sidebarArray } from '$lib/stores/Sidebar-store';
 	import { LabelLink, Link } from '$lib/components/basic/index.js';
 	import { LabelActions } from '$lib/components/mail/index.js';
@@ -82,7 +81,7 @@
 					{#each $labelStore as label}
 						<LabelLink
 							id={label?.id}
-							active={$page.route?.id?.includes(label.id)}
+							active={$page.route?.id?.includes(label.id + '') ?? false}
 							label={label?.name ?? ''}
 							color={label?.color ?? ''}
 						/>

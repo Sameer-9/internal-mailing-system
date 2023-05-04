@@ -2,8 +2,9 @@ import { updateIsRead, updateIsStarred } from '$lib/server/model/Conversation';
 import { userActions } from '$lib/utils/common/constants';
 import { checkValueInJsonObject } from '$lib/utils/common/helper';
 import { fail } from 'assert';
+import type { RequestEvent } from './$types';
 
-export async function POST({ request, locals }) {
+export async function POST({ request, locals }: RequestEvent) {
 	const { conversation_id, value, flag } = await request.json();
 
 	const { id } = locals.user;

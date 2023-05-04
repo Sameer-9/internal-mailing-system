@@ -1,29 +1,12 @@
-<script>
+<script lang="ts">
 	import { SelectedUser } from '$lib/stores/userSelection-store';
-	/**
-	 * @type {number}
-	 */
-	export let id;
-	/**
-	 * @type {string}
-	 */
-	export let firstname;
-	/**
-	 * @type {string}
-	 */
-	export let lastname;
-	/**
-	 * @type {string}
-	 */
-	export let email;
-	/**
-	 * @type {string}
-	 */
-	export let profilephoto;
-	/**
-	 * @type {number}
-	 */
-	export let type_lid;
+
+	export let id: number;
+	export let firstname: string;
+	export let lastname: string;
+	export let email: string;
+	export let profilephoto: string;
+	export let type_lid: number;
 
 	$: selected = $SelectedUser ? $SelectedUser.some((obj) => obj.id === id) : false;
 
@@ -51,19 +34,19 @@
 
 		switch (type_lid) {
 			case 1:
-				// @ts-ignore
-				document.getElementById('to').value = '';
-				document.getElementById('to')?.focus();
+				let to = document.getElementById('to') as HTMLInputElement;
+				to.value = '';
+				to.focus();
 				break;
 			case 3:
-				// @ts-ignore
-				document.getElementById('cc').value = '';
-				document.getElementById('cc')?.focus();
+				let cc = document.getElementById('cc') as HTMLInputElement;
+				cc.value = '';
+				cc.focus();
 				break;
 			case 4:
-				// @ts-ignore
-				document.getElementById('bcc').value = '';
-				document.getElementById('bcc')?.focus();
+				let bcc = document.getElementById('bcc') as HTMLInputElement;
+				bcc.value = '';
+				bcc.focus();
 				break;
 
 			default:
@@ -72,9 +55,9 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	on:click={handleClick}
+	on:keypress={handleClick}
 	class:bg-[#E1E1E1]={selected}
 	role="option"
 	data-id={id}

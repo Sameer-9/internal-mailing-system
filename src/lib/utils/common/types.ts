@@ -35,3 +35,9 @@ export type UserArray = {
 	user_id: number;
 	participation_type_id: number;
 };
+
+export type Label = {
+	id: number;
+	name: string;
+	color: string;
+};

@@ -1,19 +1,16 @@
-<script>
+<script lang="ts">
 	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
 	import { labelAction } from '$lib/stores/label-action-store';
 	import { onMount } from 'svelte';
 
-	export let id = 0;
-	export let active = '';
-	export let label = '';
+	export let id: number;
+	export let active: boolean;
+	export let label: string;
 	export let color = '#FF0000';
 	let hidden = false;
 
-	/**
-	 * @param {any} e
-	 */
-	function LabelActionClick(e) {
-		const clickedElement = e.target;
+	function LabelActionClick(e: Event) {
+		const clickedElement = e.target as HTMLElement;
 		const { top, left, bottom } = clickedElement.getBoundingClientRect();
 
 		labelAction.set({
@@ -26,8 +23,8 @@
 
 	onMount(() => {
 		document.addEventListener('click', (e) => {
-			// @ts-ignore
-			if (e.target.classList.contains('label-action')) return;
+			const element = e.target as HTMLElement;
+			if (element.classList.contains('label-action')) return;
 			labelAction.set({
 				isVisible: false,
 				xDirection: 0,
@@ -68,8 +65,11 @@
 			{/if}
 		</div>
 	</a>
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div class="flex justify-center items-center label-action" on:click={(e) => LabelActionClick(e)}>
+	<div
+		class="flex justify-center items-center label-action"
+		on:keypress={(e) => LabelActionClick(e)}
+		on:click={(e) => LabelActionClick(e)}
+	>
 		<div
 			class="hover:bg-zinc-500 rounded-full hover:cursor-pointer py-1 tooltip tooltip-bottom label-action"
 			data-tip="More"

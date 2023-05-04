@@ -1,11 +1,9 @@
-<script>
+<script lang="ts">
 	import { isSidebarOpened } from '$lib/stores/Sidebar-store';
-	import { fade, fly } from 'svelte/transition';
-	// import { fade, fly, slide } from 'svelte/transition';
 
-	export let url = '';
-	export let imgUrl = '';
-	export let label = '';
+	export let url: string;
+	export let imgUrl: string;
+	export let label: string;
 	export let active = false;
 	let hidden = true;
 </script>

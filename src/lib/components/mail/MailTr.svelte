@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { inboxConversations } from '$lib/stores/inbox-conversation';
 	import { toast } from '$lib/stores/toast-store';
 	import { userStore } from '$lib/stores/user-store';
 	import { Base64 } from '$lib/utils/common/base64';

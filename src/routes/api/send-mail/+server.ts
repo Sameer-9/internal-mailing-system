@@ -1,8 +1,8 @@
 import { sendMail } from '$lib/server/model/Common';
 import { error, json } from '@sveltejs/kit';
+import type { RequestEvent } from './$types';
 
-/** @type {import('./$types').RequestHandler} */
-export const POST = async ({ cookies, request }) => {
+export const POST = async ({ cookies, request }: RequestEvent) => {
 	try {
 		const res = await request.json();
 		console.log(res);

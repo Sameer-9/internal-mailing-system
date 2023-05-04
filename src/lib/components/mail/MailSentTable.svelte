@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { sentConversations } from '$lib/stores/sent-conversations';
 	import { MailSentTr } from './index';
 

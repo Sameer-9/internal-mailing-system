@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { starredConversations } from '$lib/stores/starred-conversations';
 	import { MailTr } from '.';
 </script>
