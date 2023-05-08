@@ -17,9 +17,8 @@ export function checkValueInJsonObject(value: string) {
 	return false;
 }
 
-
 export function getRange(num: number) {
-	const start = (Math.floor(num / 50) * 50) + 1;
+	const start = Math.floor(num / 50) * 50 + 1;
 	const end = Math.max(start + 49, num);
-	return {start, end};
+	return { start, end };
 }

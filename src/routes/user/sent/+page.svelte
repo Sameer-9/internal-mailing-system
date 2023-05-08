@@ -15,80 +15,66 @@
 
 	let offset = 0;
 
-	$: console.log("OFFSET:::::", offset);
-	
+	$: console.log('OFFSET:::::', offset);
+
 	async function getPreviousConv() {
-		if(!pagination.has_previous || offset === 0) return;
+		if (!pagination.has_previous || offset === 0) return;
 
 		offset -= 50;
 
 		try {
-			
 			const response = await fetch(`/api/get/starred-conversations?offset=${offset}`);
 
 			console.log(response);
-			
-			if(response.ok) {
 
+			if (response.ok) {
 				const jsonResponse = await response.json();
 
 				console.log(jsonResponse);
 
-				sentConversations.set(jsonResponse.conversations ?? [])
+				sentConversations.set(jsonResponse.conversations ?? []);
 				pagination = jsonResponse.pagination;
-				
-			} else{
-
+			} else {
 			}
-			
 		} catch (error) {
 			console.log(error);
 			offset += 50;
 		}
-
 	}
 
-
 	async function getNextConv() {
-		if(!pagination.has_next) return;
+		if (!pagination.has_next) return;
 
 		offset += 50;
 
 		try {
-			
 			const response = await fetch(`/api/get/inbox-conversations?offset=${offset}`);
 
 			console.log(response);
 
-			if(response.ok) {
-
+			if (response.ok) {
 				const jsonResponse = await response.json();
 
 				console.log(jsonResponse);
 
-				sentConversations.set(jsonResponse.conversations ?? [])
+				sentConversations.set(jsonResponse.conversations ?? []);
 				pagination = jsonResponse.pagination;
-				
-			} else{
-
+			} else {
 			}
-			
 		} catch (error) {
 			console.log(error);
 			offset -= 50;
 		}
-
 	}
-	
+
 	let start = 1;
 	let end = $sentConversations.length < 50 ? $sentConversations.length : 50;
-$:  {	
-		if(offset === 0) {
+	$: {
+		if (offset === 0) {
 			start = 1;
 			end = $sentConversations.length < 50 ? $sentConversations.length : 50;
 		} else {
-
-			({start, end} = getRange(offset));
+			({ start, end } = getRange(offset));
 		}
 	}
 </script>
