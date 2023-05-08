@@ -69,10 +69,17 @@
 		}
 	}
 
-	$: newSentUsers = sent_users?.split(',').map(val => {if(val === $userStore.email) { val = 'me'} return val})?.join(',');
+	$: newSentUsers = sent_users
+		?.split(',')
+		.map((val) => {
+			if (val === $userStore.email) {
+				val = 'me';
+			}
+			return val;
+		})
+		?.join(',');
 
-	$: console.log("newSentUsers::::::", newSentUsers);
-	
+	$: console.log('newSentUsers::::::', newSentUsers);
 </script>
 
 <div class="cursor-pointer -z-10">

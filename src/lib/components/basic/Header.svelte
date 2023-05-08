@@ -33,7 +33,7 @@
 		<p
 			class="text-gray-200 font-bold text-2xl flex-1 md:min-w-[128px] lg:min-w-[128px] sm:min-w-[80px] min-w-[60px] pl-6 font-sans"
 		>
-			<img src="/images/logo3.png" class="md:w-32 lg:w-32 sm:w-20 w-16 h-14 rounded-lg" alt="" />
+			<img src="/images/logo3.png" class="md:w-32 lg:w-32 sm:w-32 w-16 h-14 rounded-lg" alt="" />
 		</p>
 	</div>
 	<div class="flex-1">

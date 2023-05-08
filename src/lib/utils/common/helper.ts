@@ -1,9 +1,6 @@
 import { userActions } from './constants';
 
-/**
- * @param {string} value
- */
-export function checkValueInJsonObject(value) {
+export function checkValueInJsonObject(value: string) {
 	const jsonObject = userActions;
 	for (var key in jsonObject) {
 		// @ts-ignore
@@ -18,4 +15,11 @@ export function checkValueInJsonObject(value) {
 		}
 	}
 	return false;
+}
+
+
+export function getRange(num: number) {
+	const start = (Math.floor(num / 50) * 50) + 1;
+	const end = Math.max(start + 49, num);
+	return {start, end};
 }

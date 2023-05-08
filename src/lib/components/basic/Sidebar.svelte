@@ -19,9 +19,13 @@
 			// if(window.innerWidth)
 			const width = window.innerWidth;
 			if (width <= 750) {
-				isSidebarOpened.set(false);
+				if (!$isSidebarOpened) {
+					isSidebarOpened.set(false);
+				}
 			} else {
-				isSidebarOpened.set(true);
+				if ($isSidebarOpened) {
+					isSidebarOpened.set(true);
+				}
 			}
 		});
 	});

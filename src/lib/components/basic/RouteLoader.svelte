@@ -2,22 +2,22 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { routeLoading } from '$lib/stores/loading-store';
 
-		let timeout: NodeJS.Timeout;
+	let timeout: NodeJS.Timeout;
 
-		beforeNavigate(() => {
-			// delay for loads > 250ms
-			timeout = setTimeout(() => {
-				routeLoading.set(true);
-			}, 0);
-		});
+	beforeNavigate(() => {
+		// delay for loads > 250ms
+		timeout = setTimeout(() => {
+			routeLoading.set(true);
+		}, 0);
+	});
 
-		afterNavigate(() => {
-			// show for at least 400ms
-			clearTimeout(timeout);
-			setTimeout(() => {
-				routeLoading.set(false);
-			}, 400);
-		});
+	afterNavigate(() => {
+		// show for at least 400ms
+		clearTimeout(timeout);
+		setTimeout(() => {
+			routeLoading.set(false);
+		}, 400);
+	});
 </script>
 
 <div

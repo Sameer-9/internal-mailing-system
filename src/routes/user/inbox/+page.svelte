@@ -2,15 +2,94 @@
 	import { invalidateAll } from '$app/navigation';
 	import { MailTable } from '$lib/components/mail/index.js';
 	import { inboxConversations, SelectAllConversation } from '$lib/stores/inbox-conversation';
+	import { getRange } from '$lib/utils/common/helper';
 	export let data;
 
 	let isAllChecked = false;
 	$: SelectAllConversation(isAllChecked);
 
-	$: console.log(data.inbox);
-	
+	$: pagination = data.inbox.pagination;
 
 	$: inboxConversations.set(data.inbox?.conversations);
+
+	let offset = 0;
+
+	$: console.log("OFFSET:::::", offset);
+	
+	async function getPreviousConv() {
+		if(!pagination.has_previous || offset === 0) return;
+
+		offset -= 50;
+
+		try {
+			
+			const response = await fetch(`/api/get/inbox-conversations?offset=${offset}`);
+
+			console.log(response);
+			
+			if(response.ok) {
+
+				const jsonResponse = await response.json();
+
+				console.log(jsonResponse);
+
+				inboxConversations.set(jsonResponse.conversations ?? [])
+				pagination = jsonResponse.pagination;
+				
+			} else{
+
+			}
+			
+		} catch (error) {
+			console.log(error);
+			offset += 50;
+		}
+
+	}
+
+
+	async function getNextConv() {
+		if(!pagination.has_next) return;
+
+		offset += 50;
+
+		try {
+			
+			const response = await fetch(`/api/get/inbox-conversations?offset=${offset}`);
+
+			console.log(response);
+
+			if(response.ok) {
+
+				const jsonResponse = await response.json();
+
+				console.log(jsonResponse);
+
+				inboxConversations.set(jsonResponse.conversations ?? [])
+				pagination = jsonResponse.pagination;
+				
+			} else{
+
+			}
+			
+		} catch (error) {
+			console.log(error);
+			offset -= 50;
+		}
+
+	}
+	
+	let start = 1;
+	let end = $inboxConversations.length < 50 ? $inboxConversations.length : 50;
+$:  {	
+		if(offset === 0) {
+			start = 1;
+			end = $inboxConversations.length < 50 ? $inboxConversations.length : 50;
+		} else {
+
+			({start, end} = getRange(offset));
+		}
+	}
 </script>
 
 <div class="text-gray-400 font-semibold w-[97%] h-full rounded-md">
@@ -67,20 +146,26 @@
 			<div class="pr-6 flex">
 				<div>
 					<div class="hover:bg-zinc-500 rounded-md hover:cursor-pointer p-1">
-						1-50 of {$inboxConversations.length}
+						{start}-{end} of {pagination.total_count}
 					</div>
 				</div>
 				<div class="flex gap-2">
 					<div
-						class="hover:bg-zinc-500 rounded-full hover:cursor-pointer p-2 tooltip tooltip-bottom"
+						class="cursor-pointer p-2 tooltip tooltip-bottom"
 						data-tip="Previous Page"
+						class:cursor-pointer={pagination.has_previous}
+						class:cursor-not-allowed={!pagination.has_previous}
+						class:rounded-full={pagination.has_previous}
+						class:hover:bg-zinc-500={pagination.has_previous}
+						on:click={getPreviousConv}
+						on:keypress={getPreviousConv}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke-width="1.5"
-							stroke="currentColor"
+							stroke={pagination.has_previous ? 'currentColor' : 'gray'}
 							class="w-4 h-4"
 						>
 							<path
@@ -91,15 +176,21 @@
 						</svg>
 					</div>
 					<div
-						class="hover:bg-zinc-500 rounded-full hover:cursor-pointer p-2 tooltip tooltip-bottom"
+						class="cursor-pointer p-2 tooltip tooltip-bottom"
 						data-tip="Next Page"
+						class:cursor-pointer={pagination.has_next}
+						class:cursor-not-allowed={!pagination.has_next}
+						class:rounded-full={pagination.has_next}
+						class:hover:bg-zinc-500={pagination.has_next}
+						on:click={getNextConv}
+						on:keypress={getNextConv}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke-width="1.5"
-							stroke="currentColor"
+							stroke={pagination.has_next ? 'currentColor' : 'gray'}
 							class="w-4 h-4"
 						>
 							<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
