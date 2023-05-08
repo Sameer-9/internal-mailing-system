@@ -7,6 +7,7 @@ export const load: PageServerLoad = async ({ parent, locals }) => {
 		const result = await getSentConversations(locals.user?.id ?? 0);
 
 		return {
+			title: 'Sent',
 			sent: result.rows[0]?.get_sent_conversation
 		};
 	} catch (err) {

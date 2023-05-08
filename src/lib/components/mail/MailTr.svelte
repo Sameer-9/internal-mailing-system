@@ -272,6 +272,7 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
+		color: rgba(255, 255, 255, 0.8);
 	}
 
 	.is-read {

@@ -7,6 +7,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		const result = await getStarredConversations(locals.user?.id);
 
 		return {
+			title: 'Starred',
 			starred: result.rows[0]?.get_starred_conversation
 		};
 	} catch (err) {

@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { sentConversations } from '$lib/stores/sent-conversations';
 	import { toast } from '$lib/stores/toast-store';
+	import { userStore } from '$lib/stores/user-store';
 	import { Base64 } from '$lib/utils/common/base64';
 	import { alertTypes, userActions } from '$lib/utils/common/constants';
 
@@ -67,6 +68,11 @@
 			newMessage = '<p>(Attachment Inside)</p>';
 		}
 	}
+
+	$: newSentUsers = sent_users?.split(',').map(val => {if(val === $userStore.email) { val = 'me'} return val})?.join(',');
+
+	$: console.log("newSentUsers::::::", newSentUsers);
+	
 </script>
 
 <div class="cursor-pointer -z-10">
@@ -113,7 +119,7 @@
 				<div
 					class="sender-name w-24 md:w-30 sm:w-32 sm:whitespace-normal md:whitespace-nowrap min-w-[30px] text-sm"
 				>
-					To: {sent_users}
+					To: {newSentUsers}
 				</div>
 			</a>
 		</div>
@@ -279,6 +285,7 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
+		color: rgba(255, 255, 255, 0.8);
 	}
 
 	.is-read {

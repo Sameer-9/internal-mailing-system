@@ -13,6 +13,7 @@
 	import type { LayoutData } from './$types';
 	import type { UserArray } from '$lib/utils/common/types';
 	import { invalidateAll } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	export let data: LayoutData;
 	let labelName = '';
@@ -69,7 +70,7 @@
 	let audio: HTMLAudioElement;
 	onMount(async () => {
 		// Connect to the Socket.IO server
-		socket = io('http://10.130.97.5:4000');
+		socket = io('http://10.130.97.121:4000');
 		// @ts-ignore
 		console.log(io.sockets?.clients());
 		// Log the socket ID when connected
@@ -120,7 +121,7 @@
 </script>
 
 <svelte:head>
-	<title>{$userStore.email} ( {$userStore.first_name} {$userStore.last_name} )</title>
+	<title>{$page.data.title ?? ''} - {$userStore.email}</title>
 </svelte:head>
 {#if $isCreateModalOpen}
 	<MailModal />

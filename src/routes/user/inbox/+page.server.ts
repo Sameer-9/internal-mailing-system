@@ -7,6 +7,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		const result = await getInboxConversation(locals.user?.id ?? 0);
 
 		return {
+			title: 'Inbox',
 			inbox: result.rows[0]?.get_inbox_conversation
 		};
 	} catch (err) {

@@ -45,8 +45,7 @@ export const actions: Actions = {
 			return fail(422, errors);
 		}
 		const { email, password, id } = dataFromDb?.rows[0];
-		// @ts-ignore
-		const isPasswordMatched = await Password.comparePassword(password, passwordFromBrowser);
+		const isPasswordMatched = await Password.comparePassword(password, passwordFromBrowser as string);
 
 		if (!isPasswordMatched) {
 			errors.message = 'Invalid Credentials';
