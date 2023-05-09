@@ -8,26 +8,26 @@
 	let hidden = true;
 </script>
 
-<a
-	href={url}
+<div
 	on:mouseenter={() => (hidden = false)}
 	on:mouseleave={() => (hidden = true)}
 	class:active
-	class="px-2 my-1 relative text-sm tooltip tooltip-bottom hover:bg-[#ffffff4d] hover:rounded-2xl"
+	class="px-2 my-1 w-full relative text-sm tooltip tooltip-bottom hover:bg-[#ffffff4d] hover:rounded-2xl"
 	class:pl-4={$isSidebarOpened}
 	data-tip={label}
 >
-	<div class="flex gap-4  px-2 py-1 " class:justify-center={!$isSidebarOpened}>
-		{#if imgUrl}
-			<img src={imgUrl} width="20" alt={label} />
-		{/if}
-		{#if $isSidebarOpened}
-			<li>
-				<p>{label}</p>
-			</li>
-		{/if}
-	</div>
-	<!-- {#if !hidden}
+	<a href={url}>
+		<div class="flex gap-4  px-2 py-1 " class:justify-center={!$isSidebarOpened}>
+			{#if imgUrl}
+				<img src={imgUrl} width="20" alt={label} />
+			{/if}
+			{#if $isSidebarOpened}
+				<li>
+					<p>{label}</p>
+				</li>
+			{/if}
+		</div>
+		<!-- {#if !hidden}
 		<div
 			in:fly={{ x: -100, duration: 300 }}
 			out:fade
@@ -36,7 +36,8 @@
 			{label}
 		</div>
 	{/if} -->
-</a>
+	</a>
+</div>
 
 <style>
 	.active {

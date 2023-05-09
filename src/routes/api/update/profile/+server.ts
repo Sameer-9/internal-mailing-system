@@ -68,7 +68,7 @@ export async function POST({ request, locals }: RequestEvent) {
 			if (err) {
 				console.log('ERROR', err);
 			} else {
-				console.log('RESPONSE:::', res);
+				console.log('SUCCESS:::', res);
 			}
 		});
 	} catch (err) {

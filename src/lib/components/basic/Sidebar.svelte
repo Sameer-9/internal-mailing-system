@@ -38,7 +38,7 @@
 			on:click={() => ($isCreateModalOpen = true)}
 		>
 			<div class="flex gap-2">
-				<img src="/images/pencil.png" width="20" alt="Compose" />
+				<img src="/images/pencil.png" width="20" height="20" alt="Compose" />
 				{#if $isSidebarOpened}
 					<p>Compose</p>
 				{/if}
@@ -55,44 +55,44 @@
 					imgUrl={data.icon}
 				/>
 			{/each}
-
-			<div
-				class="pl-3 pt-2 text-lg flex font-sans"
-				class:justify-between={$isSidebarOpened}
-				class:justify-center={!$isSidebarOpened}
-			>
-				{#if $isSidebarOpened}
-					<pe>Label</pe>
-				{/if}
-				<label for="label-modal">
-					<div class="tooltip tooltip-bottom" data-tip="Add Label">
-						<div class="add-label">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke-width="1.5"
-								stroke="currentColor"
-							>
-								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-							</svg>
-						</div>
-					</div>
-				</label>
-			</div>
-			<div class="p-0 text-sm w-full">
-				<ul class="gap-1 flex flex-col font-bold text-gray-300 w-full pl-5">
-					{#each $labelStore as label}
-						<LabelLink
-							id={label?.id}
-							active={$page.route?.id?.includes(label.id + '') ?? false}
-							label={label?.name ?? ''}
-							color={label?.color ?? ''}
-						/>
-					{/each}
-				</ul>
-			</div>
 		</ul>
+
+		<div
+			class="pl-3 pt-2 text-lg flex font-sans"
+			class:justify-between={$isSidebarOpened}
+			class:justify-center={!$isSidebarOpened}
+		>
+			{#if $isSidebarOpened}
+				<pe>Label</pe>
+			{/if}
+			<label for="label-modal">
+				<div class="tooltip tooltip-bottom" data-tip="Add Label">
+					<div class="add-label">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+						</svg>
+					</div>
+				</div>
+			</label>
+		</div>
+		<div class="p-0 text-sm w-full">
+			<ul class="gap-1 flex flex-col font-bold text-gray-300 w-full pl-5">
+				{#each $labelStore as label}
+					<LabelLink
+						id={label?.id}
+						active={$page.route?.id?.includes(label.id + '') ?? false}
+						label={label?.name ?? ''}
+						color={label?.color ?? ''}
+					/>
+				{/each}
+			</ul>
+		</div>
 	</div>
 </aside>
 

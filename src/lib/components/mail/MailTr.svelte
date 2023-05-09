@@ -84,7 +84,7 @@
 			on:click={() => updateFlag(userActions.IS_STARRED)}
 			data-tip={is_starred ? 'Starred' : 'Not starred'}
 		>
-			<button class:active={isHover}>
+			<button class:active={isHover} aria-label={is_starred ? 'Starred' : 'Not Starred'}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill={is_starred ? 'orange' : 'none'}

@@ -502,10 +502,15 @@
 	}
 
 	:global(.ck.ck-editor__main) {
-		margin-bottom: 150px !important;
+		margin-bottom: 110px !important;
 	}
 
 	#select-wrapper {
 		box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	}
+
+	:global(.ck-editor__editable[role='textbox']) {
+		/* editing area */
+		min-height: 30vh !important;
 	}
 </style>

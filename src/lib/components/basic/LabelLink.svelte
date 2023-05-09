@@ -44,6 +44,7 @@
 	<a href="/user/label/{id}">
 		<div class="flex  px-2 py-1 gap-2" class:justify-center={!$isSidebarOpened}>
 			<svg
+				aria-label={label}
 				xmlns="http://www.w3.org/2000/svg"
 				fill={color}
 				viewBox="0 0 24 24"
