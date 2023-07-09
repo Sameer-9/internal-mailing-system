@@ -70,7 +70,8 @@
 	let audio: HTMLAudioElement;
 	onMount(async () => {
 		// Connect to the Socket.IO server
-		socket = io('http://10.130.97.121:4000');
+		socket = io('http://localhost:4000');
+		// socket = io('http://10.130.97.121:4000');
 		// @ts-ignore
 		console.log(io.sockets?.clients());
 		// Log the socket ID when connected

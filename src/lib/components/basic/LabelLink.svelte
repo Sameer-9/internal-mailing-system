@@ -60,7 +60,7 @@
 				<path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
 			</svg>
 			{#if $isSidebarOpened}
-				<li>
+				<li class="list-none">
 					<p class="text-ellipsis whitespace-nowrap overflow-hidden w-[90px]">{label}</p>
 				</li>
 			{/if}

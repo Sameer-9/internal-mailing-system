@@ -48,12 +48,14 @@
 	<div class="pt-3" id="overflow-sidebar">
 		<ul class="gap-1 flex flex-col font-bold text-gray-300 w-[90%]">
 			{#each $sidebarArray as data}
+			<li class="list-none">
 				<Link
-					active={$page.route?.id?.includes(data.url)}
-					label={data.name}
-					url={data.url}
-					imgUrl={data.icon}
+				active={$page.route?.id?.includes(data.url)}
+				label={data.name}
+				url={data.url}
+				imgUrl={data.icon}
 				/>
+			</li>
 			{/each}
 		</ul>
 
@@ -82,7 +84,7 @@
 			</label>
 		</div>
 		<div class="p-0 text-sm w-full">
-			<ul class="gap-1 flex flex-col font-bold text-gray-300 w-full pl-5">
+			<div class="gap-1 flex flex-col font-bold text-gray-300 w-full pl-5">
 				{#each $labelStore as label}
 					<LabelLink
 						id={label?.id}
@@ -91,7 +93,7 @@
 						color={label?.color ?? ''}
 					/>
 				{/each}
-			</ul>
+			</div>
 		</div>
 	</div>
 </aside>

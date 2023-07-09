@@ -19,12 +19,10 @@
 	<a href={url}>
 		<div class="flex gap-4  px-2 py-1 " class:justify-center={!$isSidebarOpened}>
 			{#if imgUrl}
-				<img src={imgUrl} width="20" alt={label} />
+				<img src={imgUrl} width="20" alt={label} loading="lazy" />
 			{/if}
 			{#if $isSidebarOpened}
-				<li>
 					<p>{label}</p>
-				</li>
 			{/if}
 		</div>
 		<!-- {#if !hidden}

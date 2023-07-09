@@ -83,7 +83,7 @@
 					for="profile-photo-edit"
 					class="profile-edit cursor-pointer overflow-hidden z-[9999] relative rounded-full w-32 h-32"
 				>
-					<img class="w-32 h-32 bg-gray-400" src={profilePhoto} alt="Profile" />
+					<img class="w-32 h-32 bg-gray-400" src={profilePhoto} alt="Profile" loading="lazy"/>
 					{#if showImage}
 						<div
 							class="bg-[rgba(32,33,36,.6)] absolute z-[9999999] bottom-0 w-full flex justify-center"

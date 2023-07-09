@@ -85,7 +85,7 @@
 			on:click={() => isProfileDropdownOpen.set(!$isProfileDropdownOpen)}
 		>
 			<div class="w-10 rounded-full">
-				<img src={$userStore?.profile_photo} alt="profle" id="profile-photo" />
+				<img src={$userStore?.profile_photo} alt="profle" id="profile-photo" loading="lazy" />
 			</div>
 		</button>
 	</div>
