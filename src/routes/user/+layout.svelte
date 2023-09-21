@@ -14,6 +14,7 @@
 	import type { UserArray } from '$lib/utils/common/types';
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
+	import type { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 	export let data: LayoutData;
 	let labelName = '';
@@ -66,7 +67,7 @@
 		}
 	}
 
-	let socket: Socket;
+	let socket: Socket<DefaultEventsMap, DefaultEventsMap> & {userId?: number};
 	let audio: HTMLAudioElement;
 	onMount(async () => {
 		// Connect to the Socket.IO server

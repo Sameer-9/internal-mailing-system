@@ -27,8 +27,8 @@
 
 	onMount(() => {
 		setTimeout(async () => {
-			editor1 = await initializeCK(editor);
-		}, 10);
+			// editor1 = await initializeCK(editor);
+		}, 100);
 	});
 
 	function submitTypeSelect(e: Event) {
@@ -88,7 +88,7 @@
 	}
 
 	async function sendMail() {
-		let editorData = await editor1.getData();
+		let editorData = await editor1?.getData();
 
 		if (!$SelectedUser || $SelectedUser.length === 0) {
 			toast(alertTypes.ERROR, 'Please specify at least one recipient.');
